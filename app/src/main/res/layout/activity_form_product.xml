@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Spinner
+        android:id="@+id/activity_form_product_spinner_categories"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        />
+
+    <EditText
+        android:id="@+id/activity_form_product_brand"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:hint="Marca"
+        android:inputType="textCapSentences" />
+
+    <EditText
+        android:id="@+id/activity_form_product_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:hint="Descrição"
+        android:inputType="textCapSentences" />
+
+    <EditText
+        android:id="@+id/activity_form_product_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:hint="Valor"
+        android:inputType="numberDecimal" />
+
+    <EditText
+        android:id="@+id/activity_form_product_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:hint="Código"
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/activity_form_product_save_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="Salvar" />
+</LinearLayout>
