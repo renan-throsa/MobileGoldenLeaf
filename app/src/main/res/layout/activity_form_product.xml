@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:hint="Marca"
-        android:inputType="textCapSentences" />
+        android:inputType="textCapCharacters" />
 
     <EditText
         android:id="@+id/activity_form_product_description"
@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:hint="Descrição"
-        android:inputType="textCapSentences" />
+        android:inputType="textCapCharacters" />
 
     <EditText
         android:id="@+id/activity_form_product_value"
