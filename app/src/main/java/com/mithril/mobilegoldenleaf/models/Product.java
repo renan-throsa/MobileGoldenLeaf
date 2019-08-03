@@ -13,6 +13,7 @@ public class Product implements Serializable {
 
 
     public Product(String brand, String description, String code, double unit_cost, boolean is_available) {
+        this.id = 0;
         this.brand = brand;
         this.description = description;
         this.code = code;
@@ -27,6 +28,10 @@ public class Product implements Serializable {
         this.code = code;
         this.unit_cost = unit_cost;
         this.is_available = is_available;
+    }
+
+    public Product() {
+        this.id = 0;
     }
 
 
@@ -80,6 +85,10 @@ public class Product implements Serializable {
 
     @Override
     public String toString() {
-        return brand + '\'' + description + '\'' + code + '\'' + unit_cost + is_available;
+        return brand + '\'' + description + '\'' + code + '\'' + unit_cost;
+    }
+
+    public boolean hasValidId() {
+        return this.getId() > 0;
     }
 }

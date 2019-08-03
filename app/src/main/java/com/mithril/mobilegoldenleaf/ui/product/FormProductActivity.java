@@ -21,6 +21,7 @@ public class FormProductActivity extends AppCompatActivity {
     private EditText valueEditText;
     private EditText codeEditText;
     private Button save_product_button;
+    private Product product;
 
 
     @Override
@@ -29,22 +30,36 @@ public class FormProductActivity extends AppCompatActivity {
         setContentView(R.layout.activity_form_product);
         setTitle(TITLE);
         initializeFields();
+        configureSaveButton();
+
+        Intent intent = getIntent();
+        if (intent.hasExtra("Product")) {
+            product = (Product) intent.getSerializableExtra("Product");
+            if (product != null) {
+
+                brandEditText.setText(product.getBrand());
+                descriptionEditText.setText(product.getDescription());
+                valueEditText.setText(String.valueOf(product.getUnit_cost()));
+                codeEditText.setText(product.getCode());
+            }
+        } else {
+            product = new Product();
+        }
+    }
+
+    private void configureSaveButton() {
         save_product_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Product product = createProduct();
-                dao.save(product);
+                fillProductOut();
+                if (product.hasValidId())
+                    dao.edit(product);
+                else
+                    dao.save(product);
                 finish();
             }
 
         });
-
-        Intent intent = getIntent();
-        Product product = (Product) intent.getSerializableExtra("Product");
-        brandEditText.setText(product.getBrand());
-        descriptionEditText.setText(product.getDescription());
-        valueEditText.setText(String.valueOf(product.getUnit_cost()));
-        codeEditText.setText(product.getCode());
     }
 
     private void initializeFields() {
@@ -55,11 +70,16 @@ public class FormProductActivity extends AppCompatActivity {
         codeEditText = findViewById(R.id.activity_form_product_code);
     }
 
-    private Product createProduct() {
+    private void fillProductOut() {
         String brand = brandEditText.getText().toString();
         String description = descriptionEditText.getText().toString();
         String value = valueEditText.getText().toString();
         String code = codeEditText.getText().toString();
-        return new Product(brand, description, code, Double.valueOf(value), true);
+
+        product.setBrand(brand);
+        product.setDescription(description);
+        product.setUnit_cost(Double.valueOf(value));
+        product.setCode(code);
+
     }
 }
