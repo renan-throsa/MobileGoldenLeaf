@@ -15,18 +15,20 @@ import com.mithril.mobilegoldenleaf.R;
 import com.mithril.mobilegoldenleaf.dao.ProductDAO;
 import com.mithril.mobilegoldenleaf.models.Product;
 
-import java.util.List;
+import static com.mithril.mobilegoldenleaf.ui.product.Constants.PRODUCT_KEY;
 
 public class ProductsListActivity extends AppCompatActivity {
 
-    ProductDAO dao = new ProductDAO();
+    public static final String TITLE = "Lista de Produtos";
+    private ProductDAO dao = new ProductDAO();
+    private ArrayAdapter<Product> arrayAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_products_list);
-        setTitle("Lista de Produtos");
-
+        setTitle(TITLE);
+        configureList();
 
         FloatingActionButton new_product_fba = findViewById(R.id.activity_products_list_fab_new_product);
         new_product_fba.setOnClickListener(new View.OnClickListener() {
@@ -42,26 +44,22 @@ public class ProductsListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        ListView product_list = findViewById(R.id.product_list_listview);
-        configureList(product_list);
+        arrayAdapter.clear();
+        arrayAdapter.addAll(dao.get_products());
 
     }
 
-    private void configureList(ListView product_list) {
-        final List<Product> products = dao.get_product();
-        product_list.setAdapter(new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_list_item_1
-                , products));
-
-
+    private void configureList() {
+        ListView product_list = findViewById(R.id.product_list_listview);
+        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+        product_list.setAdapter(arrayAdapter);
         product_list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Product product = products.get(position);
+                Product product = (Product) adapterView.getItemAtPosition(position);
                 Intent intent = new Intent(ProductsListActivity.this, FormProductActivity.class);
-                intent.putExtra("Product", product);
+                intent.putExtra(PRODUCT_KEY, product);
                 startActivity(intent);
                 return true;
             }

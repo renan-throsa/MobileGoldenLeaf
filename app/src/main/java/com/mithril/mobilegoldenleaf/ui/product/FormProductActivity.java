@@ -12,9 +12,12 @@ import com.mithril.mobilegoldenleaf.R;
 import com.mithril.mobilegoldenleaf.dao.ProductDAO;
 import com.mithril.mobilegoldenleaf.models.Product;
 
+import static com.mithril.mobilegoldenleaf.ui.product.Constants.PRODUCT_KEY;
+
 public class FormProductActivity extends AppCompatActivity {
 
-    public static final String TITLE = "Novo produto";
+    private static final String NEW_PRODUCT_TITLE = "Novo produto";
+    private static final String EDIT_PRODUCT_TITLE = "Editar produto";
     private ProductDAO dao = new ProductDAO();
     private EditText brandEditText;
     private EditText descriptionEditText;
@@ -28,21 +31,24 @@ public class FormProductActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_product);
-        setTitle(TITLE);
         initializeFields();
         configureSaveButton();
+        loadProduct();
+    }
 
+    private void loadProduct() {
         Intent intent = getIntent();
-        if (intent.hasExtra("Product")) {
-            product = (Product) intent.getSerializableExtra("Product");
+        if (intent.hasExtra(PRODUCT_KEY)) {
+            product = (Product) intent.getSerializableExtra(PRODUCT_KEY);
             if (product != null) {
-
+                setTitle(EDIT_PRODUCT_TITLE);
                 brandEditText.setText(product.getBrand());
                 descriptionEditText.setText(product.getDescription());
                 valueEditText.setText(String.valueOf(product.getUnit_cost()));
                 codeEditText.setText(product.getCode());
             }
         } else {
+            setTitle(NEW_PRODUCT_TITLE);
             product = new Product();
         }
     }
@@ -51,15 +57,19 @@ public class FormProductActivity extends AppCompatActivity {
         save_product_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fillProductOut();
-                if (product.hasValidId())
-                    dao.edit(product);
-                else
-                    dao.save(product);
-                finish();
+                finishForm();
             }
 
         });
+    }
+
+    private void finishForm() {
+        fillProductOut();
+        if (product.hasValidId())
+            dao.edit(product);
+        else
+            dao.save(product);
+        finish();
     }
 
     private void initializeFields() {

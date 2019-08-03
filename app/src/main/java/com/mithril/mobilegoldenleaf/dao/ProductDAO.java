@@ -19,7 +19,7 @@ public class ProductDAO {
         products.add(produc);
     }
 
-    public List<Product> get_product() {
+    public List<Product> get_products() {
         return new ArrayList<>(products); // Send a copy, not a reference.
     }
 
