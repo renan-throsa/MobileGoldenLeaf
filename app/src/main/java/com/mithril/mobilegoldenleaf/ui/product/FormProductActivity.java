@@ -1,5 +1,6 @@
 package com.mithril.mobilegoldenleaf.ui.product;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -37,6 +38,13 @@ public class FormProductActivity extends AppCompatActivity {
             }
 
         });
+
+        Intent intent = getIntent();
+        Product product = (Product) intent.getSerializableExtra("Product");
+        brandEditText.setText(product.getBrand());
+        descriptionEditText.setText(product.getDescription());
+        valueEditText.setText(String.valueOf(product.getUnit_cost()));
+        codeEditText.setText(product.getCode());
     }
 
     private void initializeFields() {
