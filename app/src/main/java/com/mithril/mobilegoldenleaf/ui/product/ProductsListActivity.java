@@ -30,6 +30,8 @@ public class ProductsListActivity extends AppCompatActivity {
         setTitle(TITLE);
         configureList();
 
+
+
         FloatingActionButton new_product_fba = findViewById(R.id.activity_products_list_fab_new_product);
         new_product_fba.setOnClickListener(new View.OnClickListener() {
             @Override

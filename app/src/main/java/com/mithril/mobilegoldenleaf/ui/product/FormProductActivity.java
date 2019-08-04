@@ -2,10 +2,12 @@ package com.mithril.mobilegoldenleaf.ui.product;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.mithril.mobilegoldenleaf.R;
@@ -23,7 +25,6 @@ public class FormProductActivity extends AppCompatActivity {
     private EditText descriptionEditText;
     private EditText valueEditText;
     private EditText codeEditText;
-    private Button save_product_button;
     private Product product;
 
 
@@ -32,8 +33,23 @@ public class FormProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_product);
         initializeFields();
-        configureSaveButton();
         loadProduct();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_form_product_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+        if (itemId == R.id.activity_form_product_save_menu) {
+            finishForm();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void loadProduct() {
@@ -53,16 +69,6 @@ public class FormProductActivity extends AppCompatActivity {
         }
     }
 
-    private void configureSaveButton() {
-        save_product_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finishForm();
-            }
-
-        });
-    }
-
     private void finishForm() {
         fillProductOut();
         if (product.hasValidId())
@@ -73,7 +79,6 @@ public class FormProductActivity extends AppCompatActivity {
     }
 
     private void initializeFields() {
-        save_product_button = findViewById(R.id.activity_form_product_save_button);
         brandEditText = findViewById(R.id.activity_form_product_brand);
         descriptionEditText = findViewById(R.id.activity_form_product_description);
         valueEditText = findViewById(R.id.activity_form_product_value);

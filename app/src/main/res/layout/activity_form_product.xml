@@ -1,52 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
-    <Spinner
-        android:id="@+id/activity_form_product_spinner_categories"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        />
 
-    <EditText
-        android:id="@+id/activity_form_product_brand"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:hint="Marca"
-        android:inputType="textCapCharacters" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/activity_form_product_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:hint="Descrição"
-        android:inputType="textCapCharacters" />
+        <Spinner
+            android:id="@+id/activity_form_product_spinner_categories"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp" />
 
-    <EditText
-        android:id="@+id/activity_form_product_value"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:hint="Valor"
-        android:inputType="numberDecimal" />
+        <EditText
+            android:id="@+id/activity_form_product_brand"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:hint="Marca"
+            android:inputType="textCapCharacters" />
 
-    <EditText
-        android:id="@+id/activity_form_product_code"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:hint="Código"
-        android:inputType="number" />
+        <EditText
+            android:id="@+id/activity_form_product_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:hint="Descrição"
+            android:inputType="textCapCharacters" />
 
-    <Button
-        android:id="@+id/activity_form_product_save_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:text="Salvar" />
-</LinearLayout>
+        <EditText
+            android:id="@+id/activity_form_product_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:hint="Valor"
+            android:inputType="numberDecimal" />
+
+        <EditText
+            android:id="@+id/activity_form_product_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:hint="Código"
+            android:inputType="number" />
+        
+
+    </LinearLayout>
+</ScrollView>
