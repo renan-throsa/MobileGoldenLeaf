@@ -3,7 +3,7 @@ package com.mithril.mobilegoldenleaf.dao;
 import com.mithril.mobilegoldenleaf.models.Product;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 public class ProductDAO {
@@ -11,12 +11,13 @@ public class ProductDAO {
     private static int staticId = 1;
     private final static List<Product> products =
             new ArrayList<>(
-                    Collections.singletonList(new Product("Qboa", "água sanitária", "123456", 3.50, true))
+                    Arrays.asList(new Product("Qboa", "Água sanitária", "12345687", 3.50, true),
+                            new Product("Coca Cola", "Refrigerante Fanta Uva 2L", "12345678", 5.25, true))
             );
 
-    public void save(Product produc) {
-        produc.setId(staticId++);
-        products.add(produc);
+    public void save(Product product) {
+        product.setId(staticId++);
+        products.add(product);
     }
 
     public List<Product> get_products() {
