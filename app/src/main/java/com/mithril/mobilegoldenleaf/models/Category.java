@@ -6,8 +6,8 @@ import java.util.List;
 public class Category {
 
     private int id;
-    private String title;
-    List<Product> products;
+    private final String title;
+    private final List<Product> products;
 
     public Category(String title) {
         this.title = title;

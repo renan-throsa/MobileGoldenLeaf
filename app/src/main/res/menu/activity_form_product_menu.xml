@@ -5,5 +5,5 @@
         android:id="@+id/activity_form_product_save_menu"
         app:showAsAction="always"
         android:icon="@drawable/ic_action_save_product"
-        android:title="Salvar" />
+        android:title="@string/save" />
 </menu>

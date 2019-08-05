@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -20,7 +19,7 @@ public class FormProductActivity extends AppCompatActivity {
 
     private static final String NEW_PRODUCT_TITLE = "Novo produto";
     private static final String EDIT_PRODUCT_TITLE = "Editar produto";
-    private ProductDAO dao = new ProductDAO();
+    private final ProductDAO dao = new ProductDAO();
     private EditText brandEditText;
     private EditText descriptionEditText;
     private EditText valueEditText;

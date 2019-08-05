@@ -1,5 +1,5 @@
 package com.mithril.mobilegoldenleaf.ui.product;
 
-public interface Constants {
+interface Constants {
     String PRODUCT_KEY = "Product";
 }

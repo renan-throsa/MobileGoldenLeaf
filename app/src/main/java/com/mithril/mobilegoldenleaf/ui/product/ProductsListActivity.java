@@ -19,8 +19,8 @@ import static com.mithril.mobilegoldenleaf.ui.product.Constants.PRODUCT_KEY;
 
 public class ProductsListActivity extends AppCompatActivity {
 
-    public static final String TITLE = "Lista de Produtos";
-    private ProductDAO dao = new ProductDAO();
+    private static final String TITLE = "Lista de Produtos";
+    private final ProductDAO dao = new ProductDAO();
     private ProductListAdapter adapter;
 
     @Override
@@ -46,8 +46,7 @@ public class ProductsListActivity extends AppCompatActivity {
     }
 
     private void updateProducts() {
-        adapter.clear();
-        adapter.addAll(dao.get_products());
+        adapter.update(dao.get_products());
     }
 
     private void configureList() {

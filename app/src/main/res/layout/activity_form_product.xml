@@ -6,7 +6,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <Spinner
@@ -20,32 +20,36 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:hint="Marca"
-            android:inputType="textCapCharacters" />
+            android:hint="@string/brand"
+            android:inputType="textCapCharacters"
+            android:importantForAutofill="no" />
 
         <EditText
             android:id="@+id/activity_form_product_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:hint="Descrição"
-            android:inputType="textCapCharacters" />
+            android:hint="@string/description"
+            android:inputType="textCapCharacters"
+            android:importantForAutofill="no" />
 
         <EditText
             android:id="@+id/activity_form_product_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:hint="Valor"
-            android:inputType="numberDecimal" />
+            android:hint="@string/value"
+            android:inputType="numberDecimal"
+            android:importantForAutofill="no" />
 
         <EditText
             android:id="@+id/activity_form_product_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:hint="Código"
-            android:inputType="number" />
+            android:hint="@string/code"
+            android:inputType="number"
+            android:importantForAutofill="no" />
         
 
     </LinearLayout>
