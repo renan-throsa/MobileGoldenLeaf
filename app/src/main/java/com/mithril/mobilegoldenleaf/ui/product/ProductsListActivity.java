@@ -8,11 +8,13 @@ import android.widget.ListView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.mithril.mobilegoldenleaf.Database.MobileGoldenLeafDataBase;
+import com.mithril.mobilegoldenleaf.Database.dao.ProductDao;
 import com.mithril.mobilegoldenleaf.R;
 import com.mithril.mobilegoldenleaf.adapters.ProductListAdapter;
-import com.mithril.mobilegoldenleaf.dao.ProductDAO;
 import com.mithril.mobilegoldenleaf.models.Product;
 
 import static com.mithril.mobilegoldenleaf.ui.product.Constants.PRODUCT_KEY;
@@ -20,12 +22,19 @@ import static com.mithril.mobilegoldenleaf.ui.product.Constants.PRODUCT_KEY;
 public class ProductsListActivity extends AppCompatActivity {
 
     private static final String TITLE = "Lista de Produtos";
-    private final ProductDAO dao = new ProductDAO();
+    private ProductDao dao;
     private ProductListAdapter adapter;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        dao = Room
+                .databaseBuilder(ProductsListActivity.this, MobileGoldenLeafDataBase.class, "GoldenLeafDataBase.db")
+                .allowMainThreadQueries()
+                .build()
+                .getProductDao();
+
         setContentView(R.layout.activity_products_list);
         setTitle(TITLE);
         configureList();
@@ -46,7 +55,7 @@ public class ProductsListActivity extends AppCompatActivity {
     }
 
     private void updateProducts() {
-        adapter.update(dao.get_products());
+        adapter.update(dao.all());
     }
 
     private void configureList() {

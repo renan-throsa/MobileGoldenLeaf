@@ -1,19 +1,32 @@
 package com.mithril.mobilegoldenleaf.models;
 
+import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 import java.io.Serializable;
 
-public class Product implements Serializable {
+import static androidx.room.ForeignKey.SET_NULL;
 
+@Entity(foreignKeys = @ForeignKey(entity = Category.class,
+        parentColumns = "id",
+        childColumns = "category_id",
+        onDelete = SET_NULL))
+public class Product implements Serializable {
+    @PrimaryKey(autoGenerate = true)
     private int id;
+    private int category_id;
     private String brand;
     private String description;
     private String code;
     private double unit_cost;
     private boolean is_available;
 
-
-    public Product(String brand, String description, String code, double unit_cost, boolean is_available) {
-        this.id = 0;
+    @Ignore
+    public Product(int id, int category_id, String brand, String description, String code, double unit_cost, boolean is_available) {
+        this.id = id;
+        this.category_id = category_id;
         this.brand = brand;
         this.description = description;
         this.code = code;
@@ -21,19 +34,28 @@ public class Product implements Serializable {
         this.is_available = is_available;
     }
 
-    public Product(int id, String brand, String description, String code, double unit_cost, boolean is_available) {
-        this.id = id;
+    @Ignore
+    public Product(int category_id, String brand, String description, String code, double unit_cost) {
+        this.category_id = category_id;
         this.brand = brand;
         this.description = description;
         this.code = code;
         this.unit_cost = unit_cost;
-        this.is_available = is_available;
+        this.is_available = true;
     }
 
     public Product() {
-        this.id = 0;
+
     }
 
+    @Override
+    public String toString() {
+        return brand + '\'' + description + '\'' + code + '\'' + unit_cost;
+    }
+
+    public boolean hasValidId() {
+        return this.getId() > 0;
+    }
 
     public int getId() {
         return id;
@@ -41,6 +63,14 @@ public class Product implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getCategory_id() {
+        return category_id;
+    }
+
+    public void setCategory_id(int category_id) {
+        this.category_id = category_id;
     }
 
     public String getBrand() {
@@ -81,14 +111,5 @@ public class Product implements Serializable {
 
     public void setIs_available(boolean is_available) {
         this.is_available = is_available;
-    }
-
-    @Override
-    public String toString() {
-        return brand + '\'' + description + '\'' + code + '\'' + unit_cost;
-    }
-
-    public boolean hasValidId() {
-        return this.getId() > 0;
     }
 }

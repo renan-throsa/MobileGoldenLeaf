@@ -8,9 +8,11 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
 
+import com.mithril.mobilegoldenleaf.Database.MobileGoldenLeafDataBase;
+import com.mithril.mobilegoldenleaf.Database.dao.ProductDao;
 import com.mithril.mobilegoldenleaf.R;
-import com.mithril.mobilegoldenleaf.dao.ProductDAO;
 import com.mithril.mobilegoldenleaf.models.Product;
 
 import static com.mithril.mobilegoldenleaf.ui.product.Constants.PRODUCT_KEY;
@@ -19,7 +21,7 @@ public class FormProductActivity extends AppCompatActivity {
 
     private static final String NEW_PRODUCT_TITLE = "Novo produto";
     private static final String EDIT_PRODUCT_TITLE = "Editar produto";
-    private final ProductDAO dao = new ProductDAO();
+    private ProductDao dao;
     private EditText brandEditText;
     private EditText descriptionEditText;
     private EditText valueEditText;
@@ -27,9 +29,16 @@ public class FormProductActivity extends AppCompatActivity {
     private Product product;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        dao = Room
+                .databaseBuilder(FormProductActivity.this, MobileGoldenLeafDataBase.class, "GoldenLeafDataBase.db")
+                .allowMainThreadQueries()
+                .build()
+                .getProductDao();
+
         setContentView(R.layout.activity_form_product);
         initializeFields();
         loadProduct();
