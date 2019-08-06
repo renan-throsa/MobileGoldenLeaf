@@ -4,9 +4,9 @@ import android.app.Application;
 
 import androidx.room.Room;
 
-import com.mithril.mobilegoldenleaf.Database.MobileGoldenLeafDataBase;
-import com.mithril.mobilegoldenleaf.Database.dao.CategoryDao;
-import com.mithril.mobilegoldenleaf.Database.dao.ProductDao;
+import com.mithril.mobilegoldenleaf.database.MobileGoldenLeafDataBase;
+import com.mithril.mobilegoldenleaf.database.dao.CategoryDao;
+import com.mithril.mobilegoldenleaf.database.dao.ProductDao;
 import com.mithril.mobilegoldenleaf.models.Category;
 import com.mithril.mobilegoldenleaf.models.Product;
 

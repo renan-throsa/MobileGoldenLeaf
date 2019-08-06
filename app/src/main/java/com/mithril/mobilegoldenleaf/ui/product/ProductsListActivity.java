@@ -11,8 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.mithril.mobilegoldenleaf.Database.MobileGoldenLeafDataBase;
-import com.mithril.mobilegoldenleaf.Database.dao.ProductDao;
+import com.mithril.mobilegoldenleaf.database.MobileGoldenLeafDataBase;
+import com.mithril.mobilegoldenleaf.database.dao.ProductDao;
 import com.mithril.mobilegoldenleaf.R;
 import com.mithril.mobilegoldenleaf.adapters.ProductListAdapter;
 import com.mithril.mobilegoldenleaf.models.Product;

@@ -1,4 +1,4 @@
-package com.mithril.mobilegoldenleaf.Database.dao;
+package com.mithril.mobilegoldenleaf.database.dao;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
