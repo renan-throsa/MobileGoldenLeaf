@@ -4,7 +4,7 @@ import androidx.room.TypeConverter;
 
 import java.util.Calendar;
 
-public class CaledarConversor {
+public class CaledarConverter {
 
     @TypeConverter
     public Long toLong(Calendar calendar) {

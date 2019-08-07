@@ -1,6 +1,7 @@
 package com.mithril.mobilegoldenleaf.models;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity
@@ -14,11 +15,13 @@ public class Address {
 
     }
 
+    @Ignore
     public Address(String street, String zipCode) {
         this.street = street;
         this.zipCode = zipCode;
     }
 
+    @Ignore
     public Address(int id, String street, String zipCode) {
         this.id = id;
         this.street = street;

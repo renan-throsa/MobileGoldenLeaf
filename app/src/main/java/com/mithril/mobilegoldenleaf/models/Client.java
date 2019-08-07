@@ -1,5 +1,9 @@
 package com.mithril.mobilegoldenleaf.models;
 
+import androidx.room.Entity;
+import androidx.room.Ignore;
+
+@Entity
 public class Client extends User {
 
     private String identification;
@@ -7,6 +11,10 @@ public class Client extends User {
     private Boolean status;
     private Boolean notifiable;
 
+    public Client() {
+    }
+
+    @Ignore
     public Client(String name, String phoneNumber, String identification, int address_id, Boolean notifiable) {
         super(name, phoneNumber);
         this.identification = identification;
@@ -15,6 +23,7 @@ public class Client extends User {
         this.status = true;
     }
 
+    @Ignore
     public Client(int id, String name, String phoneNumber, String identification, int address_id, Boolean status, Boolean notifiable) {
         super(id, name, phoneNumber);
         this.identification = identification;

@@ -1,7 +1,9 @@
 package com.mithril.mobilegoldenleaf.models;
 
-public abstract class User {
+import androidx.room.PrimaryKey;
 
+public abstract class User {
+    @PrimaryKey(autoGenerate = true)
     private int id;
     private String name;
     private String phoneNumber;
