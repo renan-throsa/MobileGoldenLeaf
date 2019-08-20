@@ -14,7 +14,7 @@ interface ProductDao {
     fun save(product: Product): Long
 
     @Update
-    fun edit(product: Product)
+    fun update(product: Product)
 
     @Query("SELECT * FROM Product")
     fun all(): List<Product>

@@ -10,36 +10,36 @@ import java.io.Serializable
 import androidx.room.ForeignKey.SET_NULL
 import java.math.BigDecimal
 
-@Entity(foreignKeys = [ForeignKey(entity = Category::class, parentColumns = ["id"], childColumns = ["category_id"], onDelete = SET_NULL)])
+@Entity(foreignKeys = [ForeignKey(entity = Category::class, parentColumns = ["id"], childColumns = ["categoryId"], onDelete = SET_NULL)])
 class Product : Serializable {
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
-    var category_id: Int = 0
+    var categoryId: Int = 0
     var brand: String? = null
     var description: String? = null
     var code: String? = null
-    var unit_cost: BigDecimal = BigDecimal.ZERO
-    var isIs_available: Boolean = false
+    var unitCost: BigDecimal = BigDecimal.ZERO
+    var isAvailable: Boolean = false
 
     @Ignore
     constructor(id: Int, category_id: Int, brand: String, description: String, code: String, unit_cost: BigDecimal, is_available: Boolean) {
         this.id = id
-        this.category_id = category_id
+        this.categoryId = category_id
         this.brand = brand
         this.description = description
         this.code = code
-        this.unit_cost = unit_cost
-        this.isIs_available = is_available
+        this.unitCost = unit_cost
+        this.isAvailable = is_available
     }
 
     @Ignore
     constructor(category_id: Int, brand: String, description: String, code: String, unit_cost: BigDecimal) {
-        this.category_id = category_id
+        this.categoryId = category_id
         this.brand = brand
         this.description = description
         this.code = code
-        this.unit_cost = unit_cost
-        this.isIs_available = true
+        this.unitCost = unit_cost
+        this.isAvailable = true
     }
 
     constructor() {
@@ -47,7 +47,7 @@ class Product : Serializable {
     }
 
     override fun toString(): String {
-        return "$brand'$description'$code'$unit_cost"
+        return "$brand'$description'$code'$unitCost"
     }
 
     fun hasValidId(): Boolean {

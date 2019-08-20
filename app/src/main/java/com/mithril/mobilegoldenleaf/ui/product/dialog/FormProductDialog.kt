@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.EditText
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.mithril.mobilegoldenleaf.R
@@ -15,20 +17,20 @@ import java.math.BigDecimal
 
 abstract class FormProductDialog(private val context: Context, private val viewGroup: ViewGroup?) {
     private val viewCreated = buildLayout()
-    protected val fieldValue = viewCreated.form_product_value
-    protected val fieldBrand = viewCreated.form_product_brand
-    protected val fieldDescription = viewCreated.form_product_description
-    protected val fieldCode = viewCreated.form_product_code
-    protected val spinnerCategories = viewCreated.form_transacao_categoria
+    protected val fieldValue: EditText = viewCreated.form_product_value
+    protected val fieldBrand: EditText = viewCreated.form_product_brand
+    protected val fieldDescription: EditText = viewCreated.form_product_description
+    protected val fieldCode: EditText = viewCreated.form_product_code
+    protected val spinnerCategories: Spinner = viewCreated.form_transacao_categoria
     abstract val positiveButtonTitle: String
 
 
-    fun chama(productDelegate: ProductDelegate) {
-        configCategoryBy()
-        configuraFormulario(productDelegate)
+    fun call(productDelegate: ProductDelegate) {
+        configCategory()
+        configForm(productDelegate)
     }
 
-    private fun configuraFormulario(productDelegate: ProductDelegate) {
+    private fun configForm(productDelegate: ProductDelegate) {
         AlertDialog.Builder(context)
                 .setTitle(R.string.alter_product)
                 .setView(viewCreated)
@@ -37,11 +39,11 @@ abstract class FormProductDialog(private val context: Context, private val viewG
                     val description = fieldDescription.text.toString()
                     val code = fieldCode.text.toString()
                     val valueInText = fieldValue.text.toString()
-                    val categoryInText = spinnerCategories.selectedItem.toString()
+                    //val categoryInText = spinnerCategories.selectedItem.toString()
                     val value = convertValue(valueInText)
 
                     val product =
-                            Product(brand, description, code, value)
+                            Product(1, brand, description, code, value)
 
                     productDelegate.delegate(product)
 
@@ -50,17 +52,10 @@ abstract class FormProductDialog(private val context: Context, private val viewG
                 .show()
     }
 
-    private fun configCategoryBy(id: Int) {
-        val categories = categoryBy(id)
-        val adapter = ArrayAdapter.createFromResource(
-                context,
-                categories,
-                android.R.layout.simple_dropdown_item_1line
-        )
+    private fun configCategory() {
+        val listOfItems = arrayOf("Item 1", "Item 2", "Item 3")
+        val adapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, listOfItems)
         spinnerCategories.adapter = adapter
-    }
-
-    protected fun categoryBy(id: Int): Unit {
     }
 
 
