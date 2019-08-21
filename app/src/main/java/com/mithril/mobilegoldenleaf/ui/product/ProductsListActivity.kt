@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.adapters.ProductAdapter
+import com.mithril.mobilegoldenleaf.asynctask.product.GetProductTask
 import com.mithril.mobilegoldenleaf.database.MobileGoldenLeafDataBase
 import com.mithril.mobilegoldenleaf.delegate.ProductDelegate
 import com.mithril.mobilegoldenleaf.models.Product
@@ -17,12 +18,10 @@ private const val TITLE = "Lista de Produtos"
 
 class ProductsListActivity : AppCompatActivity() {
 
-    private val dao by lazy {
-        MobileGoldenLeafDataBase.getInstance(this).productDao
-    }
+    private val dao by lazy { MobileGoldenLeafDataBase.getInstance(this).productDao }
     private val activityView by lazy { window.decorView as ViewGroup }
-    private val adapter by lazy { ProductAdapter(this, dao.all()) }
-    private val newProductFba = findViewById<FloatingActionButton>(R.id.activity_products_list_fab_new_product)
+    private val adapter by lazy { ProductAdapter(this) }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,13 +38,13 @@ class ProductsListActivity : AppCompatActivity() {
     }
 
     private fun configFba() {
-        newProductFba.setOnClickListener {
+        activity_products_list_fab_new_product.setOnClickListener {
             callAddingDialog()
         }
     }
 
     private fun updateProducts() {
-        adapter.update()
+        GetProductTask(dao, adapter).execute()
     }
 
     private fun configureList() {

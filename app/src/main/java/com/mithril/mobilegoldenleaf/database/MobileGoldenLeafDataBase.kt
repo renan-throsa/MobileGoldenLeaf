@@ -7,6 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.mithril.mobilegoldenleaf.database.converter.BigDecimalConverter
 
 import com.mithril.mobilegoldenleaf.database.converter.CaledarConverter
 import com.mithril.mobilegoldenleaf.database.converter.StatusConverter
@@ -26,7 +27,7 @@ import com.mithril.mobilegoldenleaf.models.Order
 import com.mithril.mobilegoldenleaf.models.Product
 
 @Database(entities = [Clerk::class, Client::class, Address::class, Order::class, Item::class, Category::class, Product::class], version = 2, exportSchema = false)
-@TypeConverters(CaledarConverter::class, StatusConverter::class)
+@TypeConverters(CaledarConverter::class, StatusConverter::class, BigDecimalConverter::class)
 abstract class MobileGoldenLeafDataBase : RoomDatabase() {
 
     abstract val productDao: ProductDao
@@ -45,11 +46,10 @@ abstract class MobileGoldenLeafDataBase : RoomDatabase() {
 
     companion object {
 
-        private val GOLDEN_LEAF_DATA_BASE_DB = "GoldenLeafDataBase.db"
+        private const val GOLDEN_LEAF_DATA_BASE_DB = "GoldenLeafDataBase.db"
 
         fun getInstance(context: Context): MobileGoldenLeafDataBase {
             return Room.databaseBuilder(context, MobileGoldenLeafDataBase::class.java, GOLDEN_LEAF_DATA_BASE_DB)
-                    .allowMainThreadQueries()
                     .fallbackToDestructiveMigration()
                     .build()
         }

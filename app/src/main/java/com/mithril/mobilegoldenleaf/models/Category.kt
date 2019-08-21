@@ -10,6 +10,7 @@ class Category {
     var id: Int = 0
     var title: String? = null
 
+    constructor()
 
     @Ignore
     constructor(title: String) {

@@ -20,4 +20,8 @@ interface ProductDao {
     fun all(): List<Product>
 
 
+    @Query("SELECT p.* FROM Product p JOIN Category c ON p.categoryId = c.id WHERE p.categoryId = :categoryId")
+    fun productsWith(categoryId: Int): List<Product>
+
+
 }

@@ -11,8 +11,10 @@ import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.models.Product
 import kotlinx.android.synthetic.main.item_product.view.*
 
-class ProductAdapter(private val context: Context, private val products: List<Product>) :
+class ProductAdapter(private val context: Context) :
         BaseAdapter() {
+
+    private val products: ArrayList<Product> = ArrayList()
 
     override fun getCount(): Int = products.size
 
@@ -53,7 +55,9 @@ class ProductAdapter(private val context: Context, private val products: List<Pr
         row.code.text = p.code
     }
 
-    fun update() {
+    fun update(all: List<Product>) {
+        products.clear()
+        products.addAll(all)
         notifyDataSetChanged()
     }
 

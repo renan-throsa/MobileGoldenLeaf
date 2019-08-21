@@ -14,6 +14,7 @@ import java.math.BigDecimal
 class Product : Serializable {
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
+    @ForeignKey(entity = Category::class, parentColumns = ["id"], childColumns = ["categoryId"])
     var categoryId: Int = 0
     var brand: String? = null
     var description: String? = null
