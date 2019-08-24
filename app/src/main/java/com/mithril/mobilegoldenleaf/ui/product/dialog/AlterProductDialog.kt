@@ -2,6 +2,7 @@ package com.mithril.mobilegoldenleaf.ui.product.dialog
 
 import android.content.Context
 import android.view.ViewGroup
+import com.mithril.mobilegoldenleaf.delegate.CategoryDelegate
 import com.mithril.mobilegoldenleaf.delegate.ProductDelegate
 import com.mithril.mobilegoldenleaf.models.Product
 

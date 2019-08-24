@@ -1,7 +1,6 @@
-package com.mithril.mobilegoldenleaf.ui.product
+package com.mithril.mobilegoldenleaf.ui
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -16,8 +15,8 @@ class MainActivity : AppCompatActivity() {
                 drawerLayout, toolbar, R.string.app_name, R.string.app_name)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         drawerLayout.addDrawerListener(drawerToggle)
@@ -45,7 +44,6 @@ class MainActivity : AppCompatActivity() {
     private fun selectMenuOption(menuItem: MenuItem) {
         menuItem.isChecked = true
         drawerLayout.closeDrawers()
-
     }
 
 

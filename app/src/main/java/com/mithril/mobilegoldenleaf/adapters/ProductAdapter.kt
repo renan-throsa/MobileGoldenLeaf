@@ -70,6 +70,5 @@ class ProductAdapter(private val context: Context) :
         }
     }
 
-
 }
 

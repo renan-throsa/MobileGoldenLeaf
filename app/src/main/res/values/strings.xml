@@ -16,6 +16,7 @@
     <string name="mes">Mês</string>
     <string name="ano">Ano</string>
 
+    <string name="option_dashboard">Dashboard</string>
     <string name="option_category">Categorias</string>
     <string name="option_product">Produtos</string>
     <string name="option_client">Clients</string>

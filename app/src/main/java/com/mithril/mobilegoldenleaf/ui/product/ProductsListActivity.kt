@@ -11,6 +11,8 @@ import com.mithril.mobilegoldenleaf.asynctask.product.UpdateProductTask
 import com.mithril.mobilegoldenleaf.database.MobileGoldenLeafDataBase
 import com.mithril.mobilegoldenleaf.delegate.ProductDelegate
 import com.mithril.mobilegoldenleaf.models.Product
+import com.mithril.mobilegoldenleaf.ui.category.dialog.AddCategoryDialog
+import com.mithril.mobilegoldenleaf.ui.category.dialog.AlterCategoryDialog
 import com.mithril.mobilegoldenleaf.ui.product.dialog.AddProductDialog
 import com.mithril.mobilegoldenleaf.ui.product.dialog.AlterProductDialog
 import kotlinx.android.synthetic.main.activity_products_list.*
@@ -73,6 +75,5 @@ class ProductsListActivity : AppCompatActivity() {
                     updateProducts()
                 })
     }
-
 
 }
