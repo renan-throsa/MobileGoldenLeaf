@@ -11,11 +11,10 @@
         android:theme="@style/AppTheme"
         android:name=".MobileGoldenLeafApplication"
         >
-        <activity android:name=".ui.product.FormProductActivity"/>
-        <activity android:name=".ui.product.ProductsListActivity">
+        
+        <activity android:name=".ui.product.MainActivity" android:theme="@style/MainTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

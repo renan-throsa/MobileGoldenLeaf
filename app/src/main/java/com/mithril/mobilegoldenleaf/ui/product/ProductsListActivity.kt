@@ -3,10 +3,11 @@ package com.mithril.mobilegoldenleaf.ui.product
 import android.os.Bundle
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.adapters.ProductAdapter
 import com.mithril.mobilegoldenleaf.asynctask.product.GetProductTask
+import com.mithril.mobilegoldenleaf.asynctask.product.SaveProductTask
+import com.mithril.mobilegoldenleaf.asynctask.product.UpdateProductTask
 import com.mithril.mobilegoldenleaf.database.MobileGoldenLeafDataBase
 import com.mithril.mobilegoldenleaf.delegate.ProductDelegate
 import com.mithril.mobilegoldenleaf.models.Product
@@ -51,28 +52,25 @@ class ProductsListActivity : AppCompatActivity() {
         with(product_list_listview) {
             setOnItemClickListener { _, _, position, _ ->
                 val product = adapter.getItem(position)
-                callChangingDialog(product as Product, position)
+                callEditingDialog(product as Product)
             }
 
         }
     }
 
-
-    private fun callChangingDialog(product: Product, position: Int) {
+    private fun callEditingDialog(product: Product) {
         AlterProductDialog(activityView, this)
                 .call(product, ProductDelegate { product ->
-                    dao.save(product)
+                    UpdateProductTask(dao, product).execute()
                     updateProducts()
                 })
     }
 
     private fun callAddingDialog() {
         AddProductDialog(activityView, this)
-                .call(ProductDelegate { transacao ->
-                    dao.update(transacao)
+                .call(ProductDelegate { product ->
+                    SaveProductTask(dao, product).execute()
                     updateProducts()
-                    //newProductFba.close(true)
-
                 })
     }
 

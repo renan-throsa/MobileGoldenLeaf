@@ -22,12 +22,6 @@ class AlterProductDialog(viewGroup: ViewGroup, private val context: Context) :
         fieldBrand.setText(product.brand)
         fieldDescription.setText(product.description)
         fieldCode.setText(product.code)
-
-//        campoValor.setText(transacao.valor.toString())
-//        campoData.setText(transacao.data.formataParaBrasileiro())
-//        val categoriasRetornadas = context.resources.getStringArray(categoriasPor(tipo))
-//        val posicaoCategoria = categoriasRetornadas.indexOf(transacao.categoria)
-//        campoCategoria.setSelection(posicaoCategoria, true)
     }
 
 }

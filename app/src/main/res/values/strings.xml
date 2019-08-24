@@ -5,7 +5,7 @@
     <string name="value">Valor</string>
     <string name="code">Código</string>
     <string name="save">Salvar</string>
-    <string name="lista_transacoes_adiciona"/>
+    <string name="lista_transacoes_adiciona" />
     <string name="add_product">Adicionar produto</string>
     <string name="add_category">Adicionar categoria</string>
     <string name="alter_product">Alterar produto</string>
@@ -15,4 +15,17 @@
     <string name="total">Total</string>
     <string name="mes">Mês</string>
     <string name="ano">Ano</string>
+
+    <string name="option_category">Categorias</string>
+    <string name="option_product">Produtos</string>
+    <string name="option_client">Clients</string>
+    <string name="option_order">Pedidos</string>
+
+    <string-array name="sections">
+        <item>Categorias</item>
+        <item>Produtos</item>
+        <item>Clientes</item>
+        <item>Pedidos</item>
+    </string-array>
+
 </resources>
