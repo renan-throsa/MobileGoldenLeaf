@@ -1,23 +1,21 @@
-package com.mithril.mobilegoldenleaf.database
+package com.mithril.mobilegoldenleaf.persistence
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import androidx.room.migration.Migration
-import androidx.sqlite.db.SupportSQLiteDatabase
-import com.mithril.mobilegoldenleaf.database.converter.BigDecimalConverter
+import com.mithril.mobilegoldenleaf.persistence.converter.BigDecimalConverter
 
-import com.mithril.mobilegoldenleaf.database.converter.CaledarConverter
-import com.mithril.mobilegoldenleaf.database.converter.StatusConverter
-import com.mithril.mobilegoldenleaf.database.dao.AddressDao
-import com.mithril.mobilegoldenleaf.database.dao.CategoryDao
-import com.mithril.mobilegoldenleaf.database.dao.ClerkDao
-import com.mithril.mobilegoldenleaf.database.dao.ClientDao
-import com.mithril.mobilegoldenleaf.database.dao.ItemDao
-import com.mithril.mobilegoldenleaf.database.dao.OrderDao
-import com.mithril.mobilegoldenleaf.database.dao.ProductDao
+import com.mithril.mobilegoldenleaf.persistence.converter.CaledarConverter
+import com.mithril.mobilegoldenleaf.persistence.converter.StatusConverter
+import com.mithril.mobilegoldenleaf.persistence.repository.AddressDao
+import com.mithril.mobilegoldenleaf.persistence.repository.CategoryRepository
+import com.mithril.mobilegoldenleaf.persistence.repository.ClerkDao
+import com.mithril.mobilegoldenleaf.persistence.repository.ClientDao
+import com.mithril.mobilegoldenleaf.persistence.repository.ItemDao
+import com.mithril.mobilegoldenleaf.persistence.repository.OrderDao
+import com.mithril.mobilegoldenleaf.persistence.repository.ProductRepository
 import com.mithril.mobilegoldenleaf.models.Address
 import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.models.Clerk
@@ -30,9 +28,9 @@ import com.mithril.mobilegoldenleaf.models.Product
 @TypeConverters(CaledarConverter::class, StatusConverter::class, BigDecimalConverter::class)
 abstract class MobileGoldenLeafDataBase : RoomDatabase() {
 
-    abstract val productDao: ProductDao
+    abstract val productRepository: ProductRepository
 
-    abstract val categoryDao: CategoryDao
+    abstract val categoryRepository: CategoryRepository
 
     abstract val addressDao: AddressDao
 

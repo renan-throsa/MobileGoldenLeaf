@@ -12,7 +12,7 @@ import androidx.appcompat.app.AlertDialog
 import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.delegate.ProductDelegate
 import com.mithril.mobilegoldenleaf.models.Product
-import kotlinx.android.synthetic.main.product_form.view.*
+import kotlinx.android.synthetic.main.fragment_product_form.view.*
 import java.math.BigDecimal
 
 abstract class FormProductDialog(private val context: Context, private val viewGroup: ViewGroup?) {
@@ -61,7 +61,7 @@ abstract class FormProductDialog(private val context: Context, private val viewG
 
     private fun buildLayout(): View {
         return LayoutInflater.from(context)
-                .inflate(R.layout.product_form, viewGroup, false)
+                .inflate(R.layout.fragment_product_form, viewGroup, false)
 
     }
 

@@ -1,4 +1,4 @@
-package com.mithril.mobilegoldenleaf.database.converter
+package com.mithril.mobilegoldenleaf.persistence.converter
 
 import androidx.room.TypeConverter
 

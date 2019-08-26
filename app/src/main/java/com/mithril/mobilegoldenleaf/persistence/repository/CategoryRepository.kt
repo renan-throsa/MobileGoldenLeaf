@@ -1,4 +1,4 @@
-package com.mithril.mobilegoldenleaf.database.dao
+package com.mithril.mobilegoldenleaf.persistence.repository
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -8,7 +8,7 @@ import androidx.room.Update
 import com.mithril.mobilegoldenleaf.models.Category
 
 @Dao
-interface CategoryDao {
+interface CategoryRepository {
     @Insert
     fun save(category: Category): Long
 
