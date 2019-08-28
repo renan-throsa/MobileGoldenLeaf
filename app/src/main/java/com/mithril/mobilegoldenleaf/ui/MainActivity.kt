@@ -6,10 +6,16 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.mithril.mobilegoldenleaf.R
+import com.mithril.mobilegoldenleaf.models.Product
+import com.mithril.mobilegoldenleaf.ui.product.interfaces.OnProductSavedListener
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), OnProductSavedListener {
+    override fun onProductSaved(product: Product) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     private val drawerToggle: ActionBarDrawerToggle by lazy {
         ActionBarDrawerToggle(this,
                 drawerLayout, toolbar, R.string.app_name, R.string.app_name)

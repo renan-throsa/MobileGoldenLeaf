@@ -1,6 +1,8 @@
-package com.mithril.mobilegoldenleaf.ui.product.presentation
+package com.mithril.mobilegoldenleaf.ui.product.presenters
 
 import com.mithril.mo.ProducValidator
+import com.mithril.mobilegoldenleaf.asynctask.product.GetProductById
+import com.mithril.mobilegoldenleaf.asynctask.product.SaveProductTask
 import com.mithril.mobilegoldenleaf.models.Product
 import com.mithril.mobilegoldenleaf.persistence.repository.ProductRepository
 import com.mithril.mobilegoldenleaf.ui.product.interfaces.ProductFormView
@@ -12,14 +14,14 @@ class ProductFormPresenter(private val view: ProductFormView,
     private val validator = ProducValidator()
 
     fun loadBy(productid: Long) {
-        val p: Product = repository.get(productid)
+        val p: Product = GetProductById(productid, repository).execute().get()
         view.show(p)
     }
 
-    fun save(p: Product): Boolean {
-        return if (validator.validade(p)) {
+    fun save(product: Product): Boolean {
+        return if (validator.validade(product)) {
             try {
-                repository.save(p)
+                SaveProductTask(repository, product)
                 true
             } catch (e: Exception) {
                 view.errorSaveProduct()

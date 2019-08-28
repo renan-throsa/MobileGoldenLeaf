@@ -12,8 +12,8 @@ class GetProductTask(private val repository: ProductRepository, private val adap
     }
 
 
-    override fun onPostExecute(result: List<Product>) {
-        super.onPostExecute(result)
-        adapter.update(result)
-    }
+//    override fun onPostExecute(result: List<Product>) {
+//        super.onPostExecute(result)
+//        adapter.update(result)
+//    }
 }
