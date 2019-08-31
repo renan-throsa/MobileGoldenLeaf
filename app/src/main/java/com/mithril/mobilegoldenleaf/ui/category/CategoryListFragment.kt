@@ -14,8 +14,7 @@ import com.mithril.mobilegoldenleaf.asynctask.category.UpdateCategoryTask
 import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
 import com.mithril.mobilegoldenleaf.delegate.CategoryDelegate
 import com.mithril.mobilegoldenleaf.models.Category
-import com.mithril.mobilegoldenleaf.ui.category.dialog.AddCategoryDialog
-import com.mithril.mobilegoldenleaf.ui.category.dialog.AlterCategoryDialog
+import com.mithril.mobilegoldenleaf.ui.product.fragments.ProductListFragment
 import kotlinx.android.synthetic.main.activity_products_list.*
 
 class CategoryListFragment : Fragment() {
@@ -41,25 +40,16 @@ class CategoryListFragment : Fragment() {
 
     private fun callEditingDialog(category: Category) {
 
-        AlterCategoryDialog(activityView, context)
-                .call(category, CategoryDelegate { category ->
-                    UpdateCategoryTask(dao, category).execute()
-                    updateCategories()
-                })
 
     }
 
 
-    private fun callAddingDialog() {
-        AddCategoryDialog(activityView, context)
-                .call(CategoryDelegate { category ->
-                    SaveCategoryTask(dao, category).execute()
-                    updateCategories()
-                })
+    companion object {
+        const val TAG_PRODUCT_LIST = "tagListaCategoria"
+        fun newInstance(): CategoryListFragment {
+            return CategoryListFragment()
+        }
     }
 
-    private fun updateCategories() {
-        GetCategoryTask(dao, adapter).execute()
-    }
 
 }

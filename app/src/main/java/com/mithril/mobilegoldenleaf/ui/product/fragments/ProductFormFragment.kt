@@ -101,7 +101,7 @@ class ProductFormFragment : DialogFragment(), ProductFormView {
         private const val DIALOG_TAG = "productId"
         private const val EXTRA_PRODUCT_ID = "editDialog"
 
-        fun newInstance(id: Long): ProductFormFragment {
+        fun newInstance(id: Long = 0): ProductFormFragment {
             val fragment = ProductFormFragment()
             val args = Bundle()
             args.putLong(EXTRA_PRODUCT_ID, id)

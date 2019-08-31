@@ -12,4 +12,11 @@ class Dashboard : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_dashboad, null)
     }
+
+    companion object {
+        const val TAG_PRODUCT_LIST = "tagDashboard"
+        fun newInstance(): Dashboard {
+            return Dashboard()
+        }
+    }
 }

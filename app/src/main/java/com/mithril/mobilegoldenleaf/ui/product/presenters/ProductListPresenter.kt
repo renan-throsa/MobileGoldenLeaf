@@ -17,7 +17,7 @@ class ProductListPresenter(private val view: ProductListView,
         }
     }
 
-    fun showProductDetais(product: Product) {
+    fun showProductDetails(product: Product) {
         view.showProductDetails(product)
     }
 
