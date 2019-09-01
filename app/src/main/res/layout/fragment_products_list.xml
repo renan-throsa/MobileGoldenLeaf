@@ -15,7 +15,7 @@
         android:src="@drawable/ic_action_new_product" />
 
     <ListView
-        android:id="@+id/product_list_listview"
+        android:id="@+id/product_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

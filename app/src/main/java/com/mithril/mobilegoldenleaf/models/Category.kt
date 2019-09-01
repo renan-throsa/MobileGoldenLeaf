@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity
 class Category {
     @PrimaryKey(autoGenerate = true)
-    var id: Int = 0
+    var id: Long = 0
     var title: String? = null
 
     constructor()
@@ -18,7 +18,7 @@ class Category {
     }
 
     @Ignore
-    constructor(id: Int, title: String) {
+    constructor(id: Long, title: String) {
         this.id = id
         this.title = title
     }

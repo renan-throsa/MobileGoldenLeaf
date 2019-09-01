@@ -13,7 +13,7 @@ import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
 import com.mithril.mobilegoldenleaf.ui.product.interfaces.OnProductSavedListener
 import com.mithril.mobilegoldenleaf.ui.product.interfaces.ProductListView
 import com.mithril.mobilegoldenleaf.ui.product.presenters.ProductListPresenter
-import kotlinx.android.synthetic.main.activity_products_list.*
+import kotlinx.android.synthetic.main.fragment_products_list.*
 
 private const val TITLE = "Lista de Produtos"
 
@@ -26,7 +26,7 @@ class ProductListFragment : Fragment(), ProductListView, OnProductSavedListener 
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_dashboad, null)
+        val view = inflater.inflate(R.layout.fragment_products_list, null)
         configureList()
         configFba()
         return view
@@ -64,9 +64,12 @@ class ProductListFragment : Fragment(), ProductListView, OnProductSavedListener 
         }
     }
 
+    override fun onProductSaved(product: Product) {
+        presenter.searchProducts("", adapter)
+    }
 
     private fun configureList() {
-        with(product_list_listview) {
+        with(product_list) {
             setOnItemClickListener { _, _, position, _ ->
                 val product = adapter.getItem(position) as Product
                 presenter.showProductDetails(product)
@@ -75,13 +78,9 @@ class ProductListFragment : Fragment(), ProductListView, OnProductSavedListener 
         }
     }
 
-    override fun onProductSaved(product: Product) {
-        presenter.searchProducts("", adapter)
-    }
-
     companion object {
         const val TAG_PRODUCT_LIST = "tagListaProduto"
-        fun newInstance(): ProductListFragment {
+        fun newInstance(id: Long = 0): ProductListFragment {
             return ProductListFragment()
         }
     }

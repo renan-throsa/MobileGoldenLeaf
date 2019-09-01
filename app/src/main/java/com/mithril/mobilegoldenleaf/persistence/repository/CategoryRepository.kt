@@ -15,6 +15,12 @@ interface CategoryRepository {
     @Update
     fun update(category: Category): Int
 
+    @Query("SELECT c.* FROM Category c WHERE c.id = :categoryId")
+    fun get(categoryId: Long): Category
+
     @Query("SELECT c.* FROM Category c")
     fun all(): List<Category>
+
+    @Query("")
+    fun search(term: String): List<Category>
 }

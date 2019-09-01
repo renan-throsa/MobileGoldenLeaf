@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.interfaces.OnProductClikedListener
 import com.mithril.mobilegoldenleaf.models.Product
-import com.mithril.mobilegoldenleaf.ui.category.CategoryListFragment
+import com.mithril.mobilegoldenleaf.ui.category.fragments.CategoryListFragment
 import com.mithril.mobilegoldenleaf.ui.dashboard.Dashboard
 import com.mithril.mobilegoldenleaf.ui.product.fragments.ProductDetailsFragment
 import com.mithril.mobilegoldenleaf.ui.product.fragments.ProductListFragment
