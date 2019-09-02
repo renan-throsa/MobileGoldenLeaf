@@ -20,7 +20,7 @@ class CategoryAdapter(private val context: Context) : BaseAdapter() {
     override fun getItem(position: Int): Category = categories[position]
 
 
-    override fun getItemId(i: Int): Long = categories[i].id.toLong()
+    override fun getItemId(i: Int): Long = categories[i].id
 
 
     override fun getView(position: Int, convertView: View?, viewGroup: ViewGroup): View {
@@ -60,7 +60,6 @@ class CategoryAdapter(private val context: Context) : BaseAdapter() {
     companion object {
         data class ViewHolder(val view: View) {
             val title: TextView = view.item_category_title
-
         }
     }
 

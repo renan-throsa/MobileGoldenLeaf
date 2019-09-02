@@ -56,18 +56,25 @@ class MainActivity : AppCompatActivity(), OnProductClikedListener {
     private fun selectMenuOption(menuItem: MenuItem) {
         menuItem.isChecked = true
         drawerLayout.closeDrawers()
+        val title = menuItem.title.toString()
+        if(supportFragmentManager.findFragmentByTag(title) == null){
+
+        }
         val fragment: Fragment = when (menuItem.itemId) {
             R.id.action_dashboard -> Dashboard.newInstance()
-            R.id.action_product -> ProductListFragment.newInstance()
             R.id.action_category -> CategoryListFragment.newInstance()
+            R.id.action_product -> ProductListFragment.newInstance()
             else -> {
                 return
             }
         }
 
-        val ft = supportFragmentManager.beginTransaction()
-        ft.replace(R.id.content, fragment)
-        ft.commit()
+
+        supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.content, fragment,title)
+                .commit()
+
         drawerLayout.closeDrawer(GravityCompat.START)
     }
 

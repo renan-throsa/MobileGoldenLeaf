@@ -16,10 +16,10 @@ interface ProductRepository {
     @Query("SELECT * FROM Product")
     fun all(): List<Product>
 
-    @Query(value = "")
-    fun search(term:String): List<Product>
+    @Query("SELECT p.* FROM Product p WHERE p.description LIKE :term")
+    fun search(term: String): List<Product>
 
-    @Query(value = "SELECT p.* FROM Product p WHERE p.id = :productId")
+    @Query("SELECT p.* FROM Product p WHERE p.id = :productId")
     fun get(productId: Long): Product
 
     @Query("SELECT p.* FROM Product p JOIN Category c ON p.categoryId = c.id WHERE p.categoryId = :categoryId")

@@ -3,23 +3,32 @@ package com.mithril.mobilegoldenleaf.ui.category.fragments
 import android.os.Bundle
 import android.view.*
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import androidx.fragment.app.ListFragment
+import androidx.fragment.app.Fragment
 import com.mithril.mobilegoldenleaf.R
+import com.mithril.mobilegoldenleaf.adapters.CategoryAdapter
 import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.models.Product
+import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
 import com.mithril.mobilegoldenleaf.ui.category.interfaces.CategoryListView
-import kotlinx.android.synthetic.main.fragment_category_list.*
-import kotlinx.android.synthetic.main.fragment_products_list.activity_products_list_fab_new_product
+import com.mithril.mobilegoldenleaf.ui.category.presenters.CategoryListPresenter
+import kotlinx.android.synthetic.main.fragment_category_list.view.*
 
-class CategoryListFragment : ListFragment(), CategoryListView {
+class CategoryListFragment : Fragment(), CategoryListView {
 
+    private val adapter by lazy { CategoryAdapter(requireContext()) }
+    private val presenter = CategoryListPresenter(this,
+            MobileGoldenLeafDataBase.getInstance(requireContext()).categoryRepository)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_category_list, null)
-        configureList()
-        configFba()
+        configureList(view)
+        configFba(view)
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        presenter.searchCategories("")
     }
 
     override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
@@ -29,7 +38,7 @@ class CategoryListFragment : ListFragment(), CategoryListView {
 
     override fun onContextItemSelected(item: MenuItem?): Boolean {
         val menuInfo = item?.menuInfo as AdapterView.AdapterContextMenuInfo
-        val category = listAdapter.getItem(menuInfo.position) as Category
+        val category = adapter.getItem(menuInfo.position)
         when (item.itemId) {
             R.id.category_list_menu_edit -> openEditCategoryDialogFragment(category)
             R.id.category_list_menu_add -> openAddCategoryDialogFragment()
@@ -39,16 +48,26 @@ class CategoryListFragment : ListFragment(), CategoryListView {
 
     }
 
-    private fun configFba() {
-        activity_products_list_fab_new_product.setOnClickListener {
+    override fun onResume() {
+        super.onResume()
+        presenter.searchCategories("")
+    }
+
+    override fun showCategories(all: List<Category>) {
+        adapter.update(all)
+    }
+
+    private fun configFba(view: View) {
+
+        view.fragment_category_list_fab_new_category.setOnClickListener {
             val dialogFragment = CategoryFormFragment.newInstance()
             activity?.supportFragmentManager?.let { it -> dialogFragment.open(it) }
         }
     }
 
-    private fun configureList() {
-        registerForContextMenu(category_list)
-        with(category_list) {
+    private fun configureList(view: View) {
+        registerForContextMenu(view.category_list)
+        with(view.category_list) {
             setOnItemLongClickListener { _, _, position, _ ->
                 val category = adapter.getItem(position)
                 false
@@ -80,10 +99,6 @@ class CategoryListFragment : ListFragment(), CategoryListView {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun showCategories(all: List<Category>) {
-        val adapter = ArrayAdapter<Category>(requireContext(), android.R.layout.simple_list_item_1, all)
-        listAdapter = adapter
-    }
 
     override fun editCategoryDetails(category: Category) {
 

@@ -15,7 +15,7 @@ class Product : Serializable {
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0
     @ForeignKey(entity = Category::class, parentColumns = ["id"], childColumns = ["categoryId"])
-    var categoryId: Int = 0
+    var categoryId: Long = 0
     var brand: String? = null
     var description: String? = null
     var code: String? = null
@@ -23,7 +23,7 @@ class Product : Serializable {
     var isAvailable: Boolean = false
 
     @Ignore
-    constructor(id: Long, category_id: Int, brand: String, description: String, code: String, unit_cost: BigDecimal, is_available: Boolean) {
+    constructor(id: Long, category_id: Long, brand: String, description: String, code: String, unit_cost: BigDecimal, is_available: Boolean) {
         this.id = id
         this.categoryId = category_id
         this.brand = brand
@@ -34,7 +34,7 @@ class Product : Serializable {
     }
 
     @Ignore
-    constructor(category_id: Int, brand: String, description: String, code: String, unit_cost: BigDecimal) {
+    constructor(category_id: Long, brand: String, description: String, code: String, unit_cost: BigDecimal) {
         this.categoryId = category_id
         this.brand = brand
         this.description = description

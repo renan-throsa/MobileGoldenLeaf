@@ -19,7 +19,6 @@ private const val TITLE = "Lista de Produtos"
 
 class ProductListFragment : Fragment(), ProductListView, OnProductSavedListener {
 
-    private val activityView by lazy { activity?.window?.decorView as ViewGroup }
     private val adapter by lazy { ProductAdapter(requireContext()) }
     private val presenter = ProductListPresenter(this,
             MobileGoldenLeafDataBase.getInstance(requireContext()).productRepository)
@@ -41,7 +40,7 @@ class ProductListFragment : Fragment(), ProductListView, OnProductSavedListener 
 
     override fun onResume() {
         super.onResume()
-        presenter.searchProducts("", adapter)
+        presenter.searchProducts("")
     }
 
     override fun showProducts(all: List<Product>) {
@@ -65,7 +64,7 @@ class ProductListFragment : Fragment(), ProductListView, OnProductSavedListener 
     }
 
     override fun onProductSaved(product: Product) {
-        presenter.searchProducts("", adapter)
+        presenter.searchProducts("")
     }
 
     private fun configureList() {
@@ -79,8 +78,8 @@ class ProductListFragment : Fragment(), ProductListView, OnProductSavedListener 
     }
 
     companion object {
-        const val TAG_PRODUCT_LIST = "tagListaProduto"
-        fun newInstance(id: Long = 0): ProductListFragment {
+        const val TAG_PRODUCT_LIST = "tagListaProdutos"
+        fun newInstance(): ProductListFragment {
             return ProductListFragment()
         }
     }
