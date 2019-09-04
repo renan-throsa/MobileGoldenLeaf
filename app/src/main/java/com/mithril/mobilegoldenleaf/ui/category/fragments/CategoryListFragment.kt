@@ -3,6 +3,7 @@ package com.mithril.mobilegoldenleaf.ui.category.fragments
 import android.os.Bundle
 import android.view.*
 import android.widget.AdapterView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.adapters.CategoryAdapter
@@ -15,9 +16,29 @@ import kotlinx.android.synthetic.main.fragment_category_list.view.*
 
 class CategoryListFragment : Fragment(), CategoryListView {
 
-    private val adapter by lazy { CategoryAdapter(requireContext()) }
-    private val presenter = CategoryListPresenter(this,
-            MobileGoldenLeafDataBase.getInstance(requireContext()).categoryRepository)
+    private val adapter by lazy {
+        context.let {
+            if (it != null) {
+                CategoryAdapter(it)
+            } else {
+                throw IllegalArgumentException("Contexto inválido")
+            }
+        }
+
+
+    }
+    private val presenter by lazy {
+        context.let {
+            if (it != null) {
+                val repository = MobileGoldenLeafDataBase.getInstance(it).categoryRepository
+                CategoryListPresenter(this, repository)
+            } else {
+                throw IllegalArgumentException("Contexto inválido")
+            }
+        }
+
+
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_category_list, null)
@@ -54,6 +75,13 @@ class CategoryListFragment : Fragment(), CategoryListView {
     }
 
     override fun showCategories(all: List<Category>) {
+        val contexto = context
+        val texto = "Quantidade " + all.size
+        val duracao = Toast.LENGTH_SHORT
+
+        val toast = Toast.makeText(contexto, texto, duracao)
+        toast.show()
+
         adapter.update(all)
     }
 

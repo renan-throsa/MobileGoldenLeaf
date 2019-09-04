@@ -13,7 +13,7 @@ class MobileGoldenLeafApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        //initializeDatabase()
+        initializeDatabase()
     }
 
     private fun initializeDatabase() {

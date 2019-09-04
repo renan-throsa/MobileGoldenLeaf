@@ -6,6 +6,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
+import com.google.android.material.navigation.NavigationView
 import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.interfaces.OnProductClikedListener
 import com.mithril.mobilegoldenleaf.models.Product
@@ -16,7 +17,7 @@ import com.mithril.mobilegoldenleaf.ui.product.fragments.ProductListFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 
-class MainActivity : AppCompatActivity(), OnProductClikedListener {
+class MainActivity : AppCompatActivity(), OnProductClikedListener, NavigationView.OnNavigationItemSelectedListener {
 
     private val drawerToggle: ActionBarDrawerToggle by lazy {
         ActionBarDrawerToggle(this,
@@ -29,13 +30,11 @@ class MainActivity : AppCompatActivity(), OnProductClikedListener {
         setSupportActionBar(toolbar)
         drawerLayout.addDrawerListener(drawerToggle)
         drawerToggle.syncState()
-        navigationView.setNavigationItemSelectedListener { menuItem ->
-            selectMenuOption(menuItem)
-            true
-        }
+
+        navigationView.setNavigationItemSelectedListener(this)
 
         if (savedInstanceState == null) {
-            selectMenuOption(navigationView.menu.findItem(R.id.action_dashboard))
+            displayFragment(R.id.action_dashboard)
         }
     }
 
@@ -53,30 +52,56 @@ class MainActivity : AppCompatActivity(), OnProductClikedListener {
         ProductDetailsFragment
     }
 
-    private fun selectMenuOption(menuItem: MenuItem) {
-        menuItem.isChecked = true
-        drawerLayout.closeDrawers()
-        val title = menuItem.title.toString()
-        if(supportFragmentManager.findFragmentByTag(title) == null){
-
-        }
-        val fragment: Fragment = when (menuItem.itemId) {
+    private fun displayFragment(id: Int) {
+        val fragment: Fragment = when (id) {
             R.id.action_dashboard -> Dashboard.newInstance()
             R.id.action_category -> CategoryListFragment.newInstance()
             R.id.action_product -> ProductListFragment.newInstance()
+            R.id.action_client -> Dashboard.newInstance()
+            R.id.action_order -> Dashboard.newInstance()
             else -> {
-                return
+                Dashboard.newInstance()
             }
         }
 
-
         supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.content, fragment,title)
+                .replace(R.id.content, fragment)
                 .commit()
-
-        drawerLayout.closeDrawer(GravityCompat.START)
     }
+
+    override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
+        menuItem.isChecked = true
+        drawerLayout.closeDrawers()
+        displayFragment(menuItem.itemId)
+        drawerLayout.closeDrawer(GravityCompat.START)
+        return true
+    }
+
+//    private fun selectMenuOption(menuItem: MenuItem) {
+//        menuItem.isChecked = true
+//        drawerLayout.closeDrawers()
+//        val title = menuItem.title.toString()
+//        if(supportFragmentManager.findFragmentByTag(title) == null){
+//
+//        }
+//        val fragment: Fragment = when (menuItem.itemId) {
+//            R.id.action_dashboard -> Dashboard.newInstance()
+//            R.id.action_category -> CategoryListFragment.newInstance()
+//            R.id.action_product -> ProductListFragment.newInstance()
+//            else -> {
+//                return
+//            }
+//        }
+//
+//
+//        supportFragmentManager
+//                .beginTransaction()
+//                .replace(R.id.content, fragment,title)
+//                .commit()
+//
+//        drawerLayout.closeDrawer(GravityCompat.START)
+//    }
 
 
 }

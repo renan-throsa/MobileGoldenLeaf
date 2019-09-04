@@ -8,5 +8,7 @@
         android:id="@+id/dashboard_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="DashBoard Here" />
+        android:text="DashBoard Here"
+
+        />
 </LinearLayout>
