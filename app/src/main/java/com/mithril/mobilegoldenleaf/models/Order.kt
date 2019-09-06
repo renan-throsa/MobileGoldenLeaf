@@ -1,6 +1,7 @@
 package com.mithril.mobilegoldenleaf.models
 
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 
 import java.util.Calendar
@@ -16,6 +17,7 @@ class Order {
 
     constructor() {}
 
+    @Ignore
     constructor(client_id: Int, clerk_id: Int, date: Calendar, status: OrderStatus) {
         this.client_id = client_id
         this.clerk_id = clerk_id
@@ -23,6 +25,7 @@ class Order {
         this.status = status
     }
 
+    @Ignore
     constructor(id: Int, client_id: Int, clerk_id: Int, date: Calendar, status: OrderStatus) {
         this.id = id
         this.client_id = client_id

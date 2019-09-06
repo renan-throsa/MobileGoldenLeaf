@@ -86,7 +86,6 @@ class CategoryListFragment : Fragment(), CategoryListView {
     }
 
     private fun configFba(view: View) {
-
         view.fragment_category_list_fab_new_category.setOnClickListener {
             val dialogFragment = CategoryFormFragment.newInstance()
             activity?.supportFragmentManager?.let { it -> dialogFragment.open(it) }

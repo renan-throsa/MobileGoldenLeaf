@@ -6,30 +6,35 @@ import androidx.room.PrimaryKey
 
 import androidx.room.ForeignKey.CASCADE
 import androidx.room.ForeignKey.SET_NULL
+import androidx.room.Ignore
 
-@Entity(foreignKeys = [ForeignKey(entity = Product::class, parentColumns = ["id"], childColumns = ["product_id"], onDelete = SET_NULL), ForeignKey(entity = Order::class, parentColumns = ["id"], childColumns = ["order_id"], onDelete = CASCADE)])
+@Entity
 class Item {
     @PrimaryKey(autoGenerate = true)
-    var id: Int = 0
-    var order_id: Int = 0
-    var product_id: Int = 0
+    var id: Long = 0
+    @ForeignKey(entity = Order::class, parentColumns = ["id"], childColumns = ["orderId"])
+    var orderId: Long = 0
+    @ForeignKey(entity = Product::class, parentColumns = ["id"], childColumns = ["productId"])
+    var productId: Long = 0
     var quantity: Double = 0.toDouble()
-    var extended_cost: Double = 0.toDouble()
+    var extendedCost: Double = 0.toDouble()
 
     constructor() {}
 
-    constructor(order_id: Int, product_id: Int, quantity: Double, extended_cost: Double) {
-        this.order_id = order_id
-        this.product_id = product_id
+    @Ignore
+    constructor(order_id: Long, product_id: Long, quantity: Double, extended_cost: Double) {
+        this.orderId = order_id
+        this.productId = product_id
         this.quantity = quantity
-        this.extended_cost = extended_cost
+        this.extendedCost = extended_cost
     }
 
-    constructor(id: Int, order_id: Int, product_id: Int, quantity: Double, extended_cost: Double) {
+    @Ignore
+    constructor(id: Long, order_id: Long, product_id: Long, quantity: Double, extended_cost: Double) {
         this.id = id
-        this.order_id = order_id
-        this.product_id = product_id
+        this.orderId = order_id
+        this.productId = product_id
         this.quantity = quantity
-        this.extended_cost = extended_cost
+        this.extendedCost = extended_cost
     }
 }

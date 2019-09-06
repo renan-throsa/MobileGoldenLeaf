@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.mithril.mobilegoldenleaf.R
@@ -14,20 +16,36 @@ import com.mithril.mobilegoldenleaf.ui.category.interfaces.CategoryFormView
 import com.mithril.mobilegoldenleaf.ui.category.interfaces.OnCategorySavedListener
 import com.mithril.mobilegoldenleaf.ui.category.presenters.CategoryFormPresenter
 import kotlinx.android.synthetic.main.fragment_category_form.*
+import kotlinx.android.synthetic.main.fragment_category_form.view.*
 
 class CategoryFormFragment : DialogFragment(), CategoryFormView {
-    private val presenter = CategoryFormPresenter(this, MobileGoldenLeafDataBase.getInstance(requireContext()).categoryRepository)
+
+    private val presenter by lazy {
+        context.let {
+            if (it != null) {
+                val repository = MobileGoldenLeafDataBase.getInstance(it).categoryRepository
+                CategoryFormPresenter(this, repository)
+            } else {
+                throw IllegalArgumentException("Contexto inválido")
+            }
+        }
+
+
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_product_form, container, false)
+        return inflater.inflate(R.layout.fragment_category_form, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val categoryId = arguments?.getLong(EXTRA_CATEGORY_ID, 0) ?: 0
-        presenter.loadBy(categoryId)
-        form_category_title.setOnEditorActionListener { _, i, _ -> handleKeyBoardEvent(i) }
-
+        if (categoryId > 0) {
+            presenter.loadBy(categoryId)
+        }
+        view.form_category_title.setOnEditorActionListener { _, i, _ -> handleKeyBoardEvent(i) }
+        dialog.setTitle(R.string.action_new_category)
+        dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
     }
 
     override fun show(category: Category) {
@@ -35,11 +53,12 @@ class CategoryFormFragment : DialogFragment(), CategoryFormView {
     }
 
     override fun errorinvalidTitle() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        form_category_title
     }
 
     override fun errorSaveCategory() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Toast.makeText(context, "Não foi possível salvar a categoria", Toast.LENGTH_SHORT)
+                .show()
     }
 
 
@@ -61,7 +80,9 @@ class CategoryFormFragment : DialogFragment(), CategoryFormView {
     private fun saveCategory(): Category? {
         val category = Category()
         val categoryId = arguments?.getLong(EXTRA_CATEGORY_ID, 0) ?: 0
-        category.id = categoryId
+        if (categoryId > 0) {
+            category.id = categoryId
+        }
         category.title = form_category_title.toString()
         return if (presenter.save(category)) {
             category

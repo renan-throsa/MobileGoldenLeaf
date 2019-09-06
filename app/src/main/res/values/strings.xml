@@ -24,6 +24,7 @@
     <string name="option_product">Produtos</string>
     <string name="option_client">Clients</string>
     <string name="option_order">Pedidos</string>
+    <string name="action_new_category">Nova categoria</string>
 
     <string name="error_product_not_found">Erro ao salvar produto</string>
     <string name="error_product_not_valid">Há erros nos campos de produto</string>
