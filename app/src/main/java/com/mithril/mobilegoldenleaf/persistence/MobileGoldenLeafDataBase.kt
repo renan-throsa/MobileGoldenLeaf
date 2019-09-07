@@ -47,7 +47,8 @@ abstract class MobileGoldenLeafDataBase : RoomDatabase() {
         private const val GOLDEN_LEAF_DATABASE = "GoldenLeaf.db"
 
         fun getInstance(context: Context): MobileGoldenLeafDataBase {
-            return Room.databaseBuilder(context, MobileGoldenLeafDataBase::class.java, GOLDEN_LEAF_DATABASE)
+            return Room.databaseBuilder(context.applicationContext, MobileGoldenLeafDataBase::class.java,
+                    GOLDEN_LEAF_DATABASE)
                     .fallbackToDestructiveMigration()
                     .build()
         }

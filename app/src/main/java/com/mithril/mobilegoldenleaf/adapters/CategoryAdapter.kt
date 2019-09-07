@@ -43,7 +43,7 @@ class CategoryAdapter(private val context: Context) : BaseAdapter() {
     private fun getInflate(viewGroup: ViewGroup): View {
         return LayoutInflater
                 .from(context)
-                .inflate(R.layout.item_product, viewGroup, false)
+                .inflate(R.layout.item_category, viewGroup, false)
     }
 
     private fun boundInformation(row: ViewHolder, c: Category) {
