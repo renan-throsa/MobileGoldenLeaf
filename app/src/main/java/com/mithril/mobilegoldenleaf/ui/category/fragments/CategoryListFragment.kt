@@ -39,7 +39,6 @@ class CategoryListFragment : Fragment(), CategoryListView {
             }
         }
 
-
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -66,12 +65,12 @@ class CategoryListFragment : Fragment(), CategoryListView {
         val category = adapter.getItem(menuInfo.position)
         when (item.itemId) {
             R.id.category_list_menu_edit -> openEditCategoryDialogFragment(category)
-            R.id.category_list_menu_add -> openAddCategoryDialogFragment()
-            R.id.category_list_menu_see_products -> null
+            R.id.category_list_menu_see_products -> openSeeProductsDialogFragment(category)
         }
         return super.onContextItemSelected(item)
 
     }
+
 
     override fun onResume() {
         super.onResume()
@@ -96,15 +95,10 @@ class CategoryListFragment : Fragment(), CategoryListView {
     }
 
     private fun configureList(view: View) {
-        registerForContextMenu(view.category_list)
-        view.category_list.adapter = adapter
-        with(view.category_list) {
-            addFooterView(initFooter())
-            setOnItemLongClickListener { _, _, position, _ ->
-                val category: Category = adapter.getItem(position) as Category
-                openEditCategoryDialogFragment(category)
-                false
-            }
+        with(view) {
+            category_list.adapter = adapter
+            registerForContextMenu(category_list)
+            category_list.addFooterView(initFooter())
         }
 
     }
@@ -126,6 +120,10 @@ class CategoryListFragment : Fragment(), CategoryListView {
     private fun openAddCategoryDialogFragment() {
         val dialogFragment = CategoryFormFragment.newInstance()
         activity?.supportFragmentManager?.let { it -> dialogFragment.open(it) }
+    }
+
+    private fun openSeeProductsDialogFragment(category: Category) {
+
     }
 
     override fun showProgress() {

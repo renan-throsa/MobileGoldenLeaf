@@ -42,9 +42,10 @@ class CategoryFormFragment : DialogFragment(), CategoryFormView {
         val categoryId = arguments?.getLong(EXTRA_CATEGORY_ID, 0) ?: 0
         if (categoryId > 0) {
             presenter.loadBy(categoryId)
+            dialog.setTitle(R.string.add_category)
         }
         view.form_category_title.setOnEditorActionListener { _, i, _ -> handleKeyBoardEvent(i) }
-        dialog.setTitle(R.string.action_new_category)
+        dialog.setTitle(R.string.edit_category)
         dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
     }
 

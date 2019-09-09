@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
@@ -19,8 +20,16 @@ import java.math.BigDecimal
 
 class ProductFormFragment : DialogFragment(), ProductFormView {
 
-    private val presenter = ProductFormPresenter(this,
-            MobileGoldenLeafDataBase.getInstance(requireContext()).productRepository)
+    private val presenter by lazy {
+        context.let {
+            if (it != null) {
+                val repository = MobileGoldenLeafDataBase.getInstance(it).productRepository
+                ProductFormPresenter(this, repository)
+            } else {
+                throw IllegalArgumentException("Contexto inválido")
+            }
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_product_form, container, false)
@@ -29,17 +38,23 @@ class ProductFormFragment : DialogFragment(), ProductFormView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val productId = arguments?.getLong(EXTRA_PRODUCT_ID, 0) ?: 0
-        presenter.loadBy(productId)
+        if (productId > 0) {
+            presenter.loadBy(productId)
+            dialog.setTitle(R.string.edit_product)
+        }
         form_product_value.setOnEditorActionListener { _, i, _ -> handleKeyBoardEvent(i) }
-
+        dialog.setTitle(R.string.add_product)
+        dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
     }
 
     override fun errorinvalidProduct() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun errorSaveProduct() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val toast = Toast.makeText(context, R.string.product_saving_error, Toast.LENGTH_SHORT)
+        toast.show()
+
     }
 
 
@@ -61,7 +76,9 @@ class ProductFormFragment : DialogFragment(), ProductFormView {
     private fun saveProduct(): Product? {
         val product = Product()
         val productId = arguments?.getLong(EXTRA_PRODUCT_ID, 0) ?: 0
-        product.id = productId
+        if (productId > 0) {
+            product.id = productId
+        }
         product.brand = form_product_value.toString()
         product.description = form_product_description.toString()
         product.code = form_product_code.toString()
