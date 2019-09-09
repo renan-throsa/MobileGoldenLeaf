@@ -4,10 +4,11 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.*
 import android.widget.AdapterView
-import android.widget.ListView
 import android.widget.TextView
-import androidx.fragment.app.ListFragment
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.mithril.mobilegoldenleaf.R
+import com.mithril.mobilegoldenleaf.adapters.CategoryAdapter
 import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.models.Product
 import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
@@ -15,18 +16,19 @@ import com.mithril.mobilegoldenleaf.ui.category.interfaces.CategoryListView
 import com.mithril.mobilegoldenleaf.ui.category.presenters.CategoryListPresenter
 import kotlinx.android.synthetic.main.fragment_category_list.view.*
 
-class CategoryListFragment : ListFragment(), CategoryListView {
+class CategoryListFragment : Fragment(), CategoryListView {
 
-//    private val adapter by lazy {
-//        context.let {
-//            if (it != null) {
-//                CategoryAdapter(it)
-//            } else {
-//                throw IllegalArgumentException("Contexto inválido")
-//            }
-//        }
-//
-//    }
+    private val adapter by lazy {
+        context.let {
+            if (it != null) {
+                CategoryAdapter(it)
+            } else {
+                throw IllegalArgumentException("Contexto inválido")
+            }
+        }
+
+    }
+
     private val presenter by lazy {
         context.let {
             if (it != null) {
@@ -40,13 +42,6 @@ class CategoryListFragment : ListFragment(), CategoryListView {
 
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val listView = ListView(context)
-        activity?.setContentView(listView)
-        listView.adapter = adapter
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_category_list, null)
         configureList(view)
@@ -54,10 +49,12 @@ class CategoryListFragment : ListFragment(), CategoryListView {
         return view
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         presenter.searchCategories("")
     }
+
 
     override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
         super.onCreateContextMenu(menu, v, menuInfo)
@@ -82,6 +79,12 @@ class CategoryListFragment : ListFragment(), CategoryListView {
     }
 
     override fun showCategories(all: List<Category>) {
+        val contexto = context
+        val texto = "Quantidade " + all.size
+        val duracao = Toast.LENGTH_SHORT
+
+        val toast = Toast.makeText(contexto, texto, duracao)
+        toast.show()
         adapter.update(all)
     }
 
@@ -94,21 +97,21 @@ class CategoryListFragment : ListFragment(), CategoryListView {
 
     private fun configureList(view: View) {
         registerForContextMenu(view.category_list)
+        view.category_list.adapter = adapter
         with(view.category_list) {
+            addFooterView(initFooter())
             setOnItemLongClickListener { _, _, position, _ ->
                 val category: Category = adapter.getItem(position) as Category
                 openEditCategoryDialogFragment(category)
                 false
             }
-            addFooterView(initFooter())
-
         }
 
     }
 
     private fun initFooter(): TextView {
         val txtFooter = TextView(context)
-        txtFooter.text = resources.getQuantityString(R.plurals.footer_text, adapter.count, adapter.count)
+        txtFooter.text = resources.getQuantityString(R.plurals.footer_text_category, adapter.count, adapter.count)
         txtFooter.setBackgroundColor(Color.LTGRAY)
         txtFooter.gravity = Gravity.END
         txtFooter.setPadding(0, 8, 8, 8)

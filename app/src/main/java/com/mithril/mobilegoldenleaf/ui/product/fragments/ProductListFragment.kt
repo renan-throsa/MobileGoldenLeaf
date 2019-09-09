@@ -1,9 +1,12 @@
 package com.mithril.mobilegoldenleaf.ui.product.fragments
 
+import android.graphics.Color
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.mithril.mobilegoldenleaf.R
@@ -51,12 +54,11 @@ class ProductListFragment : Fragment(), ProductListView, OnProductSavedListener 
         return view
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         presenter.searchProducts("")
 
     }
-
     private fun configFba(view: View) {
         view.fragment_products_list_fab_new_product
                 .setOnClickListener {
@@ -101,7 +103,10 @@ class ProductListFragment : Fragment(), ProductListView, OnProductSavedListener 
     }
 
     private fun configureList(view: View) {
+        registerForContextMenu(view.product_list)
+        view.product_list.adapter = adapter
         with(view.product_list) {
+            addFooterView(initFooter())
             setOnItemClickListener { _, _, position, _ ->
                 val product = adapter.getItem(position) as Product
                 presenter.showProductDetails(product)
@@ -110,6 +115,14 @@ class ProductListFragment : Fragment(), ProductListView, OnProductSavedListener 
         }
     }
 
+    private fun initFooter(): TextView {
+        val txtFooter = TextView(context)
+        txtFooter.text = resources.getQuantityString(R.plurals.footer_text_category, adapter.count, adapter.count)
+        txtFooter.setBackgroundColor(Color.LTGRAY)
+        txtFooter.gravity = Gravity.END
+        txtFooter.setPadding(0, 8, 8, 8)
+        return txtFooter
+    }
     companion object {
         const val TAG_PRODUCT_LIST = "tagListaProdutos"
         fun newInstance(): ProductListFragment {

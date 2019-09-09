@@ -1,8 +1,11 @@
 <resources>
-    <plurals name="footer_text">
+    <plurals name="footer_text_category">
         <item quantity="one">1 categoria</item>
         <item quantity="other">%d categorias</item>
-        <item quantity="zero">Nenhuma categoria</item>
+    </plurals>
+    <plurals name="footer_text_product">
+        <item quantity="one">1 produto</item>
+        <item quantity="other">%d produtos</item>
 
     </plurals>
     <string name="app_name">Mobile Golden Leaf</string>

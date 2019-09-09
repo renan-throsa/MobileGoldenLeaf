@@ -8,7 +8,7 @@ import android.widget.BaseAdapter
 import android.widget.TextView
 import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.models.Category
-import kotlinx.android.synthetic.main.item_category.view.*
+import kotlinx.android.synthetic.main.item_category_row.view.*
 
 class CategoryAdapter(private val context: Context) : BaseAdapter() {
 
@@ -43,7 +43,7 @@ class CategoryAdapter(private val context: Context) : BaseAdapter() {
     private fun getInflate(viewGroup: ViewGroup): View {
         return LayoutInflater
                 .from(context)
-                .inflate(R.layout.item_category, viewGroup, false)
+                .inflate(R.layout.item_category_row, viewGroup, false)
     }
 
     private fun boundInformation(row: ViewHolder, c: Category) {

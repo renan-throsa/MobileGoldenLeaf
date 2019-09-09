@@ -9,7 +9,7 @@ import android.widget.TextView
 
 import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.models.Product
-import kotlinx.android.synthetic.main.item_product.view.*
+import kotlinx.android.synthetic.main.item_product_row.view.*
 
 class ProductAdapter(private val context: Context) :
         BaseAdapter() {
@@ -22,7 +22,7 @@ class ProductAdapter(private val context: Context) :
     override fun getItem(position: Int): Product = products[position]
 
 
-    override fun getItemId(i: Int): Long = products[i].id.toLong()
+    override fun getItemId(i: Int): Long = products[i].id
 
 
     override fun getView(position: Int, convertView: View?, viewGroup: ViewGroup): View {
@@ -45,7 +45,7 @@ class ProductAdapter(private val context: Context) :
     private fun getInflate(viewGroup: ViewGroup): View {
         return LayoutInflater
                 .from(context)
-                .inflate(R.layout.item_product, viewGroup, false)
+                .inflate(R.layout.item_product_row, viewGroup, false)
     }
 
     private fun boundInformation(row: ViewHolder, p: Product) {
