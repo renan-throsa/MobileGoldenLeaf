@@ -24,7 +24,7 @@
     <string name="total">Total</string>
     <string name="mes">Mês</string>
     <string name="product_saving_error">Não foi possível salvar o produto.</string>
-    <string name="ano">Ano</string>
+    <string name="ano">Ano</string>"Erro no valor inserido."
     <string name="see_products">Ver produtos</string>
     <string name="option_dashboard">Dashboard</string>
     <string name="option_category">Categorias</string>
@@ -35,7 +35,8 @@
     <string name="action_new_category">Nova categoria</string>
     <string name="error_product_not_found">Erro ao salvar produto</string>
     <string name="error_product_not_valid">Há erros nos campos de produto</string>
-
+    <string name="invalid_title_error">Titulo inválido</string>
+    <string name="value_error">"Erro no valor do produto inserido."</string>
     <string-array name="sections">
         <item>Categorias</item>
         <item>Produtos</item>

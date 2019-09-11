@@ -21,7 +21,7 @@ class MobileGoldenLeafApplication : Application() {
         val leite_substitutos = Category("Leite / Substitutos")
 
         val database = Room
-                .databaseBuilder(this, MobileGoldenLeafDataBase::class.java, "GoldenLeafDataBase.db")
+                .databaseBuilder(this, MobileGoldenLeafDataBase::class.java, "GoldenLeaf.db")
                 .allowMainThreadQueries()
                 .build()
 

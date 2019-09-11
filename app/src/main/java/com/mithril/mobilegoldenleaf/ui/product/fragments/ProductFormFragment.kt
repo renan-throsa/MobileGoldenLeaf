@@ -107,7 +107,7 @@ class ProductFormFragment : DialogFragment(), ProductFormView {
         return try {
             BigDecimal(valueToText)
         } catch (exception: NumberFormatException) {
-            Toast.makeText(context, "Erro no valor inserido.", Toast.LENGTH_LONG)
+            Toast.makeText(context, R.string.value_error, Toast.LENGTH_LONG)
                     .show()
             BigDecimal.ZERO
         }

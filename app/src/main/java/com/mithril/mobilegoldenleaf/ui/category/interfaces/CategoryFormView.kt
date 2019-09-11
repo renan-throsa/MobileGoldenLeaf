@@ -5,7 +5,7 @@ import java.util.*
 
 interface CategoryFormView {
 
-    fun errorSaveCategory()
-    fun errorinvalidTitle()
+    fun showSavingCategoryError()
+    fun showInvalidTitleError()
     fun show(category: Category)
 }

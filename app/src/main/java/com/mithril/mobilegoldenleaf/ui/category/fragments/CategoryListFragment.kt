@@ -13,10 +13,11 @@ import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.models.Product
 import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
 import com.mithril.mobilegoldenleaf.ui.category.interfaces.CategoryListView
+import com.mithril.mobilegoldenleaf.ui.category.interfaces.OnCategorySavedListener
 import com.mithril.mobilegoldenleaf.ui.category.presenters.CategoryListPresenter
 import kotlinx.android.synthetic.main.fragment_category_list.view.*
 
-class CategoryListFragment : Fragment(), CategoryListView {
+class CategoryListFragment : Fragment(), CategoryListView, OnCategorySavedListener {
 
     private val adapter by lazy {
         context.let {
@@ -81,10 +82,15 @@ class CategoryListFragment : Fragment(), CategoryListView {
         val contexto = context
         val texto = "Quantidade " + all.size
         val duracao = Toast.LENGTH_SHORT
-
         val toast = Toast.makeText(contexto, texto, duracao)
         toast.show()
+
         adapter.update(all)
+
+    }
+
+    override fun onCategorySaved() {
+        presenter.searchCategories("")
     }
 
     private fun configFba(view: View) {
