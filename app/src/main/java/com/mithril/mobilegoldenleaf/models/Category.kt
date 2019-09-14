@@ -25,8 +25,6 @@ class Category {
 
 
     override fun toString(): String {
-        return "Category{" +
-                "title='" + title + '\''.toString() +
-                '}'.toString()
+        return title.toString()
     }
 }

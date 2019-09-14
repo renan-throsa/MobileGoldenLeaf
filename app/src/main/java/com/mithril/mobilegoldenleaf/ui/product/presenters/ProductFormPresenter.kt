@@ -1,35 +1,42 @@
 package com.mithril.mobilegoldenleaf.ui.product.presenters
 
-import com.mithril.mo.ProductValidator
+import com.mithril.mobilegoldenleaf.asynctask.category.GetCategoryTask
 import com.mithril.mobilegoldenleaf.asynctask.product.GetProductByIdTask
 import com.mithril.mobilegoldenleaf.asynctask.product.SaveProductTask
+import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.models.Product
-import com.mithril.mobilegoldenleaf.persistence.repository.ProductRepository
+import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
 import com.mithril.mobilegoldenleaf.ui.product.interfaces.ProductFormView
-import java.lang.Exception
+import com.mithril.mobilegoldenleaf.ui.product.validators.ProductValidator
 
 class ProductFormPresenter(private val view: ProductFormView,
-                           private val repository: ProductRepository) {
+                           private val repository: MobileGoldenLeafDataBase) {
 
     private val validator = ProductValidator()
 
-    fun loadBy(productid: Long) {
-        val p: Product = GetProductByIdTask(productid, repository).execute().get()
-        view.show(p)
+    fun loadBy(productId: Long) {
+        val p: Product = GetProductByIdTask(productId, repository.productRepository).execute().get()
+        view.showProduct(p)
     }
 
     fun save(product: Product): Boolean {
         return if (validator.validate(product)) {
             try {
-                SaveProductTask(repository, product)
+                SaveProductTask(repository.productRepository, product).execute()
                 true
             } catch (e: Exception) {
-                view.errorSaveProduct()
+                view.savingProductError()
                 false
             }
         } else {
-            view.errorinvalidProduct()
+            view.productInvalidError()
             false
         }
+    }
+
+    fun loadCategories() {
+        val c: List<Category> = GetCategoryTask(repository.categoryRepository).execute().get()
+        view.showCategories(c)
+
     }
 }
