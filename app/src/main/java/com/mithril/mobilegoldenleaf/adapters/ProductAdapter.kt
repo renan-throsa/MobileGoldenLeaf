@@ -8,6 +8,7 @@ import android.widget.BaseAdapter
 import android.widget.TextView
 
 import com.mithril.mobilegoldenleaf.R
+import com.mithril.mobilegoldenleaf.extentions.toBrazilianFormat
 import com.mithril.mobilegoldenleaf.models.Product
 import kotlinx.android.synthetic.main.item_product_row.view.*
 
@@ -51,7 +52,7 @@ class ProductAdapter(private val context: Context) :
     private fun boundInformation(row: ViewHolder, p: Product) {
         row.brand.text = p.brand
         row.description.text = p.description
-        row.unit_cost.text = p.unitCost.toString()
+        row.unit_cost.text = p.unitCost.toBrazilianFormat()
         row.code.text = p.code
     }
 

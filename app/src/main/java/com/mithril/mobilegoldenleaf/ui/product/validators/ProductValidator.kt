@@ -7,8 +7,7 @@ class ProductValidator {
         checkDescription(description) && checkCode(code)
     }
 
-    private fun checkDescription(description: String?) = description?.length in 3..20
+    private fun checkDescription(description: String?) = description?.length in 3..30
     private fun checkCode(code: String?) = code?.length in 9..13
-
 
 }

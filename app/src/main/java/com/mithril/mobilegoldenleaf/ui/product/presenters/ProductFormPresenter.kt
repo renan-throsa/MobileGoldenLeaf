@@ -3,6 +3,7 @@ package com.mithril.mobilegoldenleaf.ui.product.presenters
 import com.mithril.mobilegoldenleaf.asynctask.category.GetCategoryTask
 import com.mithril.mobilegoldenleaf.asynctask.product.GetProductByIdTask
 import com.mithril.mobilegoldenleaf.asynctask.product.SaveProductTask
+import com.mithril.mobilegoldenleaf.asynctask.product.UpdateProductTask
 import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.models.Product
 import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
@@ -22,7 +23,11 @@ class ProductFormPresenter(private val view: ProductFormView,
     fun save(product: Product): Boolean {
         return if (validator.validate(product)) {
             try {
-                SaveProductTask(repository.productRepository, product).execute()
+                if (product.id != 0L) {
+                    UpdateProductTask(repository.productRepository, product).execute()
+                } else {
+                    SaveProductTask(repository.productRepository, product).execute()
+                }
                 true
             } catch (e: Exception) {
                 view.savingProductError()
@@ -33,6 +38,7 @@ class ProductFormPresenter(private val view: ProductFormView,
             false
         }
     }
+
 
     fun loadCategories() {
         val c: List<Category> = GetCategoryTask(repository.categoryRepository).execute().get()

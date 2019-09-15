@@ -19,6 +19,10 @@ import com.mithril.mobilegoldenleaf.ui.product.interfaces.ProductFormView
 import com.mithril.mobilegoldenleaf.ui.product.presenters.ProductFormPresenter
 import kotlinx.android.synthetic.main.fragment_product_form.*
 import java.math.BigDecimal
+import java.text.DecimalFormat
+import java.text.NumberFormat
+import java.text.ParsePosition
+import java.util.*
 
 class ProductFormFragment : DialogFragment(), ProductFormView {
 
@@ -39,7 +43,7 @@ class ProductFormFragment : DialogFragment(), ProductFormView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        configureSpinner()
+        presenter.loadCategories()
         val productId = arguments?.getLong(EXTRA_PRODUCT_ID, 0L) ?: 0L
         if (productId != 0L) {
             presenter.loadBy(productId)
@@ -51,11 +55,6 @@ class ProductFormFragment : DialogFragment(), ProductFormView {
         dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
 
     }
-
-    private fun configureSpinner() {
-        presenter.loadCategories()
-    }
-
 
     override fun productInvalidError() {
         val toast = Toast.makeText(context, R.string.product_invalid_error, Toast.LENGTH_SHORT)
@@ -87,7 +86,7 @@ class ProductFormFragment : DialogFragment(), ProductFormView {
     private fun saveProduct(): Product? {
         val product = Product()
         product.categoryId = form_category_spinner.selectedItemPosition.toLong()
-        product.brand = form_product_value.text.toString()
+        product.brand = form_product_brand.text.toString()
         product.description = form_product_description.text.toString()
         product.code = form_product_code.text.toString()
         product.unitCost = convertValue(form_product_value.text.toString())
@@ -104,11 +103,6 @@ class ProductFormFragment : DialogFragment(), ProductFormView {
 
     }
 
-    fun open(fm: FragmentManager) {
-        if (fm.findFragmentByTag(DIALOG_TAG) == null)
-            show(fm, DIALOG_TAG)
-    }
-
     override fun showProduct(product: Product) {
         form_category_spinner.setSelection(product.categoryId.toInt())
         form_product_value.setText(product.unitCost.toString())
@@ -123,9 +117,12 @@ class ProductFormFragment : DialogFragment(), ProductFormView {
         form_category_spinner.adapter = adapter
     }
 
-    private fun convertValue(valueToText: String): BigDecimal {
+    private fun convertValue(str: String): BigDecimal {
         return try {
-            BigDecimal(valueToText)
+            val ptBr = Locale("pt", "br")
+            val nf = NumberFormat.getInstance(ptBr) as DecimalFormat
+            nf.isParseBigDecimal = true
+            return nf.parse(str, ParsePosition(0)) as BigDecimal
         } catch (exception: NumberFormatException) {
             Toast.makeText(context, R.string.value_error, Toast.LENGTH_LONG)
                     .show()
@@ -133,6 +130,11 @@ class ProductFormFragment : DialogFragment(), ProductFormView {
         }
     }
 
+
+    fun open(fm: FragmentManager) {
+        if (fm.findFragmentByTag(DIALOG_TAG) == null)
+            show(fm, DIALOG_TAG)
+    }
 
     companion object {
         private const val DIALOG_TAG = "productId"
