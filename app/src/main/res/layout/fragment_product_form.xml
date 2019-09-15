@@ -54,8 +54,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:hint="@string/value"
-        android:digits="1234567890,"
         android:inputType="numberDecimal"
+        android:digits="123456789,"
         android:imeOptions="actionDone"
         />
 

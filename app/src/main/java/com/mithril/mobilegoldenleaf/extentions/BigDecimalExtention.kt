@@ -11,5 +11,5 @@ fun BigDecimal.toBrazilianFormat(): String {
 
 fun BigDecimal.toDecimalFormat(): String {
     val brazilianFormat = DecimalFormat.getCurrencyInstance(Locale("pt", "br"))
-    return brazilianFormat.format(this)
+    return brazilianFormat.format(this).replace("R$", "")
 }

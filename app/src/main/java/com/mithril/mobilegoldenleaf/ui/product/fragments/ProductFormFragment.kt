@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.mithril.mobilegoldenleaf.R
+import com.mithril.mobilegoldenleaf.extentions.toDecimalFormat
 import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.models.Product
 import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
@@ -105,7 +106,7 @@ class ProductFormFragment : DialogFragment(), ProductFormView {
 
     override fun showProduct(product: Product) {
         form_category_spinner.setSelection(product.categoryId.toInt())
-        form_product_value.setText(product.unitCost.toString())
+        form_product_value.setText(product.unitCost.toDecimalFormat())
         form_product_brand.setText(product.brand)
         form_product_description.setText(product.description)
         form_product_code.setText(product.code)
@@ -119,7 +120,7 @@ class ProductFormFragment : DialogFragment(), ProductFormView {
 
     private fun convertValue(str: String): BigDecimal {
         return try {
-            val ptBr = Locale("pt", "br")
+            val ptBr = Locale("pt", "BR")
             val nf = NumberFormat.getInstance(ptBr) as DecimalFormat
             nf.isParseBigDecimal = true
             return nf.parse(str, ParsePosition(0)) as BigDecimal
