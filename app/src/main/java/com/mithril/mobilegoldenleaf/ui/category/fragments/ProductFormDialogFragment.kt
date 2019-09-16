@@ -1,4 +1,4 @@
-package com.mithril.mobilegoldenleaf.ui.product.fragments
+package com.mithril.mobilegoldenleaf.ui.category.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,18 +7,16 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
-import android.widget.Spinner
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.mithril.mobilegoldenleaf.R
-import com.mithril.mobilegoldenleaf.extentions.toDecimalFormat
 import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.models.Product
 import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
+import com.mithril.mobilegoldenleaf.ui.category.interfaces.ProductFormDialogView
+import com.mithril.mobilegoldenleaf.ui.category.presenters.ProductFormDialogPresenter
 import com.mithril.mobilegoldenleaf.ui.product.interfaces.OnProductSavedListener
-import com.mithril.mobilegoldenleaf.ui.product.interfaces.ProductFormView
-import com.mithril.mobilegoldenleaf.ui.product.presenters.ProductFormPresenter
 import kotlinx.android.synthetic.main.fragment_product_form.*
 import java.math.BigDecimal
 import java.text.DecimalFormat
@@ -26,13 +24,13 @@ import java.text.NumberFormat
 import java.text.ParsePosition
 import java.util.*
 
-class ProductFormFragment : DialogFragment(), ProductFormView {
+class ProductFormDialogFragment : DialogFragment(), ProductFormDialogView {
 
     private val presenter by lazy {
         context.let {
             if (it != null) {
                 val repository = MobileGoldenLeafDataBase.getInstance(it)
-                ProductFormPresenter(this, repository)
+                ProductFormDialogPresenter(this, repository)
             } else {
                 throw IllegalArgumentException("Contexto inválido")
             }
@@ -45,23 +43,23 @@ class ProductFormFragment : DialogFragment(), ProductFormView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        presenter.loadCategories()
-        val productId = arguments?.getLong(EXTRA_PRODUCT_ID, 0L) ?: 0L
-        if (productId != 0L) {
-            presenter.loadBy(productId)
-            dialog.setTitle(R.string.edit_product)
-        }
-
+        val categoryId = arguments?.getLong(EXTRA_CATEGORY_ID)!!
+        presenter.loadBy(categoryId)
         form_product_value.setOnEditorActionListener { _, i, _ -> handleKeyBoardEvent(i) }
         dialog.setTitle(R.string.add_product)
         dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
 
     }
 
+    override fun showCategory(c: Category) {
+        val adapter = context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_item, listOf(c)) }
+        adapter?.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line)
+        form_category_spinner.adapter = adapter
+    }
+
     override fun productInvalidError() {
         val toast = Toast.makeText(context, R.string.product_invalid_error, Toast.LENGTH_SHORT)
         toast.show()
-
     }
 
     override fun savingProductError() {
@@ -87,52 +85,18 @@ class ProductFormFragment : DialogFragment(), ProductFormView {
 
     private fun saveProduct(): Product? {
         val product = Product()
-        product.categoryId = getCategoryFromSpinner()
+        //val category = form_category_spinner.adapter.getItem(0) as Category
+        product.categoryId = arguments?.getLong(EXTRA_CATEGORY_ID)!!
         product.brand = form_product_brand.text.toString()
         product.description = form_product_description.text.toString()
         product.code = form_product_code.text.toString()
         product.unitCost = convertValue(form_product_value.text.toString())
-        val productId = arguments?.getLong(EXTRA_PRODUCT_ID, 0) ?: 0
-        if (productId != 0L) {
-            product.id = productId
-        }
         return if (presenter.save(product)) {
             product
         } else {
             null
         }
 
-    }
-
-    private fun getCategoryFromSpinner(): Long {
-        val position = form_category_spinner.selectedItemPosition
-        val category = form_category_spinner.adapter.getItem(position) as Category
-        return category.id
-    }
-
-    override fun showProduct(product: Product) {
-        form_category_spinner.setSelection(getIndex(form_category_spinner, product.categoryId))
-        form_product_value.setText(product.unitCost.toDecimalFormat())
-        form_product_brand.setText(product.brand)
-        form_product_description.setText(product.description)
-        form_product_code.setText(product.code)
-    }
-
-    private fun getIndex(spinner: Spinner?, categoryId: Long): Int {
-        var index = 0
-        for (i in 0 until spinner!!.count) {
-            val category = spinner.getItemAtPosition(i) as Category
-            if (category.id == categoryId) {
-                index = i
-            }
-        }
-        return index
-    }
-
-    override fun showCategories(c: List<Category>) {
-        val adapter = context?.let { ArrayAdapter(it, android.R.layout.simple_spinner_item, c) }
-        adapter?.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line)
-        form_category_spinner.adapter = adapter
     }
 
     private fun convertValue(str: String): BigDecimal {
@@ -155,13 +119,13 @@ class ProductFormFragment : DialogFragment(), ProductFormView {
     }
 
     companion object {
-        private const val DIALOG_TAG = "productId"
-        private const val EXTRA_PRODUCT_ID = "editDialog"
+        private const val DIALOG_TAG = "categoryId"
+        private const val EXTRA_CATEGORY_ID = "formDialog"
 
-        fun newInstance(id: Long = 0): ProductFormFragment {
-            val fragment = ProductFormFragment()
+        fun newInstance(id: Long): ProductFormDialogFragment {
+            val fragment = ProductFormDialogFragment()
             val args = Bundle()
-            args.putLong(EXTRA_PRODUCT_ID, id)
+            args.putLong(EXTRA_CATEGORY_ID, id)
             fragment.arguments = args
             return fragment
         }

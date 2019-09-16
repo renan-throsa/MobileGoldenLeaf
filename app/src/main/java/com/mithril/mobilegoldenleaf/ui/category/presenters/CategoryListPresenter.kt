@@ -16,12 +16,5 @@ class CategoryListPresenter(private val view: CategoryListView,
         }
     }
 
-    fun showProductDetails(category: Category) {
-        view.editCategoryDetails(category)
-    }
-
-    fun saveProductIn(category: Category) {
-
-    }
 
 }

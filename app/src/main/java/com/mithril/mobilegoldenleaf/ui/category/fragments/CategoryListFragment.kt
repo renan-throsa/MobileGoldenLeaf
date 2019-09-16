@@ -61,22 +61,29 @@ class CategoryListFragment : Fragment(), CategoryListView, OnCategorySavedListen
         activity?.menuInflater?.inflate(R.menu.category_list_menu, menu)
     }
 
+    override fun onResume() {
+        super.onResume()
+        presenter.searchCategories("")
+    }
+
     override fun onContextItemSelected(item: MenuItem?): Boolean {
         val menuInfo = item?.menuInfo as AdapterView.AdapterContextMenuInfo
         val category = adapter.getItem(menuInfo.position)
         when (item.itemId) {
             R.id.category_list_menu_edit -> openEditCategoryDialogFragment(category)
             R.id.category_list_menu_see_products -> openSeeProductsDialogFragment(category)
+            R.id.category_list_menu_add_product -> addProductIn(category)
         }
         return super.onContextItemSelected(item)
 
     }
 
+    private fun addProductIn(category: Category) {
+        val dialogFragment = ProductFormDialogFragment.newInstance(category.id)
+        activity?.supportFragmentManager?.let { it -> dialogFragment.open(it) }
 
-    override fun onResume() {
-        super.onResume()
-        presenter.searchCategories("")
     }
+
 
     override fun showCategories(all: List<Category>) {
         val contexto = context
@@ -144,10 +151,6 @@ class CategoryListFragment : Fragment(), CategoryListView, OnCategorySavedListen
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-
-    override fun editCategoryDetails(category: Category) {
-
-    }
 
     override fun showProductsOf(category: Category) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

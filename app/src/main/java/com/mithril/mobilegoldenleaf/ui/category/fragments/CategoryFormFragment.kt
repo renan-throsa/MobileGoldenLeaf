@@ -103,7 +103,7 @@ class CategoryFormFragment : DialogFragment(), CategoryFormView {
 
     companion object {
         private const val DIALOG_TAG = "categoryId"
-        private const val EXTRA_CATEGORY_ID = "editDialog"
+        private const val EXTRA_CATEGORY_ID = "formDialog"
 
         fun newInstance(id: Long = 0): CategoryFormFragment {
             val fragment = CategoryFormFragment()

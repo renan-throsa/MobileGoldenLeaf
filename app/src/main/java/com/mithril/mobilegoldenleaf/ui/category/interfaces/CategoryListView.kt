@@ -8,6 +8,5 @@ interface CategoryListView {
     fun hideProgress()
     fun addProduct(product: Product)
     fun showCategories(all: List<Category>)
-    fun editCategoryDetails(category: Category)
     fun showProductsOf(category: Category)
 }
