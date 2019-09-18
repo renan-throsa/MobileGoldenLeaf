@@ -12,7 +12,7 @@ import com.mithril.mobilegoldenleaf.persistence.converter.StatusConverter
 import com.mithril.mobilegoldenleaf.persistence.repository.AddressDao
 import com.mithril.mobilegoldenleaf.persistence.repository.CategoryRepository
 import com.mithril.mobilegoldenleaf.persistence.repository.ClerkDao
-import com.mithril.mobilegoldenleaf.persistence.repository.ClientDao
+import com.mithril.mobilegoldenleaf.persistence.repository.ClientRepository
 import com.mithril.mobilegoldenleaf.persistence.repository.ItemDao
 import com.mithril.mobilegoldenleaf.persistence.repository.OrderDao
 import com.mithril.mobilegoldenleaf.persistence.repository.ProductRepository
@@ -36,7 +36,7 @@ abstract class MobileGoldenLeafDataBase : RoomDatabase() {
 
     abstract val clerkDao: ClerkDao
 
-    abstract val clientDao: ClientDao
+    abstract val clientRepository: ClientRepository
 
     abstract val orderDao: OrderDao
 

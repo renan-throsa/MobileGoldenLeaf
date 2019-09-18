@@ -146,10 +146,6 @@ class CategoryListFragment : Fragment(), CategoryListView, OnCategorySavedListen
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun addProduct(product: Product) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
 
     override fun showProductsOf(category: Category) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

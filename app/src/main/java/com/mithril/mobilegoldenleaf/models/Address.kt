@@ -11,9 +11,7 @@ class Address {
     var street: String? = null
     var zipCode: String? = null
 
-    constructor() {
-
-    }
+    constructor()
 
     @Ignore
     constructor(street: String, zipCode: String) {

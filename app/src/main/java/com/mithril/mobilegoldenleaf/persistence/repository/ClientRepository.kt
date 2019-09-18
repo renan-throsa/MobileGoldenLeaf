@@ -8,15 +8,18 @@ import androidx.room.Update
 import com.mithril.mobilegoldenleaf.models.Client
 
 @Dao
-interface ClientDao {
+interface ClientRepository {
 
     @Insert
     fun save(address: Client): Long
 
     @Update
-    fun edit(address: Client)
+    fun update(address: Client)
 
     @Query("SELECT * FROM Client")
     fun all(): List<Client>
+
+    @Query("SELECT c.* FROM Client c WHERE c.name LIKE :term")
+    fun search(term: String): List<Client>
 
 }
