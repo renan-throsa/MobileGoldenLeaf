@@ -54,6 +54,17 @@ class ProductListFragment : Fragment(), ProductListView, OnProductSavedListener 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        val categoryId = arguments?.getLong(EXTRA_CATEGORY_ID, 0L) ?: 0L
+        if (categoryId != 0L) {
+            val contexto = context
+            val texto = "Category " + categoryId
+            val duracao = Toast.LENGTH_SHORT
+
+            val toast = Toast.makeText(contexto, texto, duracao)
+            toast.show()
+
+            presenter.searchProductsWith(categoryId)
+        }
         presenter.searchProducts("")
 
     }
@@ -94,12 +105,6 @@ class ProductListFragment : Fragment(), ProductListView, OnProductSavedListener 
     }
 
     override fun showProducts(all: List<Product>) {
-        val contexto = context
-        val texto = "Quantidade " + all.size
-        val duracao = Toast.LENGTH_SHORT
-
-        val toast = Toast.makeText(contexto, texto, duracao)
-        toast.show()
         adapter.update(all)
     }
 
@@ -142,9 +147,15 @@ class ProductListFragment : Fragment(), ProductListView, OnProductSavedListener 
     }
 
     companion object {
-        const val TAG_PRODUCT_LIST = "tagListaProdutos"
-        fun newInstance(): ProductListFragment {
-            return ProductListFragment()
+        private const val EXTRA_CATEGORY_ID = "categoryId"
+        private const val TAG_PRODUCT_LIST = "tagProductsList"
+
+        fun newInstance(categoryId: Long = 0L): ProductListFragment {
+            val fragment = ProductListFragment()
+            val args = Bundle()
+            args.putLong(EXTRA_CATEGORY_ID, categoryId)
+            fragment.arguments = args
+            return fragment
         }
     }
 

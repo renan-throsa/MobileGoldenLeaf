@@ -14,6 +14,7 @@ import com.mithril.mobilegoldenleaf.models.Product
 import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
 import com.mithril.mobilegoldenleaf.ui.category.interfaces.CategoryListView
 import com.mithril.mobilegoldenleaf.ui.category.interfaces.OnCategorySavedListener
+import com.mithril.mobilegoldenleaf.ui.category.interfaces.OnProductsFromCategoryListener
 import com.mithril.mobilegoldenleaf.ui.category.presenters.CategoryListPresenter
 import kotlinx.android.synthetic.main.fragment_category_list.view.*
 
@@ -71,7 +72,7 @@ class CategoryListFragment : Fragment(), CategoryListView, OnCategorySavedListen
         val category = adapter.getItem(menuInfo.position)
         when (item.itemId) {
             R.id.category_list_menu_edit -> openEditCategoryDialogFragment(category)
-            R.id.category_list_menu_see_products -> openSeeProductsDialogFragment(category)
+            R.id.category_list_menu_see_products -> openSeeProductsListFragment(category)
             R.id.category_list_menu_add_product -> addProductIn(category)
         }
         return super.onContextItemSelected(item)
@@ -130,13 +131,11 @@ class CategoryListFragment : Fragment(), CategoryListView, OnCategorySavedListen
         activity?.supportFragmentManager?.let { it -> dialogFragment.open(it) }
     }
 
-    private fun openAddCategoryDialogFragment() {
-        val dialogFragment = CategoryFormFragment.newInstance()
-        activity?.supportFragmentManager?.let { it -> dialogFragment.open(it) }
-    }
-
-    private fun openSeeProductsDialogFragment(category: Category) {
-
+    private fun openSeeProductsListFragment(category: Category) {
+        if (activity is OnProductsFromCategoryListener) {
+            val listener = activity as OnProductsFromCategoryListener
+            listener.OnProductsFromCategoryClick(category)
+        }
     }
 
     override fun showProgress() {

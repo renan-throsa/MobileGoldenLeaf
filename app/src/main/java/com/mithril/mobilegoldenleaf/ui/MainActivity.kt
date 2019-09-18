@@ -14,6 +14,7 @@ import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.models.Product
 import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
 import com.mithril.mobilegoldenleaf.ui.category.fragments.CategoryListFragment
+import com.mithril.mobilegoldenleaf.ui.category.interfaces.OnProductsFromCategoryListener
 import com.mithril.mobilegoldenleaf.ui.dashboard.Dashboard
 import com.mithril.mobilegoldenleaf.ui.product.fragments.ProductDetailsFragment
 import com.mithril.mobilegoldenleaf.ui.product.fragments.ProductListFragment
@@ -21,8 +22,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.math.BigDecimal
 
-class MainActivity : AppCompatActivity(), OnProductClikedListener, NavigationView.OnNavigationItemSelectedListener {
-
+class MainActivity : AppCompatActivity(), OnProductClikedListener, OnProductsFromCategoryListener, NavigationView.OnNavigationItemSelectedListener {
     private val drawerToggle: ActionBarDrawerToggle by lazy {
         ActionBarDrawerToggle(this,
                 drawerLayout, toolbar, R.string.app_name, R.string.app_name)
@@ -50,7 +50,15 @@ class MainActivity : AppCompatActivity(), OnProductClikedListener, NavigationVie
     }
 
     override fun onProductClick(product: Product) {
-        ProductDetailsFragment
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun OnProductsFromCategoryClick(c: Category) {
+        val fragment = ProductListFragment.newInstance(c.id)
+        supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.content, fragment)
+                .commit()
     }
 
     private fun displayFragment(id: Int) {

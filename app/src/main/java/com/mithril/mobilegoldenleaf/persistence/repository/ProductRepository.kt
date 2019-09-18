@@ -22,8 +22,8 @@ interface ProductRepository {
     @Query("SELECT p.* FROM Product p WHERE p.id = :productId")
     fun get(productId: Long): Product
 
-    @Query("SELECT p.* FROM Product p JOIN Category c ON p.categoryId = c.id WHERE p.categoryId = :categoryId")
-    fun productsWith(categoryId: Int): List<Product>
+    @Query("SELECT p.* FROM Product p WHERE p.categoryId = :categoryId")
+    fun productsWith(categoryId: Long): List<Product>
 
 
 }
