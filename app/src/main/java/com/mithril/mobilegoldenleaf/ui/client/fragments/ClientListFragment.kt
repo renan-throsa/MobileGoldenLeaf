@@ -55,7 +55,7 @@ class ClientListFragment : Fragment(), ClientListView {
 
     override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
         super.onCreateContextMenu(menu, v, menuInfo)
-        activity?.menuInflater?.inflate(R.menu.category_list_menu, menu)
+        activity?.menuInflater?.inflate(R.menu.client_list_menu, menu)
     }
 
     override fun onResume() {
@@ -99,7 +99,7 @@ class ClientListFragment : Fragment(), ClientListView {
 
     private fun initFooter(): TextView {
         val txtFooter = TextView(context)
-        txtFooter.text = resources.getQuantityString(R.plurals.footer_text_category, adapter.count, adapter.count)
+        txtFooter.text = resources.getQuantityString(R.plurals.footer_text_client, adapter.count, adapter.count)
         txtFooter.setBackgroundColor(Color.LTGRAY)
         txtFooter.gravity = Gravity.END
         txtFooter.setPadding(0, 8, 8, 8)

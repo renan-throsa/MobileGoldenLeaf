@@ -1,10 +1,7 @@
 package com.mithril.mobilegoldenleaf.ui.category.fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
+import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -17,7 +14,7 @@ import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
 import com.mithril.mobilegoldenleaf.ui.category.interfaces.ProductFormDialogView
 import com.mithril.mobilegoldenleaf.ui.category.presenters.ProductFormDialogPresenter
 import com.mithril.mobilegoldenleaf.ui.product.interfaces.OnProductSavedListener
-import kotlinx.android.synthetic.main.fragment_product_form.*
+import kotlinx.android.synthetic.main.dialogfragment_product_form.*
 import java.math.BigDecimal
 import java.text.DecimalFormat
 import java.text.NumberFormat
@@ -38,17 +35,39 @@ class ProductFormDialogFragment : DialogFragment(), ProductFormDialogView {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_product_form, container, false)
+        return inflater.inflate(R.layout.dialogfragment_product_form, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        /*
+        * Here ProductFormDialogFragment will always be attached to a Category. Thus, is not
+        * necessary verify if the id is null*/
         val categoryId = arguments?.getLong(EXTRA_CATEGORY_ID)!!
         presenter.loadBy(categoryId)
-        form_product_value.setOnEditorActionListener { _, i, _ -> handleKeyBoardEvent(i) }
         dialog.setTitle(R.string.add_product)
         dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.fragment_action_concluded_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        if (item?.itemId == R.id.fragment_form_action_concluded) {
+            val product = saveProduct()
+            if (product != null) {
+                if (activity is OnProductSavedListener) {
+                    val listener = activity as OnProductSavedListener
+                    listener.onProductSaved(product)
+                }
+            }
+            dialog.dismiss()
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun showCategory(c: Category) {
@@ -56,6 +75,7 @@ class ProductFormDialogFragment : DialogFragment(), ProductFormDialogView {
         adapter?.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line)
         form_category_spinner.adapter = adapter
     }
+
 
     override fun productInvalidError() {
         val toast = Toast.makeText(context, R.string.product_invalid_error, Toast.LENGTH_SHORT)
@@ -67,25 +87,8 @@ class ProductFormDialogFragment : DialogFragment(), ProductFormDialogView {
         toast.show()
     }
 
-
-    private fun handleKeyBoardEvent(actionId: Int): Boolean {
-        if (EditorInfo.IME_ACTION_DONE == actionId) {
-            val product = saveProduct()
-            if (product != null) {
-                if (activity is OnProductSavedListener) {
-                    val listener = activity as OnProductSavedListener
-                    listener.onProductSaved(product)
-                }
-            }
-            dialog.dismiss()
-            return true
-        }
-        return false
-    }
-
     private fun saveProduct(): Product? {
         val product = Product()
-        //val category = form_category_spinner.adapter.getItem(0) as Category
         product.categoryId = arguments?.getLong(EXTRA_CATEGORY_ID)!!
         product.brand = form_product_brand.text.toString()
         product.description = form_product_description.text.toString()

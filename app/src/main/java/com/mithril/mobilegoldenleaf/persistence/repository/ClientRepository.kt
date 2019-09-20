@@ -11,7 +11,7 @@ import com.mithril.mobilegoldenleaf.models.Client
 interface ClientRepository {
 
     @Insert
-    fun save(address: Client): Long
+    fun save(client: Client): Long
 
     @Update
     fun update(address: Client)
@@ -21,5 +21,8 @@ interface ClientRepository {
 
     @Query("SELECT c.* FROM Client c WHERE c.name LIKE :term")
     fun search(term: String): List<Client>
+
+    @Query("SELECT c.* FROM Client c WHERE c.id = :clientId")
+    fun get(clientId: Long): Client
 
 }

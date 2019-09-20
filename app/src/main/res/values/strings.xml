@@ -8,6 +8,12 @@
         <item quantity="other">%d produtos</item>
 
     </plurals>
+
+    <plurals name="footer_text_client">
+        <item quantity="one">1 cliente</item>
+        <item quantity="other">%d clientes</item>
+
+    </plurals>
     <string name="app_name">Mobile Golden Leaf</string>
     <string name="brand">Marca</string>
     <string name="description">Descrição</string>
@@ -16,9 +22,11 @@
     <string name="title">Título</string>
     <string name="save">Salvar</string>
     <string name="add_product">Adicionar produto</string>
+    <string name="add_order">Adicionar pedido</string>
     <string name="add_category">Adicionar categoria</string>
     <string name="edit_product">Editar produto</string>
     <string name="edit_category">Editar categoria</string>
+    <string name="edit_client">Editar client</string>
     <string name="date">Data</string>
     <string name="category">Categoria</string>
     <string name="total">Total</string>
@@ -26,6 +34,7 @@
     <string name="product_saving_error">Não foi possível salvar o produto.</string>
     <string name="ano">Ano</string>"Erro no valor inserido."
     <string name="see_products">Ver produtos</string>
+    <string name="see_orders">Ver pedidos</string>
     <string name="option_dashboard">Dashboard</string>
     <string name="option_category">Categorias</string>
     <string name="option_product">Produtos</string>

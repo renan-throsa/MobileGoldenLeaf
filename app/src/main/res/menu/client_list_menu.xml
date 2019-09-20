@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/category_list_menu_edit"
+        android:title="@string/edit_client" />
+    <item
+        android:id="@+id/category_list_menu_add_product"
+        android:title="@string/add_order" />
+    <item
+        android:id="@+id/category_list_menu_see_products"
+        android:title="@string/see_orders" />
+</menu>
