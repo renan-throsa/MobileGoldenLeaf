@@ -3,6 +3,7 @@ package com.mithril.mobilegoldenleaf.ui.client.presenters
 import com.mithril.mobilegoldenleaf.asynctask.client.GetClientByIdTask
 import com.mithril.mobilegoldenleaf.asynctask.client.SaveClientTask
 import com.mithril.mobilegoldenleaf.asynctask.client.UpdateClientTask
+import com.mithril.mobilegoldenleaf.models.Address
 import com.mithril.mobilegoldenleaf.models.Client
 import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
 import com.mithril.mobilegoldenleaf.ui.client.interfaces.ClientFormView
@@ -20,10 +21,11 @@ class ClientFormDialogPresenter(private val view: ClientFormView, private val re
     fun save(client: Client): Boolean {
         return if (validator.validate(client)) {
             try {
-                if (client.id != 0L) {
+                if (client.hasValidId()) {
                     UpdateClientTask(repository.clientRepository, client).execute()
                 } else {
-                    SaveClientTask(repository.clientRepository, client).execute()
+                    val clientId = SaveClientTask(repository.clientRepository, client).execute().get()
+                    val addres = Address(clientId,"","")
                 }
                 true
             } catch (e: Exception) {

@@ -63,7 +63,7 @@ class ProductFormDialogFragment : DialogFragment(), ProductFormDialogView {
             if (product != null) {
                 if (activity is OnProductSavedListener) {
                     val listener = activity as OnProductSavedListener
-                    listener.onProductSaved(product)
+                    listener.onProductSaved()
                 }
             }
             dialog.dismiss()

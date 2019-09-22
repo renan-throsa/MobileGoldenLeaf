@@ -62,7 +62,6 @@ class ProductFormDialogFragment : DialogFragment(), ProductFormView {
     }
 
 
-
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if (item?.itemId == R.id.fragment_form_action_concluded) {
             val product = saveProduct()
@@ -159,8 +158,8 @@ class ProductFormDialogFragment : DialogFragment(), ProductFormView {
     }
 
     companion object {
-        private const val DIALOG_TAG = "productId"
-        private const val EXTRA_PRODUCT_ID = "editDialog"
+        private const val DIALOG_TAG = "ProductFormDialogFragment"
+        private const val EXTRA_PRODUCT_ID = "productId"
 
         fun newInstance(id: Long = 0): ProductFormDialogFragment {
             val fragment = ProductFormDialogFragment()

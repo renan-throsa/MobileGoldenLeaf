@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.adapters.CategoryAdapter
 import com.mithril.mobilegoldenleaf.models.Category
-import com.mithril.mobilegoldenleaf.models.Product
 import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
 import com.mithril.mobilegoldenleaf.ui.MainActivity
 import com.mithril.mobilegoldenleaf.ui.category.interfaces.CategoryListView
@@ -94,7 +93,7 @@ class CategoryListFragment : Fragment(), CategoryListView, OnCategorySavedListen
 
     private fun configFba(view: View) {
         view.fragment_category_list_fab_new_category.setOnClickListener {
-            val dialogFragment = CategoryFormFragment.newInstance()
+            val dialogFragment = CategoryFormDialogFragment.newInstance()
             activity?.supportFragmentManager?.let { it -> dialogFragment.open(it) }
         }
     }
@@ -118,7 +117,7 @@ class CategoryListFragment : Fragment(), CategoryListView, OnCategorySavedListen
     }
 
     private fun openEditCategoryDialogFragment(category: Category) {
-        val dialogFragment = CategoryFormFragment.newInstance(category.id)
+        val dialogFragment = CategoryFormDialogFragment.newInstance(category.id)
         activity?.supportFragmentManager?.let { it -> dialogFragment.open(it) }
     }
 

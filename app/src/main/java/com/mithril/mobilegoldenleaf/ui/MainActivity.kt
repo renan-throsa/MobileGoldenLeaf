@@ -15,6 +15,7 @@ import com.mithril.mobilegoldenleaf.models.Product
 import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
 import com.mithril.mobilegoldenleaf.ui.category.fragments.CategoryListFragment
 import com.mithril.mobilegoldenleaf.ui.category.interfaces.OnProductsFromCategoryListener
+import com.mithril.mobilegoldenleaf.ui.client.fragments.ClientListFragment
 import com.mithril.mobilegoldenleaf.ui.dashboard.Dashboard
 import com.mithril.mobilegoldenleaf.ui.product.fragments.ProductDetailsFragment
 import com.mithril.mobilegoldenleaf.ui.product.fragments.ProductListFragment
@@ -22,7 +23,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.math.BigDecimal
 
-class MainActivity : AppCompatActivity(), OnProductClikedListener, OnProductsFromCategoryListener, NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), OnProductsFromCategoryListener, NavigationView.OnNavigationItemSelectedListener {
+
     private val drawerToggle: ActionBarDrawerToggle by lazy {
         ActionBarDrawerToggle(this,
                 drawerLayout, toolbar, R.string.app_name, R.string.app_name)
@@ -34,7 +36,6 @@ class MainActivity : AppCompatActivity(), OnProductClikedListener, OnProductsFro
         setSupportActionBar(toolbar)
         drawerLayout.addDrawerListener(drawerToggle)
         drawerToggle.syncState()
-
         navigationView.setNavigationItemSelectedListener(this)
 
     }
@@ -47,10 +48,6 @@ class MainActivity : AppCompatActivity(), OnProductClikedListener, OnProductsFro
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun onProductClick(product: Product) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun OnProductsFromCategoryClick(c: Category) {
@@ -66,7 +63,7 @@ class MainActivity : AppCompatActivity(), OnProductClikedListener, OnProductsFro
             R.id.action_dashboard -> Dashboard.newInstance()
             R.id.action_category -> CategoryListFragment.newInstance()
             R.id.action_product -> ProductListFragment.newInstance()
-            R.id.action_client -> Dashboard.newInstance()
+            R.id.action_client -> ClientListFragment.newInstance()
             R.id.action_order -> Dashboard.newInstance()
             else -> {
                 Dashboard.newInstance()
@@ -75,6 +72,7 @@ class MainActivity : AppCompatActivity(), OnProductClikedListener, OnProductsFro
 
         supportFragmentManager
                 .beginTransaction()
+                .addToBackStack(null)
                 .replace(R.id.content, fragment)
                 .commit()
     }
@@ -86,31 +84,5 @@ class MainActivity : AppCompatActivity(), OnProductClikedListener, OnProductsFro
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
-
-//    private fun selectMenuOption(menuItem: MenuItem) {
-//        menuItem.isChecked = true
-//        drawerLayout.closeDrawers()
-//        val title = menuItem.title.toString()
-//        if(supportFragmentManager.findFragmentByTag(title) == null){
-//
-//        }
-//        val fragment: Fragment = when (menuItem.itemId) {
-//            R.id.action_dashboard -> Dashboard.newInstance()
-//            R.id.action_category -> CategoryListFragment.newInstance()
-//            R.id.action_product -> ProductListFragment.newInstance()
-//            else -> {
-//                return
-//            }
-//        }
-//
-//
-//        supportFragmentManager
-//                .beginTransaction()
-//                .replace(R.id.content, fragment,title)
-//                .commit()
-//
-//        drawerLayout.closeDrawer(GravityCompat.START)
-//    }
-
 
 }

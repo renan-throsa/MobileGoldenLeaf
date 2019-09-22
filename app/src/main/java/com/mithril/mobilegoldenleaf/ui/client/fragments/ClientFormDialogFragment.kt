@@ -13,8 +13,9 @@ import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
 import com.mithril.mobilegoldenleaf.ui.MainActivity
 import com.mithril.mobilegoldenleaf.ui.client.interfaces.ClientFormView
 import com.mithril.mobilegoldenleaf.ui.client.presenters.ClientFormDialogPresenter
+import kotlinx.android.synthetic.main.dialogfragment_client_form.*
 
-class ClientFormFragment : DialogFragment(), ClientFormView {
+class ClientFormDialogFragment : DialogFragment(), ClientFormView {
     private lateinit var activityContext: MainActivity
 
     private val presenter by lazy {
@@ -44,7 +45,10 @@ class ClientFormFragment : DialogFragment(), ClientFormView {
     }
 
     override fun showClient(client: Client) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        form_client_name.setText(client.name)
+        form_client_identification.setText(client.identification)
+        form_client_phoneNumber.setText(client.phoneNumber)
+
     }
 
     override fun clientInvalidError() {
@@ -62,11 +66,11 @@ class ClientFormFragment : DialogFragment(), ClientFormView {
 
 
     companion object {
-        private const val DIALOG_TAG = "categoryId"
-        private const val EXTRA_CLIENT_ID = "formDialog"
+        private const val DIALOG_TAG = "ClientFormDialogFragment"
+        private const val EXTRA_CLIENT_ID = "clientId"
 
-        fun newInstance(id: Long = 0): ClientFormFragment {
-            val fragment = ClientFormFragment()
+        fun newInstance(id: Long = 0): ClientFormDialogFragment {
+            val fragment = ClientFormDialogFragment()
             val args = Bundle()
             args.putLong(EXTRA_CLIENT_ID, id)
             fragment.arguments = args

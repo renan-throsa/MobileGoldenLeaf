@@ -11,53 +11,68 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:text="@string/category"
+        android:text="@string/client_information"
         android:textColor="#7b7b7b"
-        android:textSize="12dp" />
-
-    <Spinner
-        android:id="@+id/form_category_spinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
+        android:textSize="18sp" />
 
     <EditText
-        android:id="@+id/form_product_brand"
+        android:id="@+id/form_client_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:hint="@string/brand"
+        android:hint="@string/name"
         android:importantForAutofill="no"
-        android:inputType="textCapCharacters" />
+        android:inputType="textCapSentences" />
+
 
     <EditText
-        android:id="@+id/form_product_description"
+        android:id="@+id/form_client_identification"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:hint="@string/description"
-        android:importantForAutofill="no"
-        android:inputType="textCapCharacters" />
-
-    <EditText
-        android:id="@+id/form_product_code"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:hint="@string/code"
+        android:hint="@string/identification"
         android:importantForAutofill="no"
         android:inputType="number" />
 
     <EditText
-        android:id="@+id/form_product_value"
+        android:id="@+id/form_client_phoneNumber"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:hint="@string/value"
-        android:inputType="numberDecimal"
+        android:hint="@string/phoneNumber"
+        android:importantForAutofill="no"
+        android:inputType="phone" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:text="@string/client_address_information"
+        android:textColor="#7b7b7b"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/form_client_address_zipCode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:hint="@string/zipCode"
+        android:importantForAutofill="no"
+        android:inputType="textCapSentences" />
+
+
+    <EditText
+        android:id="@+id/form_client_address_street"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:digits="0123456789,"
+        android:hint="@string/street"
         android:imeOptions="actionDone"
-        />
+        android:inputType="number" />
+
 
 
 </LinearLayout>

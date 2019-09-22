@@ -102,8 +102,18 @@ class ClientListFragment : Fragment(), ClientListView {
 
     private fun configFba(view: View) {
         view.fragment_clients_list_fab_new_client.setOnClickListener {
-            val dialogFragment = ClientFormFragment.newInstance()
+            val dialogFragment = ClientFormDialogFragment.newInstance()
             activity?.supportFragmentManager?.let { it -> dialogFragment.open(it) }
+        }
+    }
+
+    companion object {
+//        private const val EXTRA_CLIENT_ID = "categoryId"
+//        private const val TAG_CLIENT_LIST = "tagProductsList"
+
+        fun newInstance(): ClientListFragment {
+            val fragment = ClientListFragment()
+            return fragment
         }
     }
 }

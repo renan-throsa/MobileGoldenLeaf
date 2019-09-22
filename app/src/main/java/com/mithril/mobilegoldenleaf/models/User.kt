@@ -8,9 +8,11 @@ abstract class User {
     var name: String? = null
     var phoneNumber: String? = null
 
-    constructor() {
-
+    fun hasValidId(): Boolean {
+        return id != 0L
     }
+
+    constructor()
 
     constructor(name: String, phoneNumber: String) {
         this.name = name

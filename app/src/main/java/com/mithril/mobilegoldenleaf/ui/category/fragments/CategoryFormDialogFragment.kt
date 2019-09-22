@@ -2,7 +2,6 @@ package com.mithril.mobilegoldenleaf.ui.category.fragments
 
 import android.os.Bundle
 import android.view.*
-import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
@@ -14,9 +13,8 @@ import com.mithril.mobilegoldenleaf.ui.category.interfaces.CategoryFormView
 import com.mithril.mobilegoldenleaf.ui.category.interfaces.OnCategorySavedListener
 import com.mithril.mobilegoldenleaf.ui.category.presenters.CategoryFormPresenter
 import kotlinx.android.synthetic.main.dialogfragment_category_form.*
-import kotlinx.android.synthetic.main.dialogfragment_category_form.view.*
 
-class CategoryFormFragment : DialogFragment(), CategoryFormView {
+class CategoryFormDialogFragment : DialogFragment(), CategoryFormView {
 
     private lateinit var activityContext: MainActivity
 
@@ -102,11 +100,11 @@ class CategoryFormFragment : DialogFragment(), CategoryFormView {
 
 
     companion object {
-        private const val DIALOG_TAG = "categoryId"
-        private const val EXTRA_CATEGORY_ID = "formDialog"
+        private const val DIALOG_TAG = "categoryFormFragment"
+        private const val EXTRA_CATEGORY_ID = "categoryId"
 
-        fun newInstance(id: Long = 0): CategoryFormFragment {
-            val fragment = CategoryFormFragment()
+        fun newInstance(id: Long = 0): CategoryFormDialogFragment {
+            val fragment = CategoryFormDialogFragment()
             val args = Bundle()
             args.putLong(EXTRA_CATEGORY_ID, id)
             fragment.arguments = args
