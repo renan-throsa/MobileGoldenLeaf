@@ -18,7 +18,7 @@ class Clerk : User {
     }
 
     @Ignore
-    constructor(id: Int, name: String, phoneNumber: String, email: String, password: String) : super(id, name, phoneNumber) {
+    constructor(id: Long, name: String, phoneNumber: String, email: String, password: String) : super(id, name, phoneNumber) {
         this.email = email
         this.password = password
     }

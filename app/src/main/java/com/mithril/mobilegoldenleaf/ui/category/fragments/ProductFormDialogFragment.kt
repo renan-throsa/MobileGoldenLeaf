@@ -11,6 +11,7 @@ import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.models.Product
 import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
+import com.mithril.mobilegoldenleaf.ui.MainActivity
 import com.mithril.mobilegoldenleaf.ui.category.interfaces.ProductFormDialogView
 import com.mithril.mobilegoldenleaf.ui.category.presenters.ProductFormDialogPresenter
 import com.mithril.mobilegoldenleaf.ui.product.interfaces.OnProductSavedListener
@@ -22,16 +23,16 @@ import java.text.ParsePosition
 import java.util.*
 
 class ProductFormDialogFragment : DialogFragment(), ProductFormDialogView {
+    private lateinit var activityContext: MainActivity
 
     private val presenter by lazy {
-        context.let {
-            if (it != null) {
-                val repository = MobileGoldenLeafDataBase.getInstance(it)
-                ProductFormDialogPresenter(this, repository)
-            } else {
-                throw IllegalArgumentException("Contexto inválido")
-            }
-        }
+        val repository = MobileGoldenLeafDataBase.getInstance(activityContext)
+        ProductFormDialogPresenter(this, repository)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        activityContext = activity as MainActivity
+        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

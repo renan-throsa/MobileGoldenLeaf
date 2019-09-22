@@ -10,33 +10,27 @@ import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.adapters.ClientAdapter
 import com.mithril.mobilegoldenleaf.models.Client
 import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
+import com.mithril.mobilegoldenleaf.ui.MainActivity
 import com.mithril.mobilegoldenleaf.ui.client.interfaces.ClientListView
 import com.mithril.mobilegoldenleaf.ui.client.presenters.ClientListPresenter
 import kotlinx.android.synthetic.main.fragment_clients_list.view.*
 
 class ClientListFragment : Fragment(), ClientListView {
 
-    private val adapter by lazy {
-        context.let {
-            if (it != null) {
-                ClientAdapter(it)
-            } else {
-                throw IllegalArgumentException("Contexto inválido")
-            }
-        }
+    private lateinit var activityContext: MainActivity
 
+    private val adapter by lazy {
+        ClientAdapter(activityContext)
     }
 
     private val presenter by lazy {
-        context.let {
-            if (it != null) {
-                val repository = MobileGoldenLeafDataBase.getInstance(it).clientRepository
-                ClientListPresenter(this, repository)
-            } else {
-                throw IllegalArgumentException("Contexto inválido")
-            }
-        }
+        val repository = MobileGoldenLeafDataBase.getInstance(activityContext).clientRepository
+        ClientListPresenter(this, repository)
+    }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        activityContext = activity as MainActivity
+        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

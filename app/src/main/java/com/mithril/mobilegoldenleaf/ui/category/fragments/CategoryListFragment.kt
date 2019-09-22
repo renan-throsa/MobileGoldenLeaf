@@ -12,6 +12,7 @@ import com.mithril.mobilegoldenleaf.adapters.CategoryAdapter
 import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.models.Product
 import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
+import com.mithril.mobilegoldenleaf.ui.MainActivity
 import com.mithril.mobilegoldenleaf.ui.category.interfaces.CategoryListView
 import com.mithril.mobilegoldenleaf.ui.category.interfaces.OnCategorySavedListener
 import com.mithril.mobilegoldenleaf.ui.category.interfaces.OnProductsFromCategoryListener
@@ -19,28 +20,18 @@ import com.mithril.mobilegoldenleaf.ui.category.presenters.CategoryListPresenter
 import kotlinx.android.synthetic.main.fragment_category_list.view.*
 
 class CategoryListFragment : Fragment(), CategoryListView, OnCategorySavedListener {
+    private lateinit var activityContext: MainActivity
 
-    private val adapter by lazy {
-        context.let {
-            if (it != null) {
-                CategoryAdapter(it)
-            } else {
-                throw IllegalArgumentException("Contexto inválido")
-            }
-        }
-
-    }
+    private val adapter by lazy { CategoryAdapter(activityContext) }
 
     private val presenter by lazy {
-        context.let {
-            if (it != null) {
-                val repository = MobileGoldenLeafDataBase.getInstance(it).categoryRepository
-                CategoryListPresenter(this, repository)
-            } else {
-                throw IllegalArgumentException("Contexto inválido")
-            }
-        }
+        val repository = MobileGoldenLeafDataBase.getInstance(activityContext).categoryRepository
+        CategoryListPresenter(this, repository)
+    }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        activityContext = activity as MainActivity
+        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

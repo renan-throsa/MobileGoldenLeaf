@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentManager
 import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
+import com.mithril.mobilegoldenleaf.ui.MainActivity
 import com.mithril.mobilegoldenleaf.ui.category.interfaces.CategoryFormView
 import com.mithril.mobilegoldenleaf.ui.category.interfaces.OnCategorySavedListener
 import com.mithril.mobilegoldenleaf.ui.category.presenters.CategoryFormPresenter
@@ -17,16 +18,16 @@ import kotlinx.android.synthetic.main.dialogfragment_category_form.view.*
 
 class CategoryFormFragment : DialogFragment(), CategoryFormView {
 
-    private val presenter by lazy {
-        context.let {
-            if (it != null) {
-                val repository = MobileGoldenLeafDataBase.getInstance(it).categoryRepository
-                CategoryFormPresenter(this, repository)
-            } else {
-                throw IllegalArgumentException("Contexto inválido")
-            }
-        }
+    private lateinit var activityContext: MainActivity
 
+    private val presenter by lazy {
+        val repository = MobileGoldenLeafDataBase.getInstance(activityContext).categoryRepository
+        CategoryFormPresenter(this, repository)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        activityContext = activity as MainActivity
+        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

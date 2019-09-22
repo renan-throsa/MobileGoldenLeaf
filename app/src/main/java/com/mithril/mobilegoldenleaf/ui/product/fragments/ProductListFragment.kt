@@ -12,37 +12,24 @@ import com.mithril.mobilegoldenleaf.adapters.ProductAdapter
 import com.mithril.mobilegoldenleaf.interfaces.OnProductClikedListener
 import com.mithril.mobilegoldenleaf.models.Product
 import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
+import com.mithril.mobilegoldenleaf.ui.MainActivity
 import com.mithril.mobilegoldenleaf.ui.product.interfaces.OnProductSavedListener
 import com.mithril.mobilegoldenleaf.ui.product.interfaces.ProductListView
 import com.mithril.mobilegoldenleaf.ui.product.presenters.ProductListPresenter
 import kotlinx.android.synthetic.main.fragment_products_list.view.*
 
 
-private const val TITLE = "Lista de Produtos"
-
 class ProductListFragment : Fragment(), ProductListView, OnProductSavedListener {
-
-    private val adapter by lazy {
-        context.let {
-            if (it != null) {
-                ProductAdapter(it)
-            } else {
-                throw IllegalArgumentException("Contexto inválido")
-            }
-        }
+    private lateinit var activityContext: MainActivity
+    private val adapter by lazy { ProductAdapter(activityContext) }
+    private val presenter by lazy {
+        val repository = MobileGoldenLeafDataBase.getInstance(activityContext).productRepository
+        ProductListPresenter(this, repository)
     }
 
-    private val presenter by lazy {
-        context.let {
-            if (it != null) {
-                val repository = MobileGoldenLeafDataBase.getInstance(it).productRepository
-                ProductListPresenter(this, repository)
-            } else {
-                throw IllegalArgumentException("Contexto inválido")
-            }
-        }
-
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        activityContext = activity as MainActivity
+        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -52,11 +39,12 @@ class ProductListFragment : Fragment(), ProductListView, OnProductSavedListener 
         return view
     }
 
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val categoryId = arguments?.getLong(EXTRA_CATEGORY_ID, 0L) ?: 0L
         if (categoryId != 0L) {
-            val contexto = context
+            val contexto = activityContext
             val texto = "Category " + categoryId
             val duracao = Toast.LENGTH_SHORT
 
@@ -86,7 +74,7 @@ class ProductListFragment : Fragment(), ProductListView, OnProductSavedListener 
     }
 
     private fun openEditProductDialogFragment(product: Product) {
-        val dialogFragment = ProductFormFragment.newInstance(product.id)
+        val dialogFragment = ProductFormDialogFragment.newInstance(product.id)
         activity?.supportFragmentManager?.let { it -> dialogFragment.open(it) }
     }
 
@@ -94,7 +82,7 @@ class ProductListFragment : Fragment(), ProductListView, OnProductSavedListener 
     private fun configFba(view: View) {
         view.fragment_products_list_fab_new_product
                 .setOnClickListener {
-                    val dialogFragment = ProductFormFragment.newInstance()
+                    val dialogFragment = ProductFormDialogFragment.newInstance()
                     activity?.supportFragmentManager?.let { it -> dialogFragment.open(it) }
                 }
     }
@@ -124,7 +112,7 @@ class ProductListFragment : Fragment(), ProductListView, OnProductSavedListener 
         }
     }
 
-    override fun onProductSaved(product: Product) {
+    override fun onProductSaved() {
         presenter.searchProducts("")
     }
 

@@ -22,6 +22,7 @@
     <string name="title">Título</string>
     <string name="save">Salvar</string>
     <string name="add_product">Adicionar produto</string>
+    <string name="add_client">Adicionar client</string>
     <string name="add_order">Adicionar pedido</string>
     <string name="add_category">Adicionar categoria</string>
     <string name="edit_product">Editar produto</string>

@@ -2,7 +2,6 @@ package com.mithril.mobilegoldenleaf.ui.product.fragments
 
 import android.os.Bundle
 import android.view.*
-import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
@@ -13,6 +12,7 @@ import com.mithril.mobilegoldenleaf.extentions.toDecimalFormat
 import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.models.Product
 import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
+import com.mithril.mobilegoldenleaf.ui.MainActivity
 import com.mithril.mobilegoldenleaf.ui.product.interfaces.OnProductSavedListener
 import com.mithril.mobilegoldenleaf.ui.product.interfaces.ProductFormView
 import com.mithril.mobilegoldenleaf.ui.product.presenters.ProductFormPresenter
@@ -23,18 +23,19 @@ import java.text.NumberFormat
 import java.text.ParsePosition
 import java.util.*
 
-class ProductFormFragment : DialogFragment(), ProductFormView {
+class ProductFormDialogFragment : DialogFragment(), ProductFormView {
+    private lateinit var activityContext: MainActivity
 
     private val presenter by lazy {
-        context.let {
-            if (it != null) {
-                val repository = MobileGoldenLeafDataBase.getInstance(it)
-                ProductFormPresenter(this, repository)
-            } else {
-                throw IllegalArgumentException("Contexto inválido")
-            }
-        }
+        val repository = MobileGoldenLeafDataBase.getInstance(activityContext)
+        ProductFormPresenter(this, repository)
     }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        activityContext = activity as MainActivity
+        super.onCreate(savedInstanceState)
+    }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.dialogfragment_product_form, container, false)
@@ -60,13 +61,15 @@ class ProductFormFragment : DialogFragment(), ProductFormView {
 
     }
 
+
+
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if (item?.itemId == R.id.fragment_form_action_concluded) {
             val product = saveProduct()
             if (product != null) {
                 if (activity is OnProductSavedListener) {
                     val listener = activity as OnProductSavedListener
-                    listener.onProductSaved(product)
+                    listener.onProductSaved()
                 }
             }
             dialog.dismiss()
@@ -143,7 +146,7 @@ class ProductFormFragment : DialogFragment(), ProductFormView {
             nf.isParseBigDecimal = true
             return nf.parse(str, ParsePosition(0)) as BigDecimal
         } catch (exception: NumberFormatException) {
-            Toast.makeText(context, R.string.value_error, Toast.LENGTH_LONG)
+            Toast.makeText(activityContext, R.string.value_error, Toast.LENGTH_LONG)
                     .show()
             BigDecimal.ZERO
         }
@@ -159,8 +162,8 @@ class ProductFormFragment : DialogFragment(), ProductFormView {
         private const val DIALOG_TAG = "productId"
         private const val EXTRA_PRODUCT_ID = "editDialog"
 
-        fun newInstance(id: Long = 0): ProductFormFragment {
-            val fragment = ProductFormFragment()
+        fun newInstance(id: Long = 0): ProductFormDialogFragment {
+            val fragment = ProductFormDialogFragment()
             val args = Bundle()
             args.putLong(EXTRA_PRODUCT_ID, id)
             fragment.arguments = args
