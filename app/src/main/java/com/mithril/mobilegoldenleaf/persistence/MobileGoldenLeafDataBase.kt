@@ -9,7 +9,7 @@ import com.mithril.mobilegoldenleaf.persistence.converter.BigDecimalConverter
 
 import com.mithril.mobilegoldenleaf.persistence.converter.CaledarConverter
 import com.mithril.mobilegoldenleaf.persistence.converter.StatusConverter
-import com.mithril.mobilegoldenleaf.persistence.repository.AddressDao
+import com.mithril.mobilegoldenleaf.persistence.repository.addressRepository
 import com.mithril.mobilegoldenleaf.persistence.repository.CategoryRepository
 import com.mithril.mobilegoldenleaf.persistence.repository.ClerkDao
 import com.mithril.mobilegoldenleaf.persistence.repository.ClientRepository
@@ -32,7 +32,7 @@ abstract class MobileGoldenLeafDataBase : RoomDatabase() {
 
     abstract val categoryRepository: CategoryRepository
 
-    abstract val addressDao: AddressDao
+    abstract val addressRepository: addressRepository
 
     abstract val clerkDao: ClerkDao
 

@@ -71,7 +71,7 @@
         android:digits="0123456789,"
         android:hint="@string/street"
         android:imeOptions="actionDone"
-        android:inputType="number" />
+        android:inputType="textCapSentences" />
 
 
 

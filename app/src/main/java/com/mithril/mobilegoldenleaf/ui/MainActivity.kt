@@ -6,22 +6,16 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
-import androidx.room.Room
 import com.google.android.material.navigation.NavigationView
 import com.mithril.mobilegoldenleaf.R
-import com.mithril.mobilegoldenleaf.interfaces.OnProductClikedListener
 import com.mithril.mobilegoldenleaf.models.Category
-import com.mithril.mobilegoldenleaf.models.Product
-import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
 import com.mithril.mobilegoldenleaf.ui.category.fragments.CategoryListFragment
 import com.mithril.mobilegoldenleaf.ui.category.interfaces.OnProductsFromCategoryListener
 import com.mithril.mobilegoldenleaf.ui.client.fragments.ClientListFragment
 import com.mithril.mobilegoldenleaf.ui.dashboard.Dashboard
-import com.mithril.mobilegoldenleaf.ui.product.fragments.ProductDetailsFragment
 import com.mithril.mobilegoldenleaf.ui.product.fragments.ProductListFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
-import java.math.BigDecimal
 
 class MainActivity : AppCompatActivity(), OnProductsFromCategoryListener, NavigationView.OnNavigationItemSelectedListener {
 

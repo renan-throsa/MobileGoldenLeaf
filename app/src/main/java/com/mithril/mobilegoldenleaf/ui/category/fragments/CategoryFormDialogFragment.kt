@@ -1,5 +1,6 @@
 package com.mithril.mobilegoldenleaf.ui.category.fragments
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
@@ -21,6 +22,11 @@ class CategoryFormDialogFragment : DialogFragment(), CategoryFormView {
     private val presenter by lazy {
         val repository = MobileGoldenLeafDataBase.getInstance(activityContext).categoryRepository
         CategoryFormPresenter(this, repository)
+    }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        setStyle(STYLE_NORMAL, R.style.CustomDialogFragment)
+        return super.onCreateDialog(savedInstanceState)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

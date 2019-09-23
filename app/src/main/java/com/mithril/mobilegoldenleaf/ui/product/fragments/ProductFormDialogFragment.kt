@@ -1,5 +1,6 @@
 package com.mithril.mobilegoldenleaf.ui.product.fragments
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.*
 import android.widget.ArrayAdapter
@@ -31,6 +32,11 @@ class ProductFormDialogFragment : DialogFragment(), ProductFormView {
         ProductFormPresenter(this, repository)
     }
 
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        setStyle(STYLE_NORMAL, R.style.CustomDialogFragment)
+        return super.onCreateDialog(savedInstanceState)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         activityContext = activity as MainActivity
         super.onCreate(savedInstanceState)
@@ -44,7 +50,7 @@ class ProductFormDialogFragment : DialogFragment(), ProductFormView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         presenter.loadCategories()
-        val productId = arguments?.getLong(EXTRA_PRODUCT_ID, 0L) ?: 0L
+        val productId = arguments?.getLong(EXTRA_PRODUCT_ID) ?: 0L
         if (productId != 0L) {
             presenter.loadBy(productId)
             dialog.setTitle(R.string.edit_product)
@@ -95,7 +101,7 @@ class ProductFormDialogFragment : DialogFragment(), ProductFormView {
         product.description = form_product_description.text.toString()
         product.code = form_product_code.text.toString()
         product.unitCost = convertValue(form_product_value.text.toString())
-        val productId = arguments?.getLong(EXTRA_PRODUCT_ID, 0) ?: 0
+        val productId = arguments?.getLong(EXTRA_PRODUCT_ID) ?: 0L
         if (productId != 0L) {
             product.id = productId
         }

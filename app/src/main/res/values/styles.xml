@@ -11,4 +11,8 @@
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
+    <style name="CustomDialogFragment" parent="@style/Theme.AppCompat.Light.Dialog">
+        <item name="android:windowNoTitle">false</item>
+    </style>
+
 </resources>

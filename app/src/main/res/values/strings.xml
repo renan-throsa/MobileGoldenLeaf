@@ -27,17 +27,19 @@
     <string name="street">Rua</string>
     <string name="save">Salvar</string>
     <string name="add_product">Adicionar produto</string>
-    <string name="add_client">Adicionar client</string>
+    <string name="add_client">Adicionar cliente</string>
     <string name="add_order">Adicionar pedido</string>
     <string name="add_category">Adicionar categoria</string>
     <string name="edit_product">Editar produto</string>
     <string name="edit_category">Editar categoria</string>
-    <string name="edit_client">Editar client</string>
+    <string name="edit_client">Editar cliente</string>
     <string name="date">Data</string>
     <string name="category">Categoria</string>
     <string name="total">Total</string>
     <string name="mes">Mês</string>
     <string name="product_saving_error">Não foi possível salvar o produto.</string>
+    <string name="client_saving_error">Não foi possível salvar o cliente.</string>
+    <string name="address_saving_error">Não foi possível salvar o produto.</string>
     <string name="ano">Ano</string>"Erro no valor inserido."
     <string name="see_products">Ver produtos</string>
     <string name="see_orders">Ver pedidos</string>
@@ -54,6 +56,8 @@
     <string name="invalid_title_error">Titulo inválido</string>
     <string name="value_error">"Erro no valor do produto. Salvo cm valor 0.0."</string>
     <string name="product_invalid_error">Produto com campos inválidos</string>
+    <string name="client_invalid_error">Cliente com campos inválidos</string>
+    <string name="address_invalid_error">Endereço com campos inválidos</string>
     <string-array name="sections">
         <item>Categorias</item>
         <item>Produtos</item>

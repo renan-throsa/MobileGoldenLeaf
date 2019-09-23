@@ -1,5 +1,6 @@
 package com.mithril.mobilegoldenleaf.ui.category.fragments
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.*
 import android.view.inputmethod.EditorInfo
@@ -55,6 +56,11 @@ class ProductFormDialogFragment : DialogFragment(), ProductFormDialogView {
         inflater?.inflate(R.menu.fragment_action_concluded_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
 
+    }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        setStyle(STYLE_NORMAL, R.style.CustomDialogFragment)
+        return super.onCreateDialog(savedInstanceState)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

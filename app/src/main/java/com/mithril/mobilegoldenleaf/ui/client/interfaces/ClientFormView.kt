@@ -6,4 +6,6 @@ interface ClientFormView {
     fun showClient(client: Client)
     fun clientInvalidError()
     fun savingClientError()
+    fun savingAddressError()
+    fun addressInvalidError()
 }

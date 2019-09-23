@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.AdapterView
 import android.widget.TextView
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.adapters.ClientAdapter
@@ -76,7 +77,7 @@ class ClientListFragment : Fragment(), ClientListView {
     }
 
     override fun showClients(all: List<Client>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        adapter.update(all)
     }
 
     override fun showOrdersOf(client: Client) {

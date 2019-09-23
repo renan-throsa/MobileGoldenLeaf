@@ -13,6 +13,9 @@ class Address {
 
     constructor()
 
+    fun hasValidId(): Boolean {
+        return id != 0L
+    }
 
     @Ignore
     constructor(id: Long, street: String, zipCode: String) {

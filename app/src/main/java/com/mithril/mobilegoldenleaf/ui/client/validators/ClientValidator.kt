@@ -8,7 +8,7 @@ class ClientValidator {
         checkIdentification(identification) && checkPhoneNumber(phoneNumber)
     }
 
-    private fun checkIdentification(description: String?) = description?.length in 3..50
-    private fun checkPhoneNumber(code: String?) = code?.length in 9..13
+    private fun checkIdentification(description: String?) = description?.length == 11
+    private fun checkPhoneNumber(code: String?) = code?.length == 10
 
 }
