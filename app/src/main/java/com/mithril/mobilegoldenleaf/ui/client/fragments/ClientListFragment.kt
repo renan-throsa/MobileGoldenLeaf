@@ -62,10 +62,15 @@ class ClientListFragment : Fragment(), ClientListView {
         val menuInfo = item?.menuInfo as AdapterView.AdapterContextMenuInfo
         val client = adapter.getItem(menuInfo.position)
         when (item.itemId) {
-
+            R.id.client_list_menu_edit -> openEditProductDialogFragment(client)
         }
         return super.onContextItemSelected(item)
 
+    }
+
+    private fun openEditProductDialogFragment(client: Client) {
+        val dialogFragment = ClientFormDialogFragment.newInstance(client.id)
+        activity?.supportFragmentManager?.let { it -> dialogFragment.open(it) }
     }
 
     override fun showProgress() {

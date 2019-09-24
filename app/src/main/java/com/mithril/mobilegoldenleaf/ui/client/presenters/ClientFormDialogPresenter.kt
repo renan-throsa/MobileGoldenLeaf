@@ -1,5 +1,7 @@
 package com.mithril.mobilegoldenleaf.ui.client.presenters
 
+import com.mithril.mobilegoldenleaf.asynctask.address.DeleteAddressTask
+import com.mithril.mobilegoldenleaf.asynctask.address.GetAddressByIdTask
 import com.mithril.mobilegoldenleaf.asynctask.address.SaveAddressTask
 import com.mithril.mobilegoldenleaf.asynctask.address.UpdateAddressTask
 import com.mithril.mobilegoldenleaf.asynctask.client.GetClientByIdTask
@@ -19,7 +21,8 @@ class ClientFormDialogPresenter(private val view: ClientFormView, private val re
 
     fun loadBy(clientId: Long) {
         val c: Client = GetClientByIdTask(clientId, repository.clientRepository).execute().get()
-        view.showClient(c)
+        val a: Address = GetAddressByIdTask(c.addressId, repository.addressRepository).execute().get()
+        view.showClient(c, a)
     }
 
     fun save(client: Client): Boolean {
@@ -47,7 +50,7 @@ class ClientFormDialogPresenter(private val view: ClientFormView, private val re
                 if (address.hasValidId()) {
                     UpdateAddressTask(repository.addressRepository, address).execute()
                 } else {
-                    SaveAddressTask(repository.addressRepository, address).execute()
+                    address.id = SaveAddressTask(repository.addressRepository, address).execute().get()
                 }
                 true
             } catch (e: Exception) {
@@ -58,5 +61,9 @@ class ClientFormDialogPresenter(private val view: ClientFormView, private val re
             view.addressInvalidError()
             false
         }
+    }
+
+    fun delete(address: Address) {
+        DeleteAddressTask(repository.addressRepository, address)
     }
 }

@@ -8,7 +8,7 @@ class AddressValidator {
         checkZipCode(zipCode) && checkStreet(street)
     }
 
-    private fun checkZipCode(description: String?) = description?.length == 8
-    private fun checkStreet(code: String?) = code?.length in 10..50
+    private fun checkZipCode(zipCode: String?) = zipCode?.length == 8
+    private fun checkStreet(street: String?) = street?.length in 10..50
 
 }

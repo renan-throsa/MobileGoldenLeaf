@@ -2,12 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/category_list_menu_edit"
+        android:id="@+id/client_list_menu_edit"
         android:title="@string/edit_client" />
     <item
-        android:id="@+id/category_list_menu_add_product"
+        android:id="@+id/client_list_menu_add_order"
         android:title="@string/add_order" />
     <item
-        android:id="@+id/category_list_menu_see_products"
+        android:id="@+id/client_list_menu_see_orders"
         android:title="@string/see_orders" />
 </menu>

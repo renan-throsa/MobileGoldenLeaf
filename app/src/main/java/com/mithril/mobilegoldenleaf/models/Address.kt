@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity
 class Address {
     @PrimaryKey(autoGenerate = true)
-    var id: Long = 0
+    var id: Long = 0L
     var street: String? = null
     var zipCode: String? = null
 

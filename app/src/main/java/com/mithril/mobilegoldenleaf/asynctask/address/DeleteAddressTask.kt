@@ -4,8 +4,8 @@ import android.os.AsyncTask
 import com.mithril.mobilegoldenleaf.models.Address
 import com.mithril.mobilegoldenleaf.persistence.repository.AddressRepository
 
-class UpdateAddressTask(private val repository: AddressRepository, private val address: Address) : AsyncTask<Unit, Unit, Unit>() {
+class DeleteAddressTask(private val repository: AddressRepository, private val address: Address) : AsyncTask<Unit, Unit, Unit>() {
     override fun doInBackground(vararg p0: Unit?) {
-        repository.update(address)
+        repository.delete(address)
     }
 }

@@ -3,6 +3,7 @@ package com.mithril.mobilegoldenleaf.ui.client.fragments
 import android.app.Dialog
 import android.os.Bundle
 import android.view.*
+import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
@@ -14,6 +15,7 @@ import com.mithril.mobilegoldenleaf.ui.MainActivity
 import com.mithril.mobilegoldenleaf.ui.client.interfaces.ClientFormView
 import com.mithril.mobilegoldenleaf.ui.client.presenters.ClientFormDialogPresenter
 import kotlinx.android.synthetic.main.dialogfragment_client_form.*
+import kotlinx.android.synthetic.main.dialogfragment_client_form.view.*
 
 class ClientFormDialogFragment : DialogFragment(), ClientFormView {
     private lateinit var activityContext: MainActivity
@@ -27,6 +29,7 @@ class ClientFormDialogFragment : DialogFragment(), ClientFormView {
         setStyle(STYLE_NORMAL, R.style.CustomDialogFragment)
         return super.onCreateDialog(savedInstanceState)
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         activityContext = activity as MainActivity
         super.onCreate(savedInstanceState)
@@ -46,7 +49,25 @@ class ClientFormDialogFragment : DialogFragment(), ClientFormView {
         }
         dialog.setTitle(R.string.add_client)
         dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+        view.form_client_address_street.setOnEditorActionListener { _, i, _ -> handleKeyBoardEvent(i) }
 
+    }
+
+    private fun handleKeyBoardEvent(i: Int): Boolean {
+        if (EditorInfo.IME_ACTION_DONE == i) {
+            val address = saveAddress()
+            if (address != null) {
+                val client = saveClient(address.id)
+                if (client != null) {
+                    showSuccessMessage(client.name)
+                } else {
+                    presenter.delete(address)
+                }
+            }
+            dialog.dismiss()
+            return true
+        }
+        return false
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -57,10 +78,12 @@ class ClientFormDialogFragment : DialogFragment(), ClientFormView {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if (item?.itemId == R.id.fragment_form_action_concluded) {
             val address = saveAddress()
-            if (address != null) {
+            if (address != null && address.id != 0L) {
                 val client = saveClient(address.id)
                 if (client != null) {
                     showSuccessMessage(client.name)
+                } else {
+                    presenter.delete(address)
                 }
             }
             dialog.dismiss()
@@ -87,7 +110,7 @@ class ClientFormDialogFragment : DialogFragment(), ClientFormView {
 
     private fun fillClientOut(addressId: Long): Client {
         val client = Client()
-        val clientId = arguments?.getLong(EXTRA_CLIENT_ID) ?: 0
+        val clientId = arguments?.getLong(EXTRA_CLIENT_ID) ?: 0L
         if (clientId != 0L) {
             client.id = clientId
         }
@@ -114,11 +137,12 @@ class ClientFormDialogFragment : DialogFragment(), ClientFormView {
         return address
     }
 
-    override fun showClient(client: Client) {
+    override fun showClient(client: Client, address: Address) {
         form_client_name.setText(client.name)
         form_client_identification.setText(client.identification)
         form_client_phoneNumber.setText(client.phoneNumber)
-
+        form_client_address_zipCode.setText(address.zipCode)
+        form_client_address_street.setText(address.street)
     }
 
     override fun clientInvalidError() {

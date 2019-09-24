@@ -5,7 +5,7 @@ import androidx.room.*
 import com.mithril.mobilegoldenleaf.models.Address
 
 @Dao
-interface addressRepository {
+interface AddressRepository {
 
     @Insert
     fun save(address: Address): Long
@@ -15,5 +15,12 @@ interface addressRepository {
 
     @Query("SELECT a.* FROM Address a")
     fun all(): List<Address>
+
+    @Query("SELECT a.* FROM Address a WHERE a.id = :addressId")
+    fun get(addressId: Long): Address
+
+    @Delete
+    fun delete(address: Address)
+
 
 }

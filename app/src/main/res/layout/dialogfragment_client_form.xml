@@ -22,7 +22,8 @@
         android:layout_margin="8dp"
         android:hint="@string/name"
         android:importantForAutofill="no"
-        android:inputType="textCapSentences" />
+        android:inputType="textCapWords"
+        />
 
 
     <EditText
@@ -32,7 +33,9 @@
         android:layout_margin="8dp"
         android:hint="@string/identification"
         android:importantForAutofill="no"
-        android:inputType="number" />
+        android:inputType="number"
+        android:maxLength="11"
+        />
 
     <EditText
         android:id="@+id/form_client_phoneNumber"
@@ -41,6 +44,7 @@
         android:layout_margin="8dp"
         android:hint="@string/phoneNumber"
         android:importantForAutofill="no"
+        android:maxLength="11"
         android:inputType="phone" />
 
 
@@ -60,7 +64,7 @@
         android:layout_margin="8dp"
         android:hint="@string/zipCode"
         android:importantForAutofill="no"
-        android:inputType="textCapSentences" />
+        android:inputType="number" />
 
 
     <EditText
@@ -68,10 +72,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:digits="0123456789,"
         android:hint="@string/street"
         android:imeOptions="actionDone"
-        android:inputType="textCapSentences" />
+        android:inputType="textCapWords" />
 
 
 
