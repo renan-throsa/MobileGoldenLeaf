@@ -2,12 +2,14 @@ package com.mithril.mobilegoldenleaf.ui.category.presenters
 
 import android.os.AsyncTask
 import com.mithril.mobilegoldenleaf.asynctask.category.GetCategoryLocallyTask
-import com.mithril.mobilegoldenleaf.asynctask.category.SaveListOfCategoriesLocalyTask
-import com.mithril.mobilegoldenleaf.asynctask.remote.GetCategoryRemotelyTask
+import com.mithril.mobilegoldenleaf.asynctask.category.SaveListOfCategoriesLocallyTask
 import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.persistence.repository.CategoryRepository
 import com.mithril.mobilegoldenleaf.retrofit.RetrofitInitializer
 import com.mithril.mobilegoldenleaf.ui.category.interfaces.CategoryListView
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class CategoryListPresenter(private val view: CategoryListView,
                             private val repository: CategoryRepository) {
@@ -15,27 +17,33 @@ class CategoryListPresenter(private val view: CategoryListView,
 
     fun searchCategories(term: String) {
         if (term.isEmpty()) {
+            //The faster task first
             view.showCategories(GetCategoryLocallyTask(repository).execute().get())
-            val categories = getCategoriesRemotely()
-            if (categories != null) {
-                SaveListOfCategoriesLocalyTask(repository, categories)
-
-            } else {
-                view.gettingCategoriesError()
-            }
-
+            //The slower task last
+            getCategoriesRemotely()
         } else {
             view.showCategories(repository.search(term))
         }
     }
 
-    private fun getCategoriesRemotely(): List<Category>? {
+    private fun getCategoriesRemotely() {
         val service = RetrofitInitializer().categoryService()
         val call = service.getAll()
-        val response = GetCategoryRemotelyTask(call)
-                .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
-                .get()
-        return response.body()
+        call.enqueue(object : Callback<List<Category>?> {
+            override fun onResponse(call: Call<List<Category>?>?, response: Response<List<Category>?>?) {
+                response?.body()?.let {
+                    val categories: List<Category> = it
+                    view.showCategories(categories)
+                    SaveListOfCategoriesLocallyTask(repository, categories)
+                            .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
+
+                }
+            }
+
+            override fun onFailure(call: Call<List<Category>?>?, t: Throwable?) {
+                view.gettingCategoriesError()
+            }
+        })
     }
 
 
