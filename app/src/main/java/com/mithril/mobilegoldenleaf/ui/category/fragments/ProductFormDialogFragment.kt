@@ -3,7 +3,6 @@ package com.mithril.mobilegoldenleaf.ui.category.fragments
 import android.app.Dialog
 import android.os.Bundle
 import android.view.*
-import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
@@ -47,24 +46,19 @@ class ProductFormDialogFragment : DialogFragment(), ProductFormDialogView {
         * necessary verify if the id is null*/
         val categoryId = arguments?.getLong(EXTRA_CATEGORY_ID)!!
         presenter.loadBy(categoryId)
-        dialog.setTitle(R.string.add_product)
-        dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+        dialog?.setTitle(R.string.add_product)
+        dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
 
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.fragment_action_concluded_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-
-    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         setStyle(STYLE_NORMAL, R.style.CustomDialogFragment)
         return super.onCreateDialog(savedInstanceState)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if (item?.itemId == R.id.fragment_form_action_concluded) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.fragment_form_action_concluded) {
             val product = saveProduct()
             if (product != null) {
                 if (activity is OnProductSavedListener) {
@@ -72,7 +66,7 @@ class ProductFormDialogFragment : DialogFragment(), ProductFormDialogView {
                     listener.onProductSaved()
                 }
             }
-            dialog.dismiss()
+            dialog?.dismiss()
         }
         return super.onOptionsItemSelected(item)
     }

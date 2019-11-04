@@ -11,6 +11,7 @@ import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.models.Address
 import com.mithril.mobilegoldenleaf.models.Client
 import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
+import com.mithril.mobilegoldenleaf.retrofit.RetrofitInitializer
 import com.mithril.mobilegoldenleaf.ui.MainActivity
 import com.mithril.mobilegoldenleaf.ui.client.interfaces.ClientFormView
 import com.mithril.mobilegoldenleaf.ui.client.presenters.ClientFormDialogPresenter
@@ -24,6 +25,7 @@ class ClientFormDialogFragment : DialogFragment(), ClientFormView {
         val repository = MobileGoldenLeafDataBase.getInstance(activityContext)
         ClientFormDialogPresenter(this, repository)
     }
+
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         setStyle(STYLE_NORMAL, R.style.CustomDialogFragment)
@@ -45,10 +47,10 @@ class ClientFormDialogFragment : DialogFragment(), ClientFormView {
         val clientId = arguments?.getLong(EXTRA_CLIENT_ID) ?: 0L
         if (clientId != 0L) {
             presenter.loadBy(clientId)
-            dialog.setTitle(R.string.edit_client)
+            dialog?.setTitle(R.string.edit_client)
         }
-        dialog.setTitle(R.string.add_client)
-        dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+        dialog?.setTitle(R.string.add_client)
+        dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
         view.form_client_address_street.setOnEditorActionListener { _, i, _ -> handleKeyBoardEvent(i) }
 
     }
@@ -64,19 +66,19 @@ class ClientFormDialogFragment : DialogFragment(), ClientFormView {
                     presenter.delete(address)
                 }
             }
-            dialog.dismiss()
+            dialog?.dismiss()
             return true
         }
         return false
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.fragment_action_concluded_menu, menu)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.fragment_action_concluded_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if (item?.itemId == R.id.fragment_form_action_concluded) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.fragment_form_action_concluded) {
             val address = saveAddress()
             if (address != null && address.id != 0L) {
                 val client = saveClient(address.id)
@@ -86,13 +88,13 @@ class ClientFormDialogFragment : DialogFragment(), ClientFormView {
                     presenter.delete(address)
                 }
             }
-            dialog.dismiss()
+            dialog?.dismiss()
         }
         return super.onOptionsItemSelected(item)
     }
 
     private fun showSuccessMessage(name: String?) {
-        val text = name + " salvo com sucesso!"
+        val text = name + " salvo com sucesso    !"
         val duration = Toast.LENGTH_SHORT
         val toast = Toast.makeText(activityContext, text, duration)
         toast.show()

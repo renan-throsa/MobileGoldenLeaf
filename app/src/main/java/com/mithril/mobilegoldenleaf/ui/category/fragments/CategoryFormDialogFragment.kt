@@ -43,20 +43,20 @@ class CategoryFormDialogFragment : DialogFragment(), CategoryFormView {
         val categoryId = arguments?.getLong(EXTRA_CATEGORY_ID, 0L) ?: 0L
         if (categoryId != 0L) {
             presenter.loadBy(categoryId)
-            dialog.setTitle(R.string.edit_category)
+            dialog?.setTitle(R.string.edit_category)
         }
-        dialog.setTitle(R.string.add_category)
-        dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+        dialog?.setTitle(R.string.add_category)
+        dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.fragment_action_concluded_menu, menu)
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.fragment_action_concluded_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
-
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if (item?.itemId == R.id.fragment_form_action_concluded) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.fragment_form_action_concluded) {
             val category = saveCategory()
             if (category != null) {
                 if (activity is OnCategorySavedListener) {
@@ -64,7 +64,7 @@ class CategoryFormDialogFragment : DialogFragment(), CategoryFormView {
                     listener.onCategorySaved()
                 }
             }
-            dialog.dismiss()
+            dialog?.dismiss()
         }
         return super.onOptionsItemSelected(item)
     }

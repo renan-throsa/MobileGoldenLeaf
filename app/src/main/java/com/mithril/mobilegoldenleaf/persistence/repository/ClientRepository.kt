@@ -1,9 +1,6 @@
 package com.mithril.mobilegoldenleaf.persistence.repository
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 
 import com.mithril.mobilegoldenleaf.models.Client
 
@@ -12,6 +9,9 @@ interface ClientRepository {
 
     @Insert
     fun save(client: Client): Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun save(clients: List<Client>)
 
     @Update
     fun update(address: Client)

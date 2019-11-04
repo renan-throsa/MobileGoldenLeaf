@@ -57,13 +57,13 @@ class ProductListFragment : Fragment(), ProductListView, OnProductSavedListener 
 
     }
 
-    override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
+    override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
         super.onCreateContextMenu(menu, v, menuInfo)
         activity?.menuInflater?.inflate(R.menu.product_list_menu, menu)
     }
 
-    override fun onContextItemSelected(item: MenuItem?): Boolean {
-        val menuInfo = item?.menuInfo as AdapterView.AdapterContextMenuInfo
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        val menuInfo = item.menuInfo as AdapterView.AdapterContextMenuInfo
         val product = adapter.getItem(menuInfo.position)
         when (item.itemId) {
             R.id.product_list_menu_edit -> openEditProductDialogFragment(product)

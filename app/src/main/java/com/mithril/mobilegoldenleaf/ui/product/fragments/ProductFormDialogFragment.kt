@@ -53,23 +53,23 @@ class ProductFormDialogFragment : DialogFragment(), ProductFormView {
         val productId = arguments?.getLong(EXTRA_PRODUCT_ID) ?: 0L
         if (productId != 0L) {
             presenter.loadBy(productId)
-            dialog.setTitle(R.string.edit_product)
+            dialog?.setTitle(R.string.edit_product)
         }
 
-        dialog.setTitle(R.string.add_product)
-        dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+        dialog?.setTitle(R.string.add_product)
+        dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
 
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.fragment_action_concluded_menu, menu)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.fragment_action_concluded_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
 
     }
 
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if (item?.itemId == R.id.fragment_form_action_concluded) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.fragment_form_action_concluded) {
             val product = saveProduct()
             if (product != null) {
                 if (activity is OnProductSavedListener) {
@@ -77,7 +77,7 @@ class ProductFormDialogFragment : DialogFragment(), ProductFormView {
                     listener.onProductSaved()
                 }
             }
-            dialog.dismiss()
+            dialog?.dismiss()
         }
         return super.onOptionsItemSelected(item)
     }

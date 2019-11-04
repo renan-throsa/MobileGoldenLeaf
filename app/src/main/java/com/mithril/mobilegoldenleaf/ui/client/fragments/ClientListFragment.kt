@@ -48,7 +48,7 @@ class ClientListFragment : Fragment(), ClientListView {
     }
 
 
-    override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
+    override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
         super.onCreateContextMenu(menu, v, menuInfo)
         activity?.menuInflater?.inflate(R.menu.client_list_menu, menu)
     }
@@ -58,7 +58,7 @@ class ClientListFragment : Fragment(), ClientListView {
         presenter.searchClient("")
     }
 
-    override fun onContextItemSelected(item: MenuItem?): Boolean {
+    override fun onContextItemSelected(item: MenuItem): Boolean {
         val menuInfo = item?.menuInfo as AdapterView.AdapterContextMenuInfo
         val client = adapter.getItem(menuInfo.position)
         when (item.itemId) {

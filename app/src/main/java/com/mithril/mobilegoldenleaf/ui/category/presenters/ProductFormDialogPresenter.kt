@@ -1,7 +1,6 @@
 package com.mithril.mobilegoldenleaf.ui.category.presenters
 
 import com.mithril.mobilegoldenleaf.asynctask.category.GetCategoryByIdTask
-import com.mithril.mobilegoldenleaf.asynctask.category.GetCategoryTask
 import com.mithril.mobilegoldenleaf.asynctask.product.SaveProductTask
 import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.models.Product

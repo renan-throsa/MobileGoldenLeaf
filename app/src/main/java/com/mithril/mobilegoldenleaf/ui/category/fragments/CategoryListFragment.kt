@@ -19,6 +19,7 @@ import com.mithril.mobilegoldenleaf.ui.category.presenters.CategoryListPresenter
 import kotlinx.android.synthetic.main.fragment_category_list.view.*
 
 class CategoryListFragment : Fragment(), CategoryListView, OnCategorySavedListener {
+
     private lateinit var activityContext: MainActivity
 
     private val adapter by lazy { CategoryAdapter(activityContext) }
@@ -32,6 +33,7 @@ class CategoryListFragment : Fragment(), CategoryListView, OnCategorySavedListen
         activityContext = activity as MainActivity
         super.onCreate(savedInstanceState)
     }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_category_list, null)
@@ -47,18 +49,19 @@ class CategoryListFragment : Fragment(), CategoryListView, OnCategorySavedListen
     }
 
 
-    override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
+    override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
         super.onCreateContextMenu(menu, v, menuInfo)
         activity?.menuInflater?.inflate(R.menu.category_list_menu, menu)
     }
+
 
     override fun onResume() {
         super.onResume()
         presenter.searchCategories("")
     }
 
-    override fun onContextItemSelected(item: MenuItem?): Boolean {
-        val menuInfo = item?.menuInfo as AdapterView.AdapterContextMenuInfo
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        val menuInfo = item.menuInfo as AdapterView.AdapterContextMenuInfo
         val category = adapter.getItem(menuInfo.position)
         when (item.itemId) {
             R.id.category_list_menu_edit -> openEditCategoryDialogFragment(category)
@@ -68,6 +71,7 @@ class CategoryListFragment : Fragment(), CategoryListView, OnCategorySavedListen
         return super.onContextItemSelected(item)
 
     }
+
 
     private fun addProductIn(category: Category) {
         val dialogFragment = ProductFormDialogFragment.newInstance(category.id)
@@ -86,6 +90,7 @@ class CategoryListFragment : Fragment(), CategoryListView, OnCategorySavedListen
         adapter.update(all)
 
     }
+
 
     override fun onCategorySaved() {
         presenter.searchCategories("")
@@ -139,6 +144,11 @@ class CategoryListFragment : Fragment(), CategoryListView, OnCategorySavedListen
 
     override fun showProductsOf(category: Category) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun gettingCategoriesError() {
+        val toast = Toast.makeText(context, R.string.getting_categories_error, Toast.LENGTH_SHORT)
+        toast.show()
     }
 
     companion object {

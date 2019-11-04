@@ -1,9 +1,6 @@
 package com.mithril.mobilegoldenleaf.persistence.repository
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 
 import com.mithril.mobilegoldenleaf.models.Category
 
@@ -11,6 +8,9 @@ import com.mithril.mobilegoldenleaf.models.Category
 interface CategoryRepository {
     @Insert
     fun save(category: Category): Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun save(categories: List<Category>)
 
     @Update
     fun update(category: Category): Int

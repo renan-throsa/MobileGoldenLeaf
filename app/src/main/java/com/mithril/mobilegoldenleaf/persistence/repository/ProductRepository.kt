@@ -11,6 +11,9 @@ interface ProductRepository {
     fun save(product: Product): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun save(products: List<Product>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun update(product: Product)
 
     @Query("SELECT * FROM Product")

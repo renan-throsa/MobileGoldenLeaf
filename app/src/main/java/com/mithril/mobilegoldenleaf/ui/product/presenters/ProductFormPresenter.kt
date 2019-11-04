@@ -1,6 +1,6 @@
 package com.mithril.mobilegoldenleaf.ui.product.presenters
 
-import com.mithril.mobilegoldenleaf.asynctask.category.GetCategoryTask
+import com.mithril.mobilegoldenleaf.asynctask.category.GetCategoryLocallyTask
 import com.mithril.mobilegoldenleaf.asynctask.product.GetProductByIdTask
 import com.mithril.mobilegoldenleaf.asynctask.product.SaveProductTask
 import com.mithril.mobilegoldenleaf.asynctask.product.UpdateProductTask
@@ -41,7 +41,7 @@ class ProductFormPresenter(private val view: ProductFormView,
 
 
     fun loadCategories() {
-        val c: List<Category> = GetCategoryTask(repository.categoryRepository).execute().get()
+        val c: List<Category> = GetCategoryLocallyTask(repository.categoryRepository).execute().get()
         view.showCategories(c)
 
     }

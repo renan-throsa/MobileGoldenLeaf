@@ -7,4 +7,5 @@ interface CategoryListView {
     fun hideProgress()
     fun showCategories(all: List<Category>)
     fun showProductsOf(category: Category)
+    fun gettingCategoriesError()
 }

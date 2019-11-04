@@ -37,9 +37,12 @@
     <string name="category">Categoria</string>
     <string name="total">Total</string>
     <string name="mes">Mês</string>
+    <string name="password">Senha</string>
+    <string name="email">Email</string>
     <string name="product_saving_error">Não foi possível salvar o produto.</string>
     <string name="client_saving_error">Não foi possível salvar o cliente.</string>
     <string name="address_saving_error">Não foi possível salvar o produto.</string>
+    <string name="getting_categories_error">Não foi possível obter as categorias do servidor.</string>
     <string name="ano">Ano</string>"Erro no valor inserido."
     <string name="see_products">Ver produtos</string>
     <string name="see_orders">Ver pedidos</string>
@@ -51,8 +54,9 @@
     <string name="client_information">Informações do cliente</string>
     <string name="client_address_information">Informações do endereço</string>
     <string name="action_new_category">Nova categoria</string>
-    <string name="error_product_not_found">Erro ao salvar produto</string>
-    <string name="error_product_not_valid">Há erros nos campos de produto</string>
+    <string name="product_not_found_error">Erro ao salvar produto</string>
+    <string name="error_msg_email">Email Inválido</string>
+    <string name="error_msg_password">Senha Inválida</string>
     <string name="invalid_title_error">Titulo inválido</string>
     <string name="value_error">"Erro no valor do produto. Salvo cm valor 0.0."</string>
     <string name="product_invalid_error">Produto com campos inválidos</string>
