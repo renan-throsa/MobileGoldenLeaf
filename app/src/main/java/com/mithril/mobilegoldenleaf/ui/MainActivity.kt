@@ -9,15 +9,19 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationView
 import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.models.Category
+import com.mithril.mobilegoldenleaf.models.Clerk
 import com.mithril.mobilegoldenleaf.ui.category.fragments.CategoryListFragment
 import com.mithril.mobilegoldenleaf.ui.category.interfaces.OnProductsFromCategoryListener
 import com.mithril.mobilegoldenleaf.ui.client.fragments.ClientListFragment
 import com.mithril.mobilegoldenleaf.ui.dashboard.Dashboard
 import com.mithril.mobilegoldenleaf.ui.product.fragments.ProductListFragment
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.menu_header.*
 import kotlinx.android.synthetic.main.toolbar.*
 
 class MainActivity : AppCompatActivity(), OnProductsFromCategoryListener, NavigationView.OnNavigationItemSelectedListener {
+
+    private val clerk by lazy { intent.getParcelableExtra<Clerk>("clerk") }
 
     private val drawerToggle: ActionBarDrawerToggle by lazy {
         ActionBarDrawerToggle(this,
@@ -31,6 +35,7 @@ class MainActivity : AppCompatActivity(), OnProductsFromCategoryListener, Naviga
         drawerLayout.addDrawerListener(drawerToggle)
         drawerToggle.syncState()
         navigationView.setNavigationItemSelectedListener(this)
+        clerkName.text = clerk?.name
 
     }
 

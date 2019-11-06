@@ -9,13 +9,6 @@ import com.mithril.mobilegoldenleaf.persistence.converter.BigDecimalConverter
 
 import com.mithril.mobilegoldenleaf.persistence.converter.CaledarConverter
 import com.mithril.mobilegoldenleaf.persistence.converter.StatusConverter
-import com.mithril.mobilegoldenleaf.persistence.repository.AddressRepository
-import com.mithril.mobilegoldenleaf.persistence.repository.CategoryRepository
-import com.mithril.mobilegoldenleaf.persistence.repository.ClerkDao
-import com.mithril.mobilegoldenleaf.persistence.repository.ClientRepository
-import com.mithril.mobilegoldenleaf.persistence.repository.ItemDao
-import com.mithril.mobilegoldenleaf.persistence.repository.OrderDao
-import com.mithril.mobilegoldenleaf.persistence.repository.ProductRepository
 import com.mithril.mobilegoldenleaf.models.Address
 import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.models.Clerk
@@ -23,10 +16,13 @@ import com.mithril.mobilegoldenleaf.models.Client
 import com.mithril.mobilegoldenleaf.models.Item
 import com.mithril.mobilegoldenleaf.models.Order
 import com.mithril.mobilegoldenleaf.models.Product
+import com.mithril.mobilegoldenleaf.persistence.repository.*
 
 @Database(entities = [Clerk::class, Client::class, Address::class, Order::class, Item::class, Category::class, Product::class], version = 5, exportSchema = false)
 @TypeConverters(CaledarConverter::class, StatusConverter::class, BigDecimalConverter::class)
 abstract class MobileGoldenLeafDataBase : RoomDatabase() {
+
+    abstract val clerkRepository: ClerkRepository
 
     abstract val productRepository: ProductRepository
 

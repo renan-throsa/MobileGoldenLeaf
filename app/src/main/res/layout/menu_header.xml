@@ -1,6 +1,6 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
+    android:layout_height="176dp"
     android:background="?attr/colorAccent"
     android:padding="16dp">
 
@@ -9,12 +9,24 @@
         android:layout_height="wrap_content"
         android:src="@mipmap/ic_launcher"
         />
+
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/appName"
+        android:layout_width="387dp"
+        android:layout_height="66dp"
         android:layout_gravity="start|bottom"
+        android:paddingTop="8dp"
         android:text="@string/app_name"
         android:textColor="@android:color/white"
         android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/clerkName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|bottom"
+        android:text="Renan Rosa"
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
+
 </FrameLayout>

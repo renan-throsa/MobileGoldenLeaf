@@ -1,6 +1,7 @@
 package com.mithril.mobilegoldenleaf.retrofit
 
 import com.mithril.mobilegoldenleaf.retrofit.service.CategoryService
+import com.mithril.mobilegoldenleaf.retrofit.service.ClerkService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -17,6 +18,10 @@ class RetrofitInitializer {
 
     fun categoryService(): CategoryService {
         return retrofit.create(CategoryService::class.java)
+    }
+
+    fun clerkService(): ClerkService {
+        return retrofit.create(ClerkService::class.java)
     }
 
 

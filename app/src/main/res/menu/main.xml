@@ -25,5 +25,11 @@
             android:id="@+id/action_order"
             android:icon="@drawable/ic_option_orders"
             android:title="@string/option_order" />
+
+
+        <item
+            android:id="@+id/action_payment"
+            android:icon="@drawable/ic_option_orders"
+            android:title="@string/option_payments" />
     </group>
 </menu>
