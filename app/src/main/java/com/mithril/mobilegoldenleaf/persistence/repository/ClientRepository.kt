@@ -1,6 +1,11 @@
 package com.mithril.mobilegoldenleaf.persistence.repository
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Update
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+
 
 import com.mithril.mobilegoldenleaf.models.Client
 

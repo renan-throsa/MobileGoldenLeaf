@@ -30,8 +30,8 @@ class CategoryListPresenter(private val view: CategoryListView,
         val service = RetrofitInitializer().categoryService()
         val call = service.getAll()
         call.enqueue(object : Callback<List<Category>?> {
-            override fun onResponse(call: Call<List<Category>?>?, response: Response<List<Category>?>?) {
-                response?.body()?.let {
+            override fun onResponse(call: Call<List<Category>?>, response: Response<List<Category>?>) {
+                response.body()?.let {
                     val categories: List<Category> = it
                     view.showCategories(categories)
                     SaveListOfCategoriesLocallyTask(repository, categories)
@@ -40,7 +40,7 @@ class CategoryListPresenter(private val view: CategoryListView,
                 }
             }
 
-            override fun onFailure(call: Call<List<Category>?>?, t: Throwable?) {
+            override fun onFailure(call: Call<List<Category>?>, t: Throwable?) {
                 view.gettingCategoriesError()
             }
         })

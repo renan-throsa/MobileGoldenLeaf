@@ -97,10 +97,10 @@ class ProductFormDialogFragment : DialogFragment(), ProductFormView {
     private fun saveProduct(): Product? {
         val product = Product()
         product.categoryId = getCategoryFromSpinner()
-        product.brand = form_product_brand.text.toString()
-        product.description = form_product_description.text.toString()
-        product.code = form_product_code.text.toString()
-        product.unitCost = convertValue(form_product_value.text.toString())
+        product.brand = form_product_brand.toString()
+        product.description = form_product_description.toString()
+        product.code = form_product_code.toString()
+        product.unitCost = convertValue(form_product_value.toString())
         val productId = arguments?.getLong(EXTRA_PRODUCT_ID) ?: 0L
         if (productId != 0L) {
             product.id = productId

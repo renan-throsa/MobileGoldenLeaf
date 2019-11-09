@@ -30,8 +30,6 @@ abstract class MobileGoldenLeafDataBase : RoomDatabase() {
 
     abstract val addressRepository: AddressRepository
 
-    abstract val clerkDao: ClerkDao
-
     abstract val clientRepository: ClientRepository
 
     abstract val orderDao: OrderDao

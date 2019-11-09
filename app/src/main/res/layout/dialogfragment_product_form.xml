@@ -1,63 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:text="@string/category"
-        android:textColor="#7b7b7b"
-        android:textSize="12dp" />
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <Spinner
         android:id="@+id/form_category_spinner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-
-    <EditText
-        android:id="@+id/form_product_brand"
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:hint="@string/brand"
-        android:importantForAutofill="no"
-        android:inputType="textCapCharacters" />
-
-    <EditText
-        android:id="@+id/form_product_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:hint="@string/description"
-        android:importantForAutofill="no"
-        android:inputType="textCapCharacters" />
-
-    <EditText
-        android:id="@+id/form_product_code"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:hint="@string/code"
-        android:importantForAutofill="no"
-        android:inputType="number" />
-
-    <EditText
-        android:id="@+id/form_product_value"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:hint="@string/value"
-        android:inputType="numberDecimal"
-        android:digits="0123456789,"
-        android:imeOptions="actionDone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         />
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/product_brand"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/form_category_spinner">
 
-</LinearLayout>
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/form_product_brand"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/brand" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/product_description"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        app:layout_constraintEnd_toEndOf="@id/product_brand"
+        app:layout_constraintStart_toStartOf="@id/product_brand"
+        app:layout_constraintTop_toBottomOf="@id/product_brand">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/form_product_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="8dp"
+            android:hint="@string/description"
+            android:lines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/product_code"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        app:layout_constraintEnd_toEndOf="@id/product_description"
+        app:layout_constraintStart_toStartOf="@id/product_description"
+        app:layout_constraintTop_toBottomOf="@id/product_description">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/form_product_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/code"
+            android:inputType="number" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/product_value"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        app:layout_constraintEnd_toEndOf="@id/product_code"
+        app:layout_constraintStart_toStartOf="@id/product_code"
+        app:layout_constraintTop_toBottomOf="@id/product_code">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/form_product_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:digits="0123456789,"
+            android:drawableStart="@drawable/ic_action_money"
+            android:drawablePadding="8dp"
+            android:hint="@string/value"
+            android:imeOptions="actionDone"
+            android:inputType="numberDecimal"
+            android:lines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

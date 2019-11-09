@@ -59,10 +59,9 @@ class CategoryFormDialogFragment : DialogFragment(), CategoryFormView {
         if (item.itemId == R.id.fragment_form_action_concluded) {
             val category = saveCategory()
             if (category != null) {
-                if (activity is OnCategorySavedListener) {
-                    val listener = activity as OnCategorySavedListener
-                    listener.onCategorySaved()
-                }
+                val listener = targetFragment as OnCategorySavedListener
+                listener.onCategorySaved()
+
             }
             dialog?.dismiss()
         }

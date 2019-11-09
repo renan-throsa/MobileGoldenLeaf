@@ -99,6 +99,7 @@ class CategoryListFragment : Fragment(), CategoryListView, OnCategorySavedListen
     private fun configFba(view: View) {
         view.fragment_category_list_fab_new_category.setOnClickListener {
             val dialogFragment = CategoryFormDialogFragment.newInstance()
+            dialogFragment.setTargetFragment(this, 0)
             activity?.supportFragmentManager?.let { it -> dialogFragment.open(it) }
         }
     }
@@ -107,14 +108,15 @@ class CategoryListFragment : Fragment(), CategoryListView, OnCategorySavedListen
         with(view) {
             category_list.adapter = adapter
             registerForContextMenu(category_list)
-            category_list.addFooterView(initFooter())
+            //category_list.addFooterView(initFooter())
         }
 
     }
 
     private fun initFooter(): TextView {
         val txtFooter = TextView(context)
-        txtFooter.text = resources.getQuantityString(R.plurals.footer_text_category, adapter.count, adapter.count)
+        txtFooter.text = resources.getQuantityString(R.plurals.footer_text_category,
+                adapter.itemCount, adapter.itemCount)
         txtFooter.setBackgroundColor(Color.LTGRAY)
         txtFooter.gravity = Gravity.END
         txtFooter.setPadding(0, 8, 8, 8)

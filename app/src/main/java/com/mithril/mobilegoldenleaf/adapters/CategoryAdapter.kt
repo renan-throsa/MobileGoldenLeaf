@@ -4,63 +4,45 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.models.Category
 import kotlinx.android.synthetic.main.item_category_row.view.*
 
-class CategoryAdapter(private val context: Context) : BaseAdapter() {
+class CategoryAdapter(private val context: Context) : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
     private val categories: ArrayList<Category> = ArrayList()
 
-    override fun getCount(): Int = categories.size
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(context).inflate(R.layout.item_category_row, parent, false)
+        return ViewHolder(view)
+    }
 
-
-    override fun getItem(position: Int): Category = categories[position]
-
+    override fun getItemCount(): Int = categories.size
 
     override fun getItemId(i: Int): Long = categories[i].id
 
 
-    override fun getView(position: Int, convertView: View?, viewGroup: ViewGroup): View {
+    fun getItem(position: Int): Category = categories[position]
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val category = categories[position]
-        val holder: ViewHolder
-        val row: View
-        if (convertView == null) {
-            row = getInflate(viewGroup)
-            holder = ViewHolder(row)
-            row.tag = holder
-        } else {
-            row = convertView
-            holder = convertView.tag as ViewHolder
-        }
-
-        boundInformation(holder, category)
-        return row
+        holder.bindView(category)
     }
 
-    private fun getInflate(viewGroup: ViewGroup): View {
-        return LayoutInflater
-                .from(context)
-                .inflate(R.layout.item_category_row, viewGroup, false)
-    }
-
-    private fun boundInformation(row: ViewHolder, c: Category) {
-        row.title.text = c.title
-
-    }
 
     fun update(all: List<Category>) {
         categories.clear()
         categories.addAll(all)
-        notifyDataSetChanged()
+        notifyItemRangeInserted(0, this.categories.size)
     }
 
-    companion object {
-        data class ViewHolder(val view: View) {
-            val title: TextView = view.item_category_title
+
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        fun bindView(category: Category) {
+            val title = itemView.item_category_title
+            title.text = category.title
         }
-    }
 
+    }
 }
