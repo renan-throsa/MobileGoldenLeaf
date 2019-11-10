@@ -3,6 +3,7 @@ package com.mithril.mobilegoldenleaf.ui.category.presenters
 import android.os.AsyncTask
 import com.mithril.mobilegoldenleaf.asynctask.category.GetCategoryByIdTask
 import com.mithril.mobilegoldenleaf.asynctask.category.SaveCategoryTask
+import com.mithril.mobilegoldenleaf.asynctask.category.UpdateCategoryTask
 import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.persistence.repository.CategoryRepository
 import com.mithril.mobilegoldenleaf.retrofit.RetrofitInitializer
@@ -49,5 +50,36 @@ class CategoryFormPresenter(private val view: CategoryFormView,
         }
         return status
     }
+
+    fun update(category: Category): Boolean {
+        var status = false
+        if (CategoryValidator().validate(category)) {
+            val service = RetrofitInitializer().categoryService()
+            val call = service.update(category.id, category)
+            call.enqueue(object : Callback<Category?> {
+                override fun onResponse(call: Call<Category?>, response: Response<Category?>) {
+                    response.body()?.let {
+                        status = true
+                    }
+                }
+
+                override fun onFailure(call: Call<Category?>, t: Throwable) {
+                    view.showSavingCategoryError()
+                    status = false
+                }
+
+
+            })
+            UpdateCategoryTask(repository, category)
+                    .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
+
+
+        } else {
+            view.showInvalidTitleError()
+            status = false
+        }
+        return status
+    }
+
 
 }

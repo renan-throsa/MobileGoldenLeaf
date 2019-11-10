@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.dialogfragment_category_form.*
 
 class CategoryFormDialogFragment : DialogFragment(), CategoryFormView {
 
+    private val categoryId = arguments?.getLong(EXTRA_CATEGORY_ID, 0L) ?: 0L
     private lateinit var activityContext: MainActivity
 
     private val presenter by lazy {
@@ -40,7 +41,6 @@ class CategoryFormDialogFragment : DialogFragment(), CategoryFormView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val categoryId = arguments?.getLong(EXTRA_CATEGORY_ID, 0L) ?: 0L
         if (categoryId != 0L) {
             presenter.loadBy(categoryId)
             dialog?.setTitle(R.string.edit_category)
@@ -57,7 +57,11 @@ class CategoryFormDialogFragment : DialogFragment(), CategoryFormView {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.fragment_form_action_concluded) {
-            val category = saveCategory()
+            val category = if (categoryId != 0L) {
+                updateCategory()
+            } else {
+                saveCategory()
+            }
             if (category != null) {
                 val listener = targetFragment as OnCategorySavedListener
                 listener.onCategorySaved()
@@ -78,19 +82,28 @@ class CategoryFormDialogFragment : DialogFragment(), CategoryFormView {
     }
 
     override fun showSavingCategoryError() {
-        Toast.makeText(context, "Não foi possível salvar a categoria", Toast.LENGTH_SHORT)
+        Toast.makeText(context, "Não foi possível salvar a categoria remotamente.", Toast.LENGTH_SHORT)
                 .show()
     }
 
 
     private fun saveCategory(): Category? {
         val category = Category()
-        val categoryId = arguments?.getLong(EXTRA_CATEGORY_ID, 0L) ?: 0L
-        if (categoryId != 0L) {
-            category.id = categoryId
-        }
         category.title = form_category_title.text.toString()
         return if (presenter.save(category)) {
+            category
+        } else {
+            null
+        }
+
+    }
+
+    private fun updateCategory(): Category? {
+        val category = Category()
+        category.id = categoryId
+        category.title = form_category_title.text.toString()
+
+        return if (presenter.update(category)) {
             category
         } else {
             null
@@ -108,7 +121,7 @@ class CategoryFormDialogFragment : DialogFragment(), CategoryFormView {
         private const val DIALOG_TAG = "categoryFormFragment"
         private const val EXTRA_CATEGORY_ID = "categoryId"
 
-        fun newInstance(id: Long = 0): CategoryFormDialogFragment {
+        fun newInstance(id: Long = 0L): CategoryFormDialogFragment {
             val fragment = CategoryFormDialogFragment()
             val args = Bundle()
             args.putLong(EXTRA_CATEGORY_ID, id)

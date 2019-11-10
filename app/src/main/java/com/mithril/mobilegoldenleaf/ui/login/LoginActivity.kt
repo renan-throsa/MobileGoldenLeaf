@@ -39,7 +39,9 @@ class LoginActivity : AppCompatActivity(), LoginFormView {
             if (form_login_Password.text.toString().isEmpty()) {
                 form_login_Password.error = getString(R.string.error_msg_password)
             }
-            if (!Patterns.EMAIL_ADDRESS.matcher(form_login_Email.text.toString()).matches()) {
+            if (!Patterns.EMAIL_ADDRESS.matcher(form_login_Email.text.toString()).matches()
+                    || form_login_Email.text.toString().isEmpty()
+            ) {
                 form_login_Email.error = getString(R.string.error_msg_email)
             } else {
                 presenter.doLogin(form_login_Email.text.toString(), form_login_Password.text.toString())

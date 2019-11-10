@@ -11,6 +11,7 @@ import com.mithril.mobilegoldenleaf.models.Category
 
 @Dao
 interface CategoryRepository {
+
     @Insert
     fun save(category: Category): Long
 
