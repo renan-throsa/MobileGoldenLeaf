@@ -13,21 +13,25 @@ import retrofit2.Response
 
 class LoginPresenter(private val view: LoginFormView, private val repository: ClerkRepository) {
 
-    fun doLogin(email: String, password: String) {
+    fun getClerk(email: String, password: String) {
         val service = RetrofitInitializer().clerkService()
         val call = service.getClerk(email, password)
 
-
         call.enqueue(object : Callback<Clerk?> {
-            override fun onResponse(call: Call<Clerk?>?, response: Response<Clerk?>?) {
-                response?.body()?.let {
-                    view.login(it)
-                    // This will surely be saved, but not immediately.
-                    SaveClerkTask(it, repository).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
+            override fun onResponse(call: Call<Clerk?>, response: Response<Clerk?>) {
+                if (response.isSuccessful) {
+                    response.body()?.let { clerk ->
+                        view.login(clerk)
+                        // It will surely be saved, but not immediately.
+                        SaveClerkTask(clerk, repository).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
+                    }
+                } else {
+                    view.showLoginError(response.message())
                 }
+
             }
 
-            override fun onFailure(call: Call<Clerk?>?, t: Throwable) {
+            override fun onFailure(call: Call<Clerk?>, t: Throwable) {
                 val clerk = GetClerkTask(email, password, repository).execute().get()
                 if (clerk != null) {
                     view.login(clerk)

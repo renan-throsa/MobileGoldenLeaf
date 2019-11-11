@@ -8,6 +8,7 @@ import androidx.room.Ignore
 
 @Entity
 class Clerk : User, Parcelable {
+
     var email: String? = null
     var password: String? = null
 
@@ -40,6 +41,10 @@ class Clerk : User, Parcelable {
 
     override fun describeContents(): Int {
         return 0
+    }
+
+    override fun toString(): String {
+        return "Clerk(email=$email)"
     }
 
     companion object CREATOR : Parcelable.Creator<Clerk> {

@@ -8,14 +8,10 @@ import androidx.appcompat.app.AppCompatActivity
 import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.models.Clerk
 import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
-import com.mithril.mobilegoldenleaf.retrofit.RetrofitInitializer
 import com.mithril.mobilegoldenleaf.ui.MainActivity
 import com.mithril.mobilegoldenleaf.ui.login.interfaces.LoginFormView
 import com.mithril.mobilegoldenleaf.ui.login.presenters.LoginPresenter
 import kotlinx.android.synthetic.main.activity_login.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class LoginActivity : AppCompatActivity(), LoginFormView {
 
@@ -26,8 +22,15 @@ class LoginActivity : AppCompatActivity(), LoginFormView {
 
 
     override fun showLoginError() {
-        val toast = Toast.makeText(this, R.string.getting_token_error, Toast.LENGTH_SHORT)
+        val toast = Toast.makeText(this, R.string.getting_clerk_error, Toast.LENGTH_SHORT)
         toast.show()
+        form_btn_login.isEnabled = true
+    }
+
+    override fun showLoginError(message: String) {
+        val toast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
+        toast.show()
+        form_btn_login.isEnabled = true
     }
 
 
@@ -35,6 +38,7 @@ class LoginActivity : AppCompatActivity(), LoginFormView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         form_btn_login.setOnClickListener {
+            form_btn_login.isEnabled = false
 
             if (form_login_Password.text.toString().isEmpty()) {
                 form_login_Password.error = getString(R.string.error_msg_password)
@@ -44,7 +48,8 @@ class LoginActivity : AppCompatActivity(), LoginFormView {
             ) {
                 form_login_Email.error = getString(R.string.error_msg_email)
             } else {
-                presenter.doLogin(form_login_Email.text.toString(), form_login_Password.text.toString())
+                presenter.getClerk(form_login_Email.text.toString(), form_login_Password.text.toString())
+
             }
         }
     }
@@ -54,6 +59,12 @@ class LoginActivity : AppCompatActivity(), LoginFormView {
         val intent = Intent(this, MainActivity::class.java)
         intent.putExtra("clerk", clerk)
         startActivity(intent)
+    }
+
+
+    override fun onBackPressed() {
+        // disable going back to the MainActivity
+        moveTaskToBack(true)
     }
 
 

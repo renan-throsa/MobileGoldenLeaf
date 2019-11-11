@@ -43,7 +43,7 @@
     <string name="client_saving_error">Não foi possível salvar o cliente.</string>
     <string name="address_saving_error">Não foi possível salvar o produto.</string>
     <string name="getting_categories_error">Não foi possível obter as categorias do servidor.</string>
-    <string name="getting_token_error">Não foi fazer login.</string>
+    <string name="getting_clerk_error">Não foi fazer login.</string>
     <string name="ano">Ano</string>"Erro no valor inserido."
     <string name="see_products">Ver produtos</string>
     <string name="see_orders">Ver pedidos</string>

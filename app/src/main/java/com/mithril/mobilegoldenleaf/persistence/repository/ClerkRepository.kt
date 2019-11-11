@@ -8,8 +8,8 @@ import com.mithril.mobilegoldenleaf.models.Clerk
 @Dao
 interface ClerkRepository {
 
-    @Query("SELECT c.* FROM Clerk c WHERE c.email = :clerkEmail")
-    fun get(clerkEmail: String): Clerk?
+    @Query("SELECT c.* FROM Clerk c WHERE c.email = :email")
+    fun get(email: String): Clerk?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun save(clerk: Clerk)
