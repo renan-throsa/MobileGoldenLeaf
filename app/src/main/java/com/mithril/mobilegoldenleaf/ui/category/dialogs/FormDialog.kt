@@ -4,57 +4,119 @@ import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
 import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.models.Category
-import kotlinx.android.synthetic.main.dialogfragment_category_form.view.*
+import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
+import com.mithril.mobilegoldenleaf.ui.category.interfaces.CategoryFormView
+import com.mithril.mobilegoldenleaf.ui.category.interfaces.CategoryDelegate
+import com.mithril.mobilegoldenleaf.ui.category.presenters.CategoryFormPresenter
+import kotlinx.android.synthetic.main.dialog_category_form.view.*
 
 
-abstract class FormDialog(private val context: Context, private val title: String, private val positiveButtonTitle: String,
-                          private val listener: ConfirmationListener) {
+class FormDialog(private val context: Context, private val viewGroup: ViewGroup?,
+                 private val delegate: CategoryDelegate, private val categoryId: Long = 0L) : CategoryFormView {
+
+    private val view = createView()
+    private val presenter by lazy {
+        val repository = MobileGoldenLeafDataBase.getInstance(context).categoryRepository
+        CategoryFormPresenter(this, repository)
+    }
 
     private val NEGATIVE_BUTTON_TITLE = "Cancelar"
-    private var category: Category? = null
 
-    constructor(context: Context, title: String, positiveButtonTitle: String, listener: ConfirmationListener, category: Category)
-            : this(context, title, positiveButtonTitle, listener) {
-        this.category = category
-    }
+    private val DIALOG_TITLE: String
+        get() {
+            return if (categoryId != 0L) {
+                "Editar categoria"
+            } else {
+                "Nova categoria"
+            }
+
+        }
+    private val POSITIVE_BUTTON_TITLE: String
+        get() {
+            return if (categoryId != 0L) {
+                "Editar"
+            } else {
+                "Salvar"
+            }
+
+        }
 
 
     fun show() {
-        val view = LayoutInflater.from(context).inflate(R.layout.dialogfragment_category_form, null)
-        tryToFillOutForm(view)
+        if (categoryId != 0L) {
+            presenter.loadBy(categoryId)
+        }
         AlertDialog.Builder(context)
-                .setTitle(title)
+                .setTitle(DIALOG_TITLE)
                 .setView(view)
-                .setPositiveButton(positiveButtonTitle) { dialog, witch ->
-                    val title = view.form_category_title.text.toString()
-                    createCategory(title)
+                .setPositiveButton(POSITIVE_BUTTON_TITLE) { _, _ ->
+                    createCategory()
                 }
                 .setNegativeButton(NEGATIVE_BUTTON_TITLE, null)
                 .show()
 
     }
 
-    private fun tryToFillOutForm(view: View) {
-        category?.title = view.form_category_title.text.toString()
+    override fun show(category: Category) {
+        view.form_category_title.setText(category.title.toString())
     }
 
-    private fun createCategory(title: String) {
-        val title: String = title
-        val id: Long = fillOutId()
-        val category = Category(id, title)
-        listener.whenConfirmed(category)
+    override fun showInvalidTitleError() {
+        Toast.makeText(context, R.string.invalid_title_error, Toast.LENGTH_SHORT)
+                .show()
+    }
+
+    override fun showSavingCategoryError() {
+        Toast.makeText(context, "Não foi possível salvar a categoria remotamente.", Toast.LENGTH_SHORT)
+                .show()
+    }
+
+
+    private fun createCategory() {
+        val category = if (categoryId != 0L) {
+            updateCategory()
+        } else {
+            saveCategory()
+        }
+        if (category != null) {
+            delegate.delegate(category)
+        }
 
     }
 
-    private fun fillOutId(): Long {
-        return category?.id ?: 0L
+    private fun saveCategory(): Category? {
+        val category = Category()
+        category.title = view.form_category_title.text.toString()
+        return if (presenter.save(category)) {
+            category
+        } else {
+            null
+        }
+
+    }
+
+    private fun updateCategory(): Category? {
+        val category = Category()
+        category.id = categoryId
+        category.title = view.form_category_title.text.toString()
+        return if (presenter.update(category)) {
+            category
+        } else {
+            null
+        }
+
     }
 
 
-    interface ConfirmationListener {
-        fun whenConfirmed(category: Category)
+    private fun createView(): View {
+        return LayoutInflater
+                .from(context)
+                .inflate(R.layout.dialog_category_form, viewGroup, false)
+
     }
 
 

@@ -72,27 +72,6 @@ class ClientFormDialogFragment : DialogFragment(), ClientFormView {
         return false
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.fragment_action_concluded_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.fragment_form_action_concluded) {
-            val address = saveAddress()
-            if (address != null && address.id != 0L) {
-                val client = saveClient(address.id)
-                if (client != null) {
-                    showSuccessMessage(client.name)
-                } else {
-                    presenter.delete(address)
-                }
-            }
-            dialog?.dismiss()
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
     private fun showSuccessMessage(name: String?) {
         val text = name + " salvo com sucesso    !"
         val duration = Toast.LENGTH_SHORT

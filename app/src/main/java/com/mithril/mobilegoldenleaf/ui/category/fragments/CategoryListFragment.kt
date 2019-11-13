@@ -12,13 +12,14 @@ import com.mithril.mobilegoldenleaf.adapters.CategoryAdapter
 import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
 import com.mithril.mobilegoldenleaf.ui.MainActivity
+import com.mithril.mobilegoldenleaf.ui.category.dialogs.FormDialog
+import com.mithril.mobilegoldenleaf.ui.category.interfaces.CategoryDelegate
 import com.mithril.mobilegoldenleaf.ui.category.interfaces.CategoryListView
-import com.mithril.mobilegoldenleaf.ui.category.interfaces.OnCategorySavedListener
 import com.mithril.mobilegoldenleaf.ui.category.interfaces.OnProductsFromCategoryListener
 import com.mithril.mobilegoldenleaf.ui.category.presenters.CategoryListPresenter
 import kotlinx.android.synthetic.main.fragment_category_list.view.*
 
-class CategoryListFragment : Fragment(), CategoryListView, OnCategorySavedListener {
+class CategoryListFragment : Fragment(), CategoryListView {
 
     private lateinit var activityContext: MainActivity
 
@@ -51,7 +52,7 @@ class CategoryListFragment : Fragment(), CategoryListView, OnCategorySavedListen
 
     override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
         super.onCreateContextMenu(menu, v, menuInfo)
-        activity?.menuInflater?.inflate(R.menu.category_list_menu, menu)
+        activityContext.menuInflater.inflate(R.menu.category_list_menu, menu)
     }
 
 
@@ -75,7 +76,7 @@ class CategoryListFragment : Fragment(), CategoryListView, OnCategorySavedListen
 
     private fun addProductIn(category: Category) {
         val dialogFragment = ProductFormDialogFragment.newInstance(category.id)
-        activity?.supportFragmentManager?.let { it -> dialogFragment.open(it) }
+        activityContext.supportFragmentManager.let { it -> dialogFragment.open(it) }
 
     }
 
@@ -91,17 +92,22 @@ class CategoryListFragment : Fragment(), CategoryListView, OnCategorySavedListen
 
     }
 
-
-    override fun onCategorySaved() {
-        presenter.searchCategories("")
-    }
-
     private fun configFba(view: View) {
         view.fragment_category_list_fab_new_category.setOnClickListener {
-            val dialogFragment = CategoryFormDialogFragment.newInstance()
-            dialogFragment.setTargetFragment(this, 0)
-            activity?.supportFragmentManager?.let { it -> dialogFragment.open(it) }
+            FormDialog(activityContext, activityContext.window.decorView as ViewGroup, object : CategoryDelegate {
+                override fun delegate(category: Category) {
+                    onDataBaseChanged(category)
+                }
+            }).show()
         }
+    }
+
+    private fun onDataBaseChanged(category: Category) {
+        presenter.searchCategories("")
+        val text = "Banco de dados atualizado com " + category.title
+        val toast = Toast.makeText(context, text, Toast.LENGTH_SHORT)
+        toast.show()
+
     }
 
     private fun configureList(view: View) {

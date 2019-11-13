@@ -12,10 +12,9 @@ import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
 import com.mithril.mobilegoldenleaf.ui.MainActivity
 import com.mithril.mobilegoldenleaf.ui.category.interfaces.CategoryFormView
-import com.mithril.mobilegoldenleaf.ui.category.interfaces.OnCategorySavedListener
 import com.mithril.mobilegoldenleaf.ui.category.presenters.CategoryFormPresenter
-import kotlinx.android.synthetic.main.dialogfragment_category_form.*
-import kotlinx.android.synthetic.main.dialogfragment_category_form.view.*
+import kotlinx.android.synthetic.main.dialog_category_form.*
+import kotlinx.android.synthetic.main.dialog_category_form.view.*
 
 class CategoryFormDialogFragment : DialogFragment(), CategoryFormView {
 
@@ -39,7 +38,7 @@ class CategoryFormDialogFragment : DialogFragment(), CategoryFormView {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.dialogfragment_category_form, container, false)
+        return inflater.inflate(R.layout.dialog_category_form, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -64,8 +63,7 @@ class CategoryFormDialogFragment : DialogFragment(), CategoryFormView {
                 saveCategory()
             }
             if (category != null) {
-                val listener = targetFragment as OnCategorySavedListener
-                listener.onCategorySaved()
+
             }
             dialog?.dismiss()
             return true
