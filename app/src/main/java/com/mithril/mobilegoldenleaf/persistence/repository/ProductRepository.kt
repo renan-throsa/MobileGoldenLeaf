@@ -1,10 +1,7 @@
 package com.mithril.mobilegoldenleaf.persistence.repository
 
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.mithril.mobilegoldenleaf.models.Product
 
 @Dao
@@ -16,7 +13,7 @@ interface ProductRepository {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun save(products: List<Product>)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Update
     fun update(product: Product)
 
     @Query("SELECT * FROM Product")

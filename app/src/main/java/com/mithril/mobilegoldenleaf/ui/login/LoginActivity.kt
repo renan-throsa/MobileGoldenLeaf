@@ -48,8 +48,9 @@ class LoginActivity : AppCompatActivity(), LoginFormView {
             ) {
                 form_login_Email.error = getString(R.string.error_msg_email)
             } else {
-                presenter.getClerk(form_login_Email.text.toString(), form_login_Password.text.toString())
-
+                //presenter.getClerk(form_login_Email.text.toString(), form_login_Password.text.toString())
+                val clerk = Clerk(1, "Renan Rosa", "91998291510", "renan@email.com", "123456")
+                login(clerk)
             }
         }
     }

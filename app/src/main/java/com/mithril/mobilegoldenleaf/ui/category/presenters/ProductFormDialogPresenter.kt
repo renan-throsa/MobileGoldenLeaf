@@ -1,7 +1,9 @@
 package com.mithril.mobilegoldenleaf.ui.category.presenters
 
 import com.mithril.mobilegoldenleaf.asynctask.category.GetCategoryByIdTask
+import com.mithril.mobilegoldenleaf.asynctask.category.UpdateCategoryTask
 import com.mithril.mobilegoldenleaf.asynctask.product.SaveProductTask
+import com.mithril.mobilegoldenleaf.asynctask.product.UpdateProductTask
 import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.models.Product
 import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
@@ -23,6 +25,21 @@ class ProductFormDialogPresenter(private val view: ProductFormDialogView,
         return if (validator.validate(product)) {
             try {
                 SaveProductTask(repository.productRepository, product).execute()
+                true
+            } catch (e: Exception) {
+                view.savingProductError()
+                false
+            }
+        } else {
+            view.productInvalidError()
+            false
+        }
+    }
+
+    fun update(product: Product): Boolean {
+        return if (validator.validate(product)) {
+            try {
+                UpdateProductTask(repository.productRepository, product).execute()
                 true
             } catch (e: Exception) {
                 view.savingProductError()

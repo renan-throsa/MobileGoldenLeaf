@@ -3,6 +3,7 @@ package com.mithril.mobilegoldenleaf.ui.category.fragments
 import android.app.Dialog
 import android.os.Bundle
 import android.view.*
+import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
@@ -14,6 +15,7 @@ import com.mithril.mobilegoldenleaf.ui.category.interfaces.CategoryFormView
 import com.mithril.mobilegoldenleaf.ui.category.interfaces.OnCategorySavedListener
 import com.mithril.mobilegoldenleaf.ui.category.presenters.CategoryFormPresenter
 import kotlinx.android.synthetic.main.dialogfragment_category_form.*
+import kotlinx.android.synthetic.main.dialogfragment_category_form.view.*
 
 class CategoryFormDialogFragment : DialogFragment(), CategoryFormView {
 
@@ -35,6 +37,7 @@ class CategoryFormDialogFragment : DialogFragment(), CategoryFormView {
         super.onCreate(savedInstanceState)
     }
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.dialogfragment_category_form, container, false)
     }
@@ -47,16 +50,14 @@ class CategoryFormDialogFragment : DialogFragment(), CategoryFormView {
         }
         dialog?.setTitle(R.string.add_category)
         dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+
+        view.form_category_title.setOnEditorActionListener { _, i, _ ->
+            handleKeyBoardEvent(i)
+        }
     }
 
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.fragment_action_concluded_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.fragment_form_action_concluded) {
+    private fun handleKeyBoardEvent(actionID: Int): Boolean {
+        if (EditorInfo.IME_ACTION_DONE == actionID) {
             val category = if (categoryId != 0L) {
                 updateCategory()
             } else {
@@ -65,12 +66,13 @@ class CategoryFormDialogFragment : DialogFragment(), CategoryFormView {
             if (category != null) {
                 val listener = targetFragment as OnCategorySavedListener
                 listener.onCategorySaved()
-
             }
             dialog?.dismiss()
+            return true
         }
-        return super.onOptionsItemSelected(item)
+        return false
     }
+
 
     override fun show(category: Category) {
         form_category_title.setText(category.title.toString())

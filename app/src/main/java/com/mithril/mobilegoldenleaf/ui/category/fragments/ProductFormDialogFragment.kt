@@ -3,6 +3,7 @@ package com.mithril.mobilegoldenleaf.ui.category.fragments
 import android.app.Dialog
 import android.os.Bundle
 import android.view.*
+import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
@@ -57,18 +58,18 @@ class ProductFormDialogFragment : DialogFragment(), ProductFormDialogView {
         return super.onCreateDialog(savedInstanceState)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.fragment_form_action_concluded) {
+
+    private fun handleKeyBoardEvent(actionID: Int): Boolean {
+        if (EditorInfo.IME_ACTION_DONE == actionID) {
             val product = saveProduct()
             if (product != null) {
-                if (activity is OnProductSavedListener) {
-                    val listener = activity as OnProductSavedListener
-                    listener.onProductSaved()
-                }
+                val listener = targetFragment as OnProductSavedListener
+                listener.onProductSaved()
             }
             dialog?.dismiss()
+            return true
         }
-        return super.onOptionsItemSelected(item)
+        return false
     }
 
     override fun showCategory(c: Category) {
@@ -103,6 +104,7 @@ class ProductFormDialogFragment : DialogFragment(), ProductFormDialogView {
 
     }
 
+
     private fun convertValue(str: String): BigDecimal {
         return try {
             val ptBr = Locale("pt", "BR")
@@ -124,7 +126,7 @@ class ProductFormDialogFragment : DialogFragment(), ProductFormDialogView {
 
     companion object {
         private const val DIALOG_TAG = "categoryId"
-        private const val EXTRA_CATEGORY_ID = "formDialog"
+        const val EXTRA_CATEGORY_ID = "formDialog"
 
         fun newInstance(id: Long): ProductFormDialogFragment {
             val fragment = ProductFormDialogFragment()

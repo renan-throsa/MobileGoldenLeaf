@@ -3,6 +3,7 @@ package com.mithril.mobilegoldenleaf.ui.product.fragments
 import android.app.Dialog
 import android.os.Bundle
 import android.view.*
+import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
@@ -14,6 +15,7 @@ import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.models.Product
 import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
 import com.mithril.mobilegoldenleaf.ui.MainActivity
+import com.mithril.mobilegoldenleaf.ui.category.fragments.ProductFormDialogFragment.Companion.EXTRA_CATEGORY_ID
 import com.mithril.mobilegoldenleaf.ui.product.interfaces.OnProductSavedListener
 import com.mithril.mobilegoldenleaf.ui.product.interfaces.ProductFormView
 import com.mithril.mobilegoldenleaf.ui.product.presenters.ProductFormPresenter
@@ -25,6 +27,9 @@ import java.text.ParsePosition
 import java.util.*
 
 class ProductFormDialogFragment : DialogFragment(), ProductFormView {
+
+    private val productId = arguments?.getLong(EXTRA_PRODUCT_ID) ?: 0L
+
     private lateinit var activityContext: MainActivity
 
     private val presenter by lazy {
@@ -50,7 +55,6 @@ class ProductFormDialogFragment : DialogFragment(), ProductFormView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         presenter.loadCategories()
-        val productId = arguments?.getLong(EXTRA_PRODUCT_ID) ?: 0L
         if (productId != 0L) {
             presenter.loadBy(productId)
             dialog?.setTitle(R.string.edit_product)
@@ -61,25 +65,22 @@ class ProductFormDialogFragment : DialogFragment(), ProductFormView {
 
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.fragment_action_concluded_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
 
-    }
-
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.fragment_form_action_concluded) {
-            val product = saveProduct()
-            if (product != null) {
-                if (activity is OnProductSavedListener) {
-                    val listener = activity as OnProductSavedListener
-                    listener.onProductSaved()
-                }
+    private fun handleKeyBoardEvent(actionID: Int): Boolean {
+        if (EditorInfo.IME_ACTION_DONE == actionID) {
+            val category = if (productId != 0L) {
+                updateProduct()
+            } else {
+                saveProduct()
+            }
+            if (category != null) {
+                val listener = targetFragment as OnProductSavedListener
+                listener.onProductSaved()
             }
             dialog?.dismiss()
+            return true
         }
-        return super.onOptionsItemSelected(item)
+        return false
     }
 
     override fun productInvalidError() {
@@ -105,6 +106,21 @@ class ProductFormDialogFragment : DialogFragment(), ProductFormView {
         if (productId != 0L) {
             product.id = productId
         }
+        return if (presenter.save(product)) {
+            product
+        } else {
+            null
+        }
+
+    }
+
+    private fun updateProduct(): Product? {
+        val product = Product()
+        product.categoryId = arguments?.getLong(EXTRA_CATEGORY_ID)!!
+        product.brand = form_product_brand.text.toString()
+        product.description = form_product_description.text.toString()
+        product.code = form_product_code.text.toString()
+        product.unitCost = convertValue(form_product_value.text.toString())
         return if (presenter.save(product)) {
             product
         } else {
@@ -167,10 +183,10 @@ class ProductFormDialogFragment : DialogFragment(), ProductFormView {
         private const val DIALOG_TAG = "ProductFormDialogFragment"
         private const val EXTRA_PRODUCT_ID = "productId"
 
-        fun newInstance(id: Long = 0): ProductFormDialogFragment {
+        fun newInstance(productId: Long = 0): ProductFormDialogFragment {
             val fragment = ProductFormDialogFragment()
             val args = Bundle()
-            args.putLong(EXTRA_PRODUCT_ID, id)
+            args.putLong(EXTRA_PRODUCT_ID, productId)
             fragment.arguments = args
             return fragment
         }
