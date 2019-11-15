@@ -22,14 +22,13 @@ class CategoryFormPresenter(private val view: CategoryFormView,
     }
 
     fun save(category: Category): Boolean {
-        var status = false
+        var status = true
         if (CategoryValidator().validate(category)) {
             val service = RetrofitInitializer().categoryService()
             val call = service.save(category)
             call.enqueue(object : Callback<Category?> {
                 override fun onResponse(call: Call<Category?>, response: Response<Category?>) {
                     response.body()?.let {
-                        status = true
                     }
                 }
 
@@ -52,14 +51,13 @@ class CategoryFormPresenter(private val view: CategoryFormView,
     }
 
     fun update(category: Category): Boolean {
-        var status = false
+        var status = true
         if (CategoryValidator().validate(category)) {
             val service = RetrofitInitializer().categoryService()
             val call = service.update(category.id, category)
             call.enqueue(object : Callback<Category?> {
                 override fun onResponse(call: Call<Category?>, response: Response<Category?>) {
                     response.body()?.let {
-                        status = true
                     }
                 }
 

@@ -86,6 +86,7 @@ class FormDialog(private val context: Context, private val viewGroup: ViewGroup?
             delegate.delegate(category)
         }
 
+
     }
 
     private fun saveCategory(): Category? {

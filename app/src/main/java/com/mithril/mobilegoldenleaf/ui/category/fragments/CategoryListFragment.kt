@@ -18,6 +18,7 @@ import com.mithril.mobilegoldenleaf.ui.category.interfaces.CategoryListView
 import com.mithril.mobilegoldenleaf.ui.category.interfaces.OnProductsFromCategoryListener
 import com.mithril.mobilegoldenleaf.ui.category.presenters.CategoryListPresenter
 import kotlinx.android.synthetic.main.fragment_category_list.view.*
+import java.util.*
 
 class CategoryListFragment : Fragment(), CategoryListView {
 
@@ -29,6 +30,7 @@ class CategoryListFragment : Fragment(), CategoryListView {
         val repository = MobileGoldenLeafDataBase.getInstance(activityContext).categoryRepository
         CategoryListPresenter(this, repository)
     }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         activityContext = activity as MainActivity
@@ -50,29 +52,10 @@ class CategoryListFragment : Fragment(), CategoryListView {
     }
 
 
-    override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
-        super.onCreateContextMenu(menu, v, menuInfo)
-        activityContext.menuInflater.inflate(R.menu.category_list_menu, menu)
-    }
-
-
     override fun onResume() {
         super.onResume()
         presenter.searchCategories("")
     }
-
-    override fun onContextItemSelected(item: MenuItem): Boolean {
-        val menuInfo = item.menuInfo as AdapterView.AdapterContextMenuInfo
-        val category = adapter.getItem(menuInfo.position)
-        when (item.itemId) {
-            R.id.category_list_menu_edit -> openEditCategoryDialogFragment(category)
-            R.id.category_list_menu_see_products -> openSeeProductsListFragment(category)
-            R.id.category_list_menu_add_product -> addProductIn(category)
-        }
-        return super.onContextItemSelected(item)
-
-    }
-
 
     private fun addProductIn(category: Category) {
         val dialogFragment = ProductFormDialogFragment.newInstance(category.id)
@@ -113,11 +96,22 @@ class CategoryListFragment : Fragment(), CategoryListView {
     private fun configureList(view: View) {
         with(view) {
             category_list.adapter = adapter
-            registerForContextMenu(category_list)
-            //category_list.addFooterView(initFooter())
         }
 
     }
+
+
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        val category = adapter.getItem(item.groupId)
+        when (item.itemId) {
+            R.id.category_list_menu_edit -> openEditCategoryDialogFragment(category)
+            R.id.category_list_menu_see_products -> openSeeProductsListFragment(category)
+            R.id.category_list_menu_add_product -> addProductIn(category)
+        }
+        return super.onContextItemSelected(item)
+
+    }
+
 
     private fun initFooter(): TextView {
         val txtFooter = TextView(context)
@@ -130,8 +124,11 @@ class CategoryListFragment : Fragment(), CategoryListView {
     }
 
     private fun openEditCategoryDialogFragment(category: Category) {
-        val dialogFragment = CategoryFormDialogFragment.newInstance(category.id)
-        activity?.supportFragmentManager?.let { it -> dialogFragment.open(it) }
+        FormDialog(activityContext, activityContext.window.decorView as ViewGroup, object : CategoryDelegate {
+            override fun delegate(category: Category) {
+                onDataBaseChanged(category)
+            }
+        }, category.id).show()
     }
 
     private fun openSeeProductsListFragment(category: Category) {
