@@ -1,60 +1,33 @@
 package com.mithril.mobilegoldenleaf.adapters
 
 import android.content.Context
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.TextView
-
+import android.view.*
+import androidx.recyclerview.widget.RecyclerView
 import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.extentions.toBrazilianFormat
 import com.mithril.mobilegoldenleaf.models.Product
 import kotlinx.android.synthetic.main.item_product_row.view.*
 
-class ProductAdapter(private val context: Context) :
-        BaseAdapter() {
+class ProductAdapter(private val context: Context) : RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
 
     private val products: ArrayList<Product> = ArrayList()
 
-    override fun getCount(): Int = products.size
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val product = products[position]
+        holder.bindView(product)
+    }
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(context).inflate(R.layout.item_product_row, parent, false)
+        return ViewHolder(view)
+    }
 
-    override fun getItem(position: Int): Product = products[position]
-
+    override fun getItemCount(): Int = products.size
 
     override fun getItemId(i: Int): Long = products[i].id
 
+    fun getItem(position: Int): Product = products[position]
 
-    override fun getView(position: Int, convertView: View?, viewGroup: ViewGroup): View {
-        val product = products[position]
-        val holder: ViewHolder
-        val row: View
-        if (convertView == null) {
-            row = getInflate(viewGroup)
-            holder = ViewHolder(row)
-            row.tag = holder
-        } else {
-            row = convertView
-            holder = convertView.tag as ViewHolder
-        }
-
-        boundInformation(holder, product)
-        return row
-    }
-
-    private fun getInflate(viewGroup: ViewGroup): View {
-        return LayoutInflater
-                .from(context)
-                .inflate(R.layout.item_product_row, viewGroup, false)
-    }
-
-    private fun boundInformation(row: ViewHolder, p: Product) {
-        row.brand.text = p.brand
-        row.description.text = p.description
-        row.unit_cost.text = p.unitCost.toBrazilianFormat()
-        row.code.text = p.code
-    }
 
     fun update(all: List<Product>) {
         products.clear()
@@ -62,13 +35,29 @@ class ProductAdapter(private val context: Context) :
         notifyDataSetChanged()
     }
 
-    companion object {
-        data class ViewHolder(val view: View) {
-            val brand: TextView = view.item_product_brand
-            val description: TextView = view.item_product_description
-            val unit_cost: TextView = view.item_product_value
-            val code: TextView = view.item_product_code
+
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnCreateContextMenuListener {
+
+        override fun onCreateContextMenu(menu: ContextMenu?, view: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
+
+            menu?.add(adapterPosition, R.id.category_list_menu_edit, Menu.NONE, R.string.edit_category)
+            menu?.add(adapterPosition, R.id.category_list_menu_see_products, Menu.NONE, R.string.add_product)
+            menu?.add(adapterPosition, R.id.category_list_menu_add_product, Menu.NONE, R.string.see_products)
         }
+
+        init {
+            itemView.setOnCreateContextMenuListener(this)
+        }
+
+
+        fun bindView(product: Product) {
+            itemView.item_product_brand.text = product.brand
+            itemView.item_product_description.text = product.description
+            itemView.item_product_value.text = product.unitCost.toBrazilianFormat()
+            itemView.item_product_code.text = product.code
+        }
+
+
     }
 
 }

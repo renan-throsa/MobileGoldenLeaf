@@ -3,7 +3,6 @@ package com.mithril.mobilegoldenleaf.ui.category.fragments
 import android.graphics.Color
 import android.os.Bundle
 import android.view.*
-import android.widget.AdapterView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -12,13 +11,12 @@ import com.mithril.mobilegoldenleaf.adapters.CategoryAdapter
 import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
 import com.mithril.mobilegoldenleaf.ui.MainActivity
-import com.mithril.mobilegoldenleaf.ui.category.dialogs.FormDialog
+import com.mithril.mobilegoldenleaf.ui.category.dialogs.CategoryFormDialog
 import com.mithril.mobilegoldenleaf.ui.category.interfaces.CategoryDelegate
 import com.mithril.mobilegoldenleaf.ui.category.interfaces.CategoryListView
 import com.mithril.mobilegoldenleaf.ui.category.interfaces.OnProductsFromCategoryListener
 import com.mithril.mobilegoldenleaf.ui.category.presenters.CategoryListPresenter
 import kotlinx.android.synthetic.main.fragment_category_list.view.*
-import java.util.*
 
 class CategoryListFragment : Fragment(), CategoryListView {
 
@@ -77,7 +75,7 @@ class CategoryListFragment : Fragment(), CategoryListView {
 
     private fun configFba(view: View) {
         view.fragment_category_list_fab_new_category.setOnClickListener {
-            FormDialog(activityContext, activityContext.window.decorView as ViewGroup, object : CategoryDelegate {
+            CategoryFormDialog(activityContext, activityContext.window.decorView as ViewGroup, object : CategoryDelegate {
                 override fun delegate(category: Category) {
                     onDataBaseChanged(category)
                 }
@@ -124,7 +122,7 @@ class CategoryListFragment : Fragment(), CategoryListView {
     }
 
     private fun openEditCategoryDialogFragment(category: Category) {
-        FormDialog(activityContext, activityContext.window.decorView as ViewGroup, object : CategoryDelegate {
+        CategoryFormDialog(activityContext, activityContext.window.decorView as ViewGroup, object : CategoryDelegate {
             override fun delegate(category: Category) {
                 onDataBaseChanged(category)
             }

@@ -7,8 +7,12 @@ import com.mithril.mobilegoldenleaf.asynctask.product.UpdateProductTask
 import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.models.Product
 import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
+import com.mithril.mobilegoldenleaf.retrofit.RetrofitInitializer
 import com.mithril.mobilegoldenleaf.ui.product.interfaces.ProductFormView
 import com.mithril.mobilegoldenleaf.ui.product.validators.ProductValidator
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ProductFormPresenter(private val view: ProductFormView,
                            private val repository: MobileGoldenLeafDataBase) {
@@ -17,22 +21,32 @@ class ProductFormPresenter(private val view: ProductFormView,
 
     fun loadBy(productId: Long) {
         val p: Product = GetProductByIdTask(productId, repository.productRepository).execute().get()
-        view.showProduct(p)
+        view.show(p)
     }
+
 
     fun save(product: Product): Boolean {
         return if (validator.validate(product)) {
-            try {
-                if (product.id != 0L) {
-                    UpdateProductTask(repository.productRepository, product).execute()
-                } else {
-                    SaveProductTask(repository.productRepository, product).execute()
+            val service = RetrofitInitializer().productService()
+            val call =
+                    if (product.id != 0L) {
+                        service.update(product.id, product)
+                    } else {
+                        service.save(product)
+                    }
+            call.enqueue(object : Callback<Product?> {
+                override fun onResponse(call: Call<Product?>, response: Response<Product?>) {
+                    response.body()?.let {
+                    }
                 }
-                true
-            } catch (e: Exception) {
-                view.savingProductError()
-                false
-            }
+
+                override fun onFailure(call: Call<Product?>, t: Throwable) {
+                    view.savingProductError()
+                }
+            })
+
+            SaveProductTask(repository.productRepository, product).execute()
+            true
         } else {
             view.productInvalidError()
             false

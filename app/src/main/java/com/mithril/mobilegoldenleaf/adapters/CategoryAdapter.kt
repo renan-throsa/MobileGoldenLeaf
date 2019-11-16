@@ -25,7 +25,6 @@ class CategoryAdapter(private val context: Context) : RecyclerView.Adapter<Categ
 
     fun getItem(position: Int): Category = categories[position]
 
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val category = categories[position]
         holder.bindView(category)
@@ -43,6 +42,7 @@ class CategoryAdapter(private val context: Context) : RecyclerView.Adapter<Categ
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnCreateContextMenuListener {
 
         override fun onCreateContextMenu(menu: ContextMenu?, view: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
+
             menu?.add(adapterPosition, R.id.category_list_menu_edit, Menu.NONE, R.string.edit_category)
             menu?.add(adapterPosition, R.id.category_list_menu_see_products, Menu.NONE, R.string.add_product)
             menu?.add(adapterPosition, R.id.category_list_menu_add_product, Menu.NONE, R.string.see_products)

@@ -6,5 +6,5 @@ interface ProductListView {
     fun showProgress()
     fun hideProgress()
     fun showProducts(all: List<Product>)
-    fun showProductDetails(product: Product)
+    fun gettingProductsError()
 }

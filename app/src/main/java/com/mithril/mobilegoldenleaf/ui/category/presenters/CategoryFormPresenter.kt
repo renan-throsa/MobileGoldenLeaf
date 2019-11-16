@@ -10,8 +10,8 @@ import com.mithril.mobilegoldenleaf.retrofit.RetrofitInitializer
 import com.mithril.mobilegoldenleaf.ui.category.interfaces.CategoryFormView
 import com.mithril.mobilegoldenleaf.ui.category.validators.CategoryValidator
 import retrofit2.Call
-import retrofit2.Response
 import retrofit2.Callback
+import retrofit2.Response
 
 class CategoryFormPresenter(private val view: CategoryFormView,
                             private val repository: CategoryRepository) {
@@ -22,10 +22,13 @@ class CategoryFormPresenter(private val view: CategoryFormView,
     }
 
     fun save(category: Category): Boolean {
-        var status = true
-        if (CategoryValidator().validate(category)) {
+        return if (CategoryValidator().validate(category)) {
             val service = RetrofitInitializer().categoryService()
-            val call = service.save(category)
+            val call = if (category.id != 0L) {
+                service.update(category.id, category)
+            } else {
+                service.save(category)
+            }
             call.enqueue(object : Callback<Category?> {
                 override fun onResponse(call: Call<Category?>, response: Response<Category?>) {
                     response.body()?.let {
@@ -34,50 +37,20 @@ class CategoryFormPresenter(private val view: CategoryFormView,
 
                 override fun onFailure(call: Call<Category?>, t: Throwable) {
                     view.showSavingCategoryError()
-                    status = false
+
                 }
 
 
             })
             SaveCategoryTask(repository, category)
                     .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
-
-
-        } else {
-            view.showInvalidTitleError()
-            status = false
-        }
-        return status
-    }
-
-    fun update(category: Category): Boolean {
-        var status = true
-        if (CategoryValidator().validate(category)) {
-            val service = RetrofitInitializer().categoryService()
-            val call = service.update(category.id, category)
-            call.enqueue(object : Callback<Category?> {
-                override fun onResponse(call: Call<Category?>, response: Response<Category?>) {
-                    response.body()?.let {
-                    }
-                }
-
-                override fun onFailure(call: Call<Category?>, t: Throwable) {
-                    view.showSavingCategoryError()
-                    status = false
-                }
-
-
-            })
-            UpdateCategoryTask(repository, category)
-                    .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
-
+            true
 
         } else {
             view.showInvalidTitleError()
-            status = false
+            false
         }
-        return status
-    }
 
+    }
 
 }

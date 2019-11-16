@@ -46,5 +46,4 @@ class CategoryListPresenter(private val view: CategoryListView,
         })
     }
 
-
 }

@@ -15,8 +15,8 @@ import com.mithril.mobilegoldenleaf.ui.category.presenters.CategoryFormPresenter
 import kotlinx.android.synthetic.main.dialog_category_form.view.*
 
 
-class FormDialog(private val context: Context, private val viewGroup: ViewGroup?,
-                 private val delegate: CategoryDelegate, private val categoryId: Long = 0L) : CategoryFormView {
+class CategoryFormDialog(private val context: Context, private val viewGroup: ViewGroup?,
+                         private val delegate: CategoryDelegate, private val categoryId: Long = 0L) : CategoryFormView {
 
     private val view = createView()
     private val presenter by lazy {
@@ -77,34 +77,20 @@ class FormDialog(private val context: Context, private val viewGroup: ViewGroup?
 
 
     private fun createCategory() {
-        val category = if (categoryId != 0L) {
-            updateCategory()
-        } else {
-            saveCategory()
-        }
+        val category =
+                saveCategory()
         if (category != null) {
             delegate.delegate(category)
         }
-
-
     }
 
     private fun saveCategory(): Category? {
         val category = Category()
         category.title = view.form_category_title.text.toString()
-        return if (presenter.save(category)) {
-            category
-        } else {
-            null
+        if (categoryId != 0L) {
+            category.id = categoryId
         }
-
-    }
-
-    private fun updateCategory(): Category? {
-        val category = Category()
-        category.id = categoryId
-        category.title = view.form_category_title.text.toString()
-        return if (presenter.update(category)) {
+        return if (presenter.save(category)) {
             category
         } else {
             null

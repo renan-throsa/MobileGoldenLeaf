@@ -15,7 +15,6 @@ import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
 import com.mithril.mobilegoldenleaf.ui.MainActivity
 import com.mithril.mobilegoldenleaf.ui.category.interfaces.ProductFormDialogView
 import com.mithril.mobilegoldenleaf.ui.category.presenters.ProductFormDialogPresenter
-import com.mithril.mobilegoldenleaf.ui.product.interfaces.OnProductSavedListener
 import kotlinx.android.synthetic.main.dialogfragment_product_form.*
 import java.math.BigDecimal
 import java.text.DecimalFormat
@@ -63,8 +62,7 @@ class ProductFormDialogFragment : DialogFragment(), ProductFormDialogView {
         if (EditorInfo.IME_ACTION_DONE == actionID) {
             val product = saveProduct()
             if (product != null) {
-                val listener = targetFragment as OnProductSavedListener
-                listener.onProductSaved()
+
             }
             dialog?.dismiss()
             return true
