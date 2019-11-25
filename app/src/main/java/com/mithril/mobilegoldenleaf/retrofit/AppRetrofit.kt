@@ -6,7 +6,7 @@ import com.mithril.mobilegoldenleaf.retrofit.service.ProductService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class RetrofitInitializer {
+class AppRetrofit {
 
     private val GOLDEN_LEAF_API_URL = "https://golden-leaf.herokuapp.com/api/"
 

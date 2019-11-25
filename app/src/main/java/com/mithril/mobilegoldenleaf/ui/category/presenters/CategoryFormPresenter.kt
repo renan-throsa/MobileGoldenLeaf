@@ -3,10 +3,9 @@ package com.mithril.mobilegoldenleaf.ui.category.presenters
 import android.os.AsyncTask
 import com.mithril.mobilegoldenleaf.asynctask.category.GetCategoryByIdTask
 import com.mithril.mobilegoldenleaf.asynctask.category.SaveCategoryTask
-import com.mithril.mobilegoldenleaf.asynctask.category.UpdateCategoryTask
 import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.persistence.repository.CategoryRepository
-import com.mithril.mobilegoldenleaf.retrofit.RetrofitInitializer
+import com.mithril.mobilegoldenleaf.retrofit.AppRetrofit
 import com.mithril.mobilegoldenleaf.ui.category.interfaces.CategoryFormView
 import com.mithril.mobilegoldenleaf.ui.category.validators.CategoryValidator
 import retrofit2.Call
@@ -23,7 +22,7 @@ class CategoryFormPresenter(private val view: CategoryFormView,
 
     fun save(category: Category): Boolean {
         return if (CategoryValidator().validate(category)) {
-            val service = RetrofitInitializer().categoryService()
+            val service = AppRetrofit().categoryService()
             val call = if (category.id != 0L) {
                 service.update(category.id, category)
             } else {

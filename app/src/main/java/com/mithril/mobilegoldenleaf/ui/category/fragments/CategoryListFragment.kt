@@ -12,7 +12,6 @@ import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
 import com.mithril.mobilegoldenleaf.ui.MainActivity
 import com.mithril.mobilegoldenleaf.ui.category.dialogs.CategoryFormDialog
-import com.mithril.mobilegoldenleaf.ui.category.interfaces.CategoryDelegate
 import com.mithril.mobilegoldenleaf.ui.category.interfaces.CategoryListView
 import com.mithril.mobilegoldenleaf.ui.category.interfaces.OnProductsFromCategoryListener
 import com.mithril.mobilegoldenleaf.ui.category.presenters.CategoryListPresenter
@@ -75,12 +74,18 @@ class CategoryListFragment : Fragment(), CategoryListView {
 
     private fun configFba(view: View) {
         view.fragment_category_list_fab_new_category.setOnClickListener {
-            CategoryFormDialog(activityContext, activityContext.window.decorView as ViewGroup, object : CategoryDelegate {
-                override fun delegate(category: Category) {
-                    onDataBaseChanged(category)
-                }
-            }).show()
+            CategoryFormDialog(activityContext, activityContext.window.decorView as ViewGroup)
+                    .show { createdCategory ->
+                        onDataBaseChanged(createdCategory)
+                    }
         }
+    }
+
+    private fun openEditCategoryDialogFragment(category: Category) {
+        CategoryFormDialog(activityContext, activityContext.window.decorView as ViewGroup, category.id)
+                .show { alteredCategory ->
+                    onDataBaseChanged(alteredCategory)
+                }
     }
 
     private fun onDataBaseChanged(category: Category) {
@@ -88,7 +93,6 @@ class CategoryListFragment : Fragment(), CategoryListView {
         val text = "Banco de dados atualizado com " + category.title
         val toast = Toast.makeText(context, text, Toast.LENGTH_SHORT)
         toast.show()
-
     }
 
     private fun configureList(view: View) {
@@ -121,13 +125,6 @@ class CategoryListFragment : Fragment(), CategoryListView {
         return txtFooter
     }
 
-    private fun openEditCategoryDialogFragment(category: Category) {
-        CategoryFormDialog(activityContext, activityContext.window.decorView as ViewGroup, object : CategoryDelegate {
-            override fun delegate(category: Category) {
-                onDataBaseChanged(category)
-            }
-        }, category.id).show()
-    }
 
     private fun openSeeProductsListFragment(category: Category) {
         if (activity is OnProductsFromCategoryListener) {

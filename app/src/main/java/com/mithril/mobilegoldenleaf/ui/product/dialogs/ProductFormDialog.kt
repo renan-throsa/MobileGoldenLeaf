@@ -13,7 +13,6 @@ import com.mithril.mobilegoldenleaf.extentions.toDecimalFormat
 import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.models.Product
 import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
-import com.mithril.mobilegoldenleaf.ui.product.interfaces.ProductDelegate
 import com.mithril.mobilegoldenleaf.ui.product.interfaces.ProductFormView
 import com.mithril.mobilegoldenleaf.ui.product.presenters.ProductFormPresenter
 import kotlinx.android.synthetic.main.dialogfragment_product_form.view.*
@@ -25,7 +24,6 @@ import java.util.*
 
 
 class ProductFormDialog(private val context: Context, private val viewGroup: ViewGroup?
-                        , private val delegate: ProductDelegate
                         , private val productId: Long = 0L) : ProductFormView {
 
 
@@ -75,7 +73,7 @@ class ProductFormDialog(private val context: Context, private val viewGroup: Vie
     }
 
 
-    fun show() {
+    fun show(productDelegate: (product: Product) -> Unit) {
         presenter.loadCategories()
         if (productId != 0L) {
             presenter.loadBy(productId)
@@ -84,7 +82,7 @@ class ProductFormDialog(private val context: Context, private val viewGroup: Vie
                 .setTitle(DIALOG_TITLE)
                 .setView(view)
                 .setPositiveButton(POSITIVE_BUTTON_TITLE) { _, _ ->
-                    createProduct()
+                    createProduct(productDelegate)
                 }
                 .setNegativeButton(NEGATIVE_BUTTON_TITLE, null)
                 .show()
@@ -114,10 +112,10 @@ class ProductFormDialog(private val context: Context, private val viewGroup: Vie
     }
 
 
-    private fun createProduct() {
+    private fun createProduct(productDelegate: (product: Product) -> Unit) {
         val product = saveProduct()
         if (product != null) {
-            delegate.delegate(product)
+            productDelegate(product)
         }
 
     }

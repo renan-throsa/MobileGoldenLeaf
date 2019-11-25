@@ -10,13 +10,12 @@ import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
 import com.mithril.mobilegoldenleaf.ui.category.interfaces.CategoryFormView
-import com.mithril.mobilegoldenleaf.ui.category.interfaces.CategoryDelegate
 import com.mithril.mobilegoldenleaf.ui.category.presenters.CategoryFormPresenter
 import kotlinx.android.synthetic.main.dialog_category_form.view.*
 
 
 class CategoryFormDialog(private val context: Context, private val viewGroup: ViewGroup?,
-                         private val delegate: CategoryDelegate, private val categoryId: Long = 0L) : CategoryFormView {
+                         private val categoryId: Long = 0L) : CategoryFormView {
 
     private val view = createView()
     private val presenter by lazy {
@@ -46,7 +45,7 @@ class CategoryFormDialog(private val context: Context, private val viewGroup: Vi
         }
 
 
-    fun show() {
+    fun show(categoryDelegate: (category: Category) -> Unit) {
         if (categoryId != 0L) {
             presenter.loadBy(categoryId)
         }
@@ -54,7 +53,7 @@ class CategoryFormDialog(private val context: Context, private val viewGroup: Vi
                 .setTitle(DIALOG_TITLE)
                 .setView(view)
                 .setPositiveButton(POSITIVE_BUTTON_TITLE) { _, _ ->
-                    createCategory()
+                    createCategory(categoryDelegate)
                 }
                 .setNegativeButton(NEGATIVE_BUTTON_TITLE, null)
                 .show()
@@ -76,11 +75,11 @@ class CategoryFormDialog(private val context: Context, private val viewGroup: Vi
     }
 
 
-    private fun createCategory() {
+    private fun createCategory(categoryDelegate: (category: Category) -> Unit) {
         val category =
                 saveCategory()
         if (category != null) {
-            delegate.delegate(category)
+            categoryDelegate(category)
         }
     }
 

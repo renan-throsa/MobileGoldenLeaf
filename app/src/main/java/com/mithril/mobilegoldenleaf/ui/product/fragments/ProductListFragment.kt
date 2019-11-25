@@ -13,7 +13,6 @@ import com.mithril.mobilegoldenleaf.models.Product
 import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
 import com.mithril.mobilegoldenleaf.ui.MainActivity
 import com.mithril.mobilegoldenleaf.ui.product.dialogs.ProductFormDialog
-import com.mithril.mobilegoldenleaf.ui.product.interfaces.ProductDelegate
 import com.mithril.mobilegoldenleaf.ui.product.interfaces.ProductListView
 import com.mithril.mobilegoldenleaf.ui.product.presenters.ProductListPresenter
 import kotlinx.android.synthetic.main.fragment_products_list.view.*
@@ -59,6 +58,12 @@ class ProductListFragment : Fragment(), ProductListView {
 
     }
 
+    private fun openEditProductDialogFragment(product: Product) {
+        ProductFormDialog(activityContext, activityContext.window.decorView as ViewGroup
+                , product.id).show { productEdited ->
+            onDataBaseChanged(productEdited)
+        }
+    }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
         val product = adapter.getItem(item.groupId)
@@ -70,27 +75,13 @@ class ProductListFragment : Fragment(), ProductListView {
 
     }
 
-    private fun openEditProductDialogFragment(product: Product) {
-        ProductFormDialog(activityContext, activityContext.window.decorView as ViewGroup,
-                object : ProductDelegate {
-                    override fun delegate(product: Product) {
-                        onDataBaseChanged(product)
-                    }
-                }
-                , product.id).show()
-    }
-
-
     private fun configFba(view: View) {
         view.fragment_products_list_fab_new_product
                 .setOnClickListener {
-                    ProductFormDialog(activityContext, activityContext.window.decorView as ViewGroup,
-                            object : ProductDelegate {
-                                override fun delegate(product: Product) {
-                                    onDataBaseChanged(product)
-                                }
-                            }
-                    ).show()
+                    ProductFormDialog(activityContext, activityContext.window.decorView as ViewGroup
+                    ).show { productCreated ->
+                        onDataBaseChanged(productCreated)
+                    }
                 }
     }
 

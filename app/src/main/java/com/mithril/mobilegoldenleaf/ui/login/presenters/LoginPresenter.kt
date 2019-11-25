@@ -5,7 +5,7 @@ import com.mithril.mobilegoldenleaf.asynctask.clerk.GetClerkTask
 import com.mithril.mobilegoldenleaf.asynctask.clerk.SaveClerkTask
 import com.mithril.mobilegoldenleaf.models.Clerk
 import com.mithril.mobilegoldenleaf.persistence.repository.ClerkRepository
-import com.mithril.mobilegoldenleaf.retrofit.RetrofitInitializer
+import com.mithril.mobilegoldenleaf.retrofit.AppRetrofit
 import com.mithril.mobilegoldenleaf.ui.login.interfaces.LoginFormView
 import retrofit2.Call
 import retrofit2.Callback
@@ -14,7 +14,7 @@ import retrofit2.Response
 class LoginPresenter(private val view: LoginFormView, private val repository: ClerkRepository) {
 
     fun getClerk(email: String, password: String) {
-        val service = RetrofitInitializer().clerkService()
+        val service = AppRetrofit().clerkService()
         val call = service.getClerk(email, password)
 
         call.enqueue(object : Callback<Clerk?> {

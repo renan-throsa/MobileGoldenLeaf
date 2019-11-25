@@ -6,7 +6,7 @@ import com.mithril.mobilegoldenleaf.asynctask.product.GetProductsFromCategoryTas
 import com.mithril.mobilegoldenleaf.asynctask.product.SaveListOfProductsLocallyTask
 import com.mithril.mobilegoldenleaf.models.Product
 import com.mithril.mobilegoldenleaf.persistence.repository.ProductRepository
-import com.mithril.mobilegoldenleaf.retrofit.RetrofitInitializer
+import com.mithril.mobilegoldenleaf.retrofit.AppRetrofit
 import com.mithril.mobilegoldenleaf.ui.product.interfaces.ProductListView
 import retrofit2.Call
 import retrofit2.Callback
@@ -32,7 +32,7 @@ class ProductListPresenter(private val view: ProductListView,
 
 
     private fun getCategoriesRemotely() {
-        val service = RetrofitInitializer().productService()
+        val service = AppRetrofit().productService()
         val call = service.getAll()
         call.enqueue(object : Callback<List<Product>?> {
             override fun onResponse(call: Call<List<Product>?>, response: Response<List<Product>?>) {

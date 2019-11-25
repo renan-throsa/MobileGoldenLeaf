@@ -11,7 +11,6 @@ import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.models.Address
 import com.mithril.mobilegoldenleaf.models.Client
 import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
-import com.mithril.mobilegoldenleaf.retrofit.RetrofitInitializer
 import com.mithril.mobilegoldenleaf.ui.MainActivity
 import com.mithril.mobilegoldenleaf.ui.client.interfaces.ClientFormView
 import com.mithril.mobilegoldenleaf.ui.client.presenters.ClientFormDialogPresenter
