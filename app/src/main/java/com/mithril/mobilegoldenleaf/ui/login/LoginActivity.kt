@@ -7,7 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.models.Clerk
-import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
+import com.mithril.mobilegoldenleaf.persistence.AppDataBase
 import com.mithril.mobilegoldenleaf.ui.MainActivity
 import com.mithril.mobilegoldenleaf.ui.login.interfaces.LoginFormView
 import com.mithril.mobilegoldenleaf.ui.login.presenters.LoginPresenter
@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 class LoginActivity : AppCompatActivity(), LoginFormView {
 
     private val presenter by lazy {
-        val repository = MobileGoldenLeafDataBase.getInstance(this).clerkRepository
+        val repository = AppDataBase.getInstance(this).clerkRepository
         LoginPresenter(this, repository)
     }
 

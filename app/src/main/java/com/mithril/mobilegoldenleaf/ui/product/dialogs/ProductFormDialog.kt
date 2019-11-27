@@ -12,7 +12,7 @@ import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.extentions.toDecimalFormat
 import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.models.Product
-import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
+import com.mithril.mobilegoldenleaf.persistence.AppDataBase
 import com.mithril.mobilegoldenleaf.ui.product.interfaces.ProductFormView
 import com.mithril.mobilegoldenleaf.ui.product.presenters.ProductFormPresenter
 import kotlinx.android.synthetic.main.dialogfragment_product_form.view.*
@@ -29,7 +29,7 @@ class ProductFormDialog(private val context: Context, private val viewGroup: Vie
 
     private val view = createView()
     private val presenter by lazy {
-        val repository = MobileGoldenLeafDataBase.getInstance(context)
+        val repository = AppDataBase.getInstance(context)
         ProductFormPresenter(this, repository)
     }
 

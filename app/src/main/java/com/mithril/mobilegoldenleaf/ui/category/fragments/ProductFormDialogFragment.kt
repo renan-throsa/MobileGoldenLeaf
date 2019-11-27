@@ -11,7 +11,7 @@ import androidx.fragment.app.FragmentManager
 import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.models.Product
-import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
+import com.mithril.mobilegoldenleaf.persistence.AppDataBase
 import com.mithril.mobilegoldenleaf.ui.MainActivity
 import com.mithril.mobilegoldenleaf.ui.category.interfaces.ProductFormDialogView
 import com.mithril.mobilegoldenleaf.ui.category.presenters.ProductFormDialogPresenter
@@ -26,7 +26,7 @@ class ProductFormDialogFragment : DialogFragment(), ProductFormDialogView {
     private lateinit var activityContext: MainActivity
 
     private val presenter by lazy {
-        val repository = MobileGoldenLeafDataBase.getInstance(activityContext)
+        val repository = AppDataBase.getInstance(activityContext)
         ProductFormDialogPresenter(this, repository)
     }
 

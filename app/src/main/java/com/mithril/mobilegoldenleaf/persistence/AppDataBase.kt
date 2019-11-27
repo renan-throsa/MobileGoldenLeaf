@@ -20,7 +20,7 @@ import com.mithril.mobilegoldenleaf.persistence.repository.*
 
 @Database(entities = [Clerk::class, Client::class, Address::class, Order::class, Item::class, Category::class, Product::class], version = 5, exportSchema = false)
 @TypeConverters(CaledarConverter::class, StatusConverter::class, BigDecimalConverter::class)
-abstract class MobileGoldenLeafDataBase : RoomDatabase() {
+abstract class AppDataBase : RoomDatabase() {
 
     abstract val clerkRepository: ClerkRepository
 
@@ -40,11 +40,11 @@ abstract class MobileGoldenLeafDataBase : RoomDatabase() {
 
         private const val GOLDEN_LEAF_DATABASE = "GoldenLeaf.db"
 
-        fun getInstance(context: Context): MobileGoldenLeafDataBase {
+        fun getInstance(context: Context): AppDataBase {
             return Room
                     .databaseBuilder(
                             context,
-                            MobileGoldenLeafDataBase::class.java,
+                            AppDataBase::class.java,
                             GOLDEN_LEAF_DATABASE)
                     .fallbackToDestructiveMigration()
                     .build()

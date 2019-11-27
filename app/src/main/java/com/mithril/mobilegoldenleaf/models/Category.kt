@@ -9,6 +9,7 @@ class Category {
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0
     var title: String? = null
+    var synchronized: Boolean = false
 
     constructor()
 

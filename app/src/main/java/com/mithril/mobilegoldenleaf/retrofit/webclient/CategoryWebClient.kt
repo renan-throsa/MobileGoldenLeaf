@@ -23,23 +23,21 @@ class CategoryWebClient(private val service: CategoryService = AppRetrofit().cat
                 } else {
                     whenFail(REQUISITION_NOT_SUCCEED)
                 }
-
             }
-
             override fun onFailure(call: Call<T?>, t: Throwable?) {
                 whenFail(t?.message)
             }
         })
     }
 
-    fun getAll(
+    fun get(
             whenSuccess: (newCategories: List<Category>?) -> Unit
             , whenFail: (error: String?) -> Unit) {
         executeRequisition(service.getAll(), whenSuccess, whenFail)
     }
 
 
-    fun save(
+    fun post(
             category: Category
             , whenSuccess: (newCategory: Category?) -> Unit
             , whenFail: (error: String?) -> Unit
@@ -48,7 +46,7 @@ class CategoryWebClient(private val service: CategoryService = AppRetrofit().cat
     }
 
 
-    fun update(
+    fun put(
             id: Long,
             category: Category,
             whenSuccess: (newCategory: Category?) -> Unit,

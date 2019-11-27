@@ -9,12 +9,12 @@ import com.mithril.mobilegoldenleaf.asynctask.client.SaveClientTask
 import com.mithril.mobilegoldenleaf.asynctask.client.UpdateClientTask
 import com.mithril.mobilegoldenleaf.models.Address
 import com.mithril.mobilegoldenleaf.models.Client
-import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
+import com.mithril.mobilegoldenleaf.persistence.AppDataBase
 import com.mithril.mobilegoldenleaf.ui.client.interfaces.ClientFormView
 import com.mithril.mobilegoldenleaf.ui.client.validators.AddressValidator
 import com.mithril.mobilegoldenleaf.ui.client.validators.ClientValidator
 
-class ClientFormDialogPresenter(private val view: ClientFormView, private val repository: MobileGoldenLeafDataBase) {
+class ClientFormDialogPresenter(private val view: ClientFormView, private val repository: AppDataBase) {
 
     private val clientValidator = ClientValidator()
     private val addressValidator = AddressValidator()

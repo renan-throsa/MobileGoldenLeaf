@@ -25,7 +25,7 @@ interface CategoryRepository {
     fun get(categoryId: Long): Category
 
     @Query("SELECT c.* FROM Category c")
-    fun all(): List<Category>
+    fun get(): List<Category>
 
     @Query("SELECT c.* FROM Category c WHERE c.title LIKE :term")
     fun search(term: String): List<Category>

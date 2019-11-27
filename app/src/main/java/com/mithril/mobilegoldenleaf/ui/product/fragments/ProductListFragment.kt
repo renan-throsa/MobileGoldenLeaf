@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.adapters.ProductAdapter
 import com.mithril.mobilegoldenleaf.models.Product
-import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
+import com.mithril.mobilegoldenleaf.persistence.AppDataBase
 import com.mithril.mobilegoldenleaf.ui.MainActivity
 import com.mithril.mobilegoldenleaf.ui.product.dialogs.ProductFormDialog
 import com.mithril.mobilegoldenleaf.ui.product.interfaces.ProductListView
@@ -24,7 +24,7 @@ class ProductListFragment : Fragment(), ProductListView {
     private lateinit var activityContext: MainActivity
     private val adapter by lazy { ProductAdapter(activityContext) }
     private val presenter by lazy {
-        val repository = MobileGoldenLeafDataBase.getInstance(activityContext).productRepository
+        val repository = AppDataBase.getInstance(activityContext).productRepository
         ProductListPresenter(this, repository)
     }
 

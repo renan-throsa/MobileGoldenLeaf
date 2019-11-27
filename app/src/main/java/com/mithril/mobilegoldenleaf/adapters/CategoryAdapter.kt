@@ -2,11 +2,9 @@ package com.mithril.mobilegoldenleaf.adapters
 
 import android.content.Context
 import android.view.*
-import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.models.Category
-import com.mithril.mobilegoldenleaf.ui.category.interfaces.OnLongItemClickListener
 import kotlinx.android.synthetic.main.item_category_row.view.*
 
 

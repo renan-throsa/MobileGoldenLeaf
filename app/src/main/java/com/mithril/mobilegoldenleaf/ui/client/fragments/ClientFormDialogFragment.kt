@@ -10,7 +10,7 @@ import androidx.fragment.app.FragmentManager
 import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.models.Address
 import com.mithril.mobilegoldenleaf.models.Client
-import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
+import com.mithril.mobilegoldenleaf.persistence.AppDataBase
 import com.mithril.mobilegoldenleaf.ui.MainActivity
 import com.mithril.mobilegoldenleaf.ui.client.interfaces.ClientFormView
 import com.mithril.mobilegoldenleaf.ui.client.presenters.ClientFormDialogPresenter
@@ -21,7 +21,7 @@ class ClientFormDialogFragment : DialogFragment(), ClientFormView {
     private lateinit var activityContext: MainActivity
 
     private val presenter by lazy {
-        val repository = MobileGoldenLeafDataBase.getInstance(activityContext)
+        val repository = AppDataBase.getInstance(activityContext)
         ClientFormDialogPresenter(this, repository)
     }
 

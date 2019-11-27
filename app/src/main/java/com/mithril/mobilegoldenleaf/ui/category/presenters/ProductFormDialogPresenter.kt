@@ -1,17 +1,16 @@
 package com.mithril.mobilegoldenleaf.ui.category.presenters
 
 import com.mithril.mobilegoldenleaf.asynctask.category.GetCategoryByIdTask
-import com.mithril.mobilegoldenleaf.asynctask.category.UpdateCategoryTask
 import com.mithril.mobilegoldenleaf.asynctask.product.SaveProductTask
 import com.mithril.mobilegoldenleaf.asynctask.product.UpdateProductTask
 import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.models.Product
-import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
+import com.mithril.mobilegoldenleaf.persistence.AppDataBase
 import com.mithril.mobilegoldenleaf.ui.category.interfaces.ProductFormDialogView
 import com.mithril.mobilegoldenleaf.ui.product.validators.ProductValidator
 
 class ProductFormDialogPresenter(private val view: ProductFormDialogView,
-                                 private val repository: MobileGoldenLeafDataBase) {
+                                 private val repository: AppDataBase) {
 
     private val validator = ProductValidator()
 

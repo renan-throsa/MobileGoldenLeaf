@@ -4,7 +4,7 @@ import android.app.Application
 
 import androidx.room.Room
 
-import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
+import com.mithril.mobilegoldenleaf.persistence.AppDataBase
 import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.models.Product
 import java.math.BigDecimal
@@ -21,7 +21,7 @@ class MobileGoldenLeafApplication : Application() {
         val leite_substitutos = Category("Leite / Substitutos")
 
         val database = Room
-                .databaseBuilder(this, MobileGoldenLeafDataBase::class.java, "GoldenLeaf.db")
+                .databaseBuilder(this, AppDataBase::class.java, "GoldenLeaf.db")
                 .allowMainThreadQueries()
                 .build()
 

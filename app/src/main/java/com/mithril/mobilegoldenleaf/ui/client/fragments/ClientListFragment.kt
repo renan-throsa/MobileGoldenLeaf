@@ -5,12 +5,11 @@ import android.os.Bundle
 import android.view.*
 import android.widget.AdapterView
 import android.widget.TextView
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.adapters.ClientAdapter
 import com.mithril.mobilegoldenleaf.models.Client
-import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
+import com.mithril.mobilegoldenleaf.persistence.AppDataBase
 import com.mithril.mobilegoldenleaf.ui.MainActivity
 import com.mithril.mobilegoldenleaf.ui.client.interfaces.ClientListView
 import com.mithril.mobilegoldenleaf.ui.client.presenters.ClientListPresenter
@@ -25,7 +24,7 @@ class ClientListFragment : Fragment(), ClientListView {
     }
 
     private val presenter by lazy {
-        val repository = MobileGoldenLeafDataBase.getInstance(activityContext).clientRepository
+        val repository = AppDataBase.getInstance(activityContext).clientRepository
         ClientListPresenter(this, repository)
     }
 

@@ -5,7 +5,7 @@ import com.mithril.mobilegoldenleaf.asynctask.product.GetProductByIdTask
 import com.mithril.mobilegoldenleaf.asynctask.product.SaveProductTask
 import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.models.Product
-import com.mithril.mobilegoldenleaf.persistence.MobileGoldenLeafDataBase
+import com.mithril.mobilegoldenleaf.persistence.AppDataBase
 import com.mithril.mobilegoldenleaf.retrofit.AppRetrofit
 import com.mithril.mobilegoldenleaf.ui.product.interfaces.ProductFormView
 import com.mithril.mobilegoldenleaf.ui.product.validators.ProductValidator
@@ -14,7 +14,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class ProductFormPresenter(private val view: ProductFormView,
-                           private val repository: MobileGoldenLeafDataBase) {
+                           private val repository: AppDataBase) {
 
     private val validator = ProductValidator()
 
