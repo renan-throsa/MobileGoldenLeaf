@@ -21,6 +21,7 @@ class Product : Serializable {
     var code: String? = null
     var unitCost: BigDecimal = BigDecimal.ZERO
     var isAvailable: Boolean = false
+    var synchronized: Boolean = false
 
     @Ignore
     constructor(id: Long, category_id: Long, brand: String, description: String, code: String, unit_cost: BigDecimal, is_available: Boolean) {

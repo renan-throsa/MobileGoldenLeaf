@@ -13,19 +13,19 @@ import com.mithril.mobilegoldenleaf.models.Product
 import com.mithril.mobilegoldenleaf.persistence.AppDataBase
 import com.mithril.mobilegoldenleaf.ui.MainActivity
 import com.mithril.mobilegoldenleaf.ui.product.dialogs.ProductFormDialog
-import com.mithril.mobilegoldenleaf.ui.product.interfaces.ProductListView
-import com.mithril.mobilegoldenleaf.ui.product.presenters.ProductListPresenter
+import com.mithril.mobilegoldenleaf.ui.product.presenters.ProductPresenter
 import kotlinx.android.synthetic.main.fragment_products_list.view.*
 
 
-class ProductListFragment : Fragment(), ProductListView {
-
+class ProductListFragment : Fragment() {
 
     private lateinit var activityContext: MainActivity
+
     private val adapter by lazy { ProductAdapter(activityContext) }
+
     private val presenter by lazy {
         val repository = AppDataBase.getInstance(activityContext).productRepository
-        ProductListPresenter(this, repository)
+        ProductPresenter(repository)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,10 +51,9 @@ class ProductListFragment : Fragment(), ProductListView {
 
             val toast = Toast.makeText(contexto, texto, duracao)
             toast.show()
-
-            presenter.searchProductsWith(categoryId)
+            searchProductsWith(categoryId)
         }
-        presenter.searchProducts("")
+        searchProducts()
 
     }
 
@@ -69,7 +68,6 @@ class ProductListFragment : Fragment(), ProductListView {
         val product = adapter.getItem(item.groupId)
         when (item.itemId) {
             R.id.product_list_menu_edit -> openEditProductDialogFragment(product)
-
         }
         return super.onContextItemSelected(item)
 
@@ -86,7 +84,7 @@ class ProductListFragment : Fragment(), ProductListView {
     }
 
     private fun onDataBaseChanged(product: Product) {
-        presenter.searchProducts("")
+        searchProducts()
         val text = "Banco de dados atualizado com " + product.description
         val toast = Toast.makeText(context, text, Toast.LENGTH_SHORT)
         toast.show()
@@ -95,23 +93,30 @@ class ProductListFragment : Fragment(), ProductListView {
 
     override fun onResume() {
         super.onResume()
-        presenter.searchProducts("")
+        searchProducts()
     }
 
-    override fun showProducts(all: List<Product>) {
-        adapter.update(all)
+
+    private fun searchProducts() {
+        presenter.get(
+                whenSuccess = {
+                    adapter.update(it)
+                }, whenFail = {
+            val toast = Toast.makeText(context, R.string.getting_products_error, Toast.LENGTH_SHORT)
+            toast.show()
+        }
+        )
     }
 
-    override fun showProgress() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun hideProgress() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun gettingProductsError() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    private fun searchProductsWith(categoryId: Long) {
+        presenter.get(categoryId,
+                whenSuccess = {
+                    adapter.update(it)
+                }, whenFail = {
+            val toast = Toast.makeText(context, R.string.getting_products_error, Toast.LENGTH_SHORT)
+            toast.show()
+        }
+        )
     }
 
 

@@ -8,6 +8,9 @@ interface ProductService {
     @GET("product")
     fun getAll(): Call<List<Product>>
 
+    @GET("product/category/{id}")
+    fun getAll(@Path("id") id: Long): Call<List<Product>>
+
     @POST("product")
     fun save(@Body product: Product): Call<Product>
 
