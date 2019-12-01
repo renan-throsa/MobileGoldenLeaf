@@ -1,15 +1,13 @@
-package com.mithril.mobilegoldenleaf.ui.category.dialogs
+package com.mithril.mobilegoldenleaf.ui.category
 
 import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.persistence.AppDataBase
-import com.mithril.mobilegoldenleaf.ui.category.presenters.CategoryPresenter
 import kotlinx.android.synthetic.main.dialog_category_form.view.*
 
 
@@ -45,9 +43,9 @@ class CategoryFormDialog(private val context: Context, private val viewGroup: Vi
         }
 
 
-    fun show(whenSuccess: (category: Category) -> Unit, whenFail: (error: String?) -> Unit) {
+    fun show(whenSucceeded: (category: Category) -> Unit, whenFailed: (error: String?) -> Unit) {
         if (categoryId != 0L) {
-            presenter.get(categoryId, whenSuccess = { categoryFound ->
+            presenter.get(categoryId, whenSucceeded = { categoryFound ->
                 if (categoryFound != null) {
                     show(categoryFound)
                 }
@@ -58,7 +56,7 @@ class CategoryFormDialog(private val context: Context, private val viewGroup: Vi
                 .setView(view)
                 .setPositiveButton(POSITIVE_BUTTON_TITLE) { _, _ ->
                     save(Category(view.form_category_title.text.toString()),
-                            whenSuccess, whenFail)
+                            whenSucceeded, whenFailed)
                 }
                 .setNegativeButton(NEGATIVE_BUTTON_TITLE, null)
                 .show()
@@ -70,14 +68,14 @@ class CategoryFormDialog(private val context: Context, private val viewGroup: Vi
     }
 
     private fun save(category: Category,
-                     whenSuccess: (category: Category) -> Unit,
-                     whenFail: (error: String?) -> Unit) {
+                     whenSucceeded: (category: Category) -> Unit,
+                     whenFailed: (error: String?) -> Unit) {
 
         if (categoryId != 0L) {
             category.id = categoryId
-            presenter.update(category, whenSuccess = whenSuccess, whenFail = whenFail)
+            presenter.update(category, whenSucceeded = whenSucceeded, whenFailed = whenFailed)
         } else {
-            presenter.save(category, whenSuccess = whenSuccess, whenFail = whenFail)
+            presenter.save(category, whenSucceeded = whenSucceeded, whenFailed = whenFailed)
         }
 
     }

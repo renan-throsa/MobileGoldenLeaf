@@ -13,46 +13,46 @@ class CategoryWebClient(private val service: CategoryService = AppRetrofit().cat
 
     private fun <T> executeRequisition(
             call: Call<T>,
-            whenSuccess: (newCategories: T?) -> Unit,
-            whenFail: (error: String?) -> Unit
+            whenSucceeded: (newCategories: T?) -> Unit,
+            whenFailed: (error: String?) -> Unit
     ) {
         call.enqueue(object : Callback<T> {
             override fun onResponse(call: Call<T?>, response: Response<T?>) {
                 if (response.isSuccessful) {
-                    whenSuccess(response.body())
+                    whenSucceeded(response.body())
                 } else {
-                    whenFail(REQUISITION_NOT_SUCCEED)
+                    whenFailed(REQUISITION_NOT_SUCCEED)
                 }
             }
             override fun onFailure(call: Call<T?>, t: Throwable?) {
-                whenFail(t?.message)
+                whenFailed(t?.message)
             }
         })
     }
 
     fun get(
-            whenSuccess: (newCategories: List<Category>?) -> Unit
-            , whenFail: (error: String?) -> Unit) {
-        executeRequisition(service.getAll(), whenSuccess, whenFail)
+            whenSucceeded: (newCategories: List<Category>?) -> Unit
+            , whenFailed: (error: String?) -> Unit) {
+        executeRequisition(service.getAll(), whenSucceeded, whenFailed)
     }
 
 
     fun post(
             category: Category
-            , whenSuccess: (newCategory: Category?) -> Unit
-            , whenFail: (error: String?) -> Unit
+            , whenSucceeded: (newCategory: Category?) -> Unit
+            , whenFailed: (error: String?) -> Unit
     ) {
-        executeRequisition(service.save(category), whenSuccess, whenFail)
+        executeRequisition(service.save(category), whenSucceeded, whenFailed)
     }
 
 
     fun put(
             id: Long,
             category: Category,
-            whenSuccess: (newCategory: Category?) -> Unit,
-            whenFail: (error: String?) -> Unit
+            whenSucceeded: (newCategory: Category?) -> Unit,
+            whenFailed: (error: String?) -> Unit
     ) {
-        executeRequisition(service.update(id, category), whenSuccess, whenFail)
+        executeRequisition(service.update(id, category), whenSucceeded, whenFailed)
     }
 
 }

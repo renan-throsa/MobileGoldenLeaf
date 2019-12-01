@@ -1,4 +1,4 @@
-package com.mithril.mobilegoldenleaf.ui.category.fragments
+package com.mithril.mobilegoldenleaf.ui.category
 
 import android.graphics.Color
 import android.os.Bundle
@@ -9,11 +9,12 @@ import androidx.fragment.app.Fragment
 import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.adapters.CategoryAdapter
 import com.mithril.mobilegoldenleaf.models.Category
+import com.mithril.mobilegoldenleaf.models.Product
 import com.mithril.mobilegoldenleaf.persistence.AppDataBase
 import com.mithril.mobilegoldenleaf.ui.MainActivity
-import com.mithril.mobilegoldenleaf.ui.category.dialogs.CategoryFormDialog
 import com.mithril.mobilegoldenleaf.ui.category.interfaces.OnProductsFromCategoryListener
-import com.mithril.mobilegoldenleaf.ui.category.presenters.CategoryPresenter
+import com.mithril.mobilegoldenleaf.ui.category.fragments.ProductFormDialogFragment
+import com.mithril.mobilegoldenleaf.ui.product.ProductFormDialog
 import kotlinx.android.synthetic.main.fragment_category_list.view.*
 
 class CategoryListFragment : Fragment() {
@@ -54,19 +55,25 @@ class CategoryListFragment : Fragment() {
 
     private fun searchCategories() {
         presenter.get(
-                whenSuccess = {
+                whenSucceeded = {
                     adapter.update(it)
-                }, whenFail = {
+                }, whenFailed = {
             val toast = Toast.makeText(context, R.string.getting_categories_error, Toast.LENGTH_SHORT)
             toast.show()
         }
         )
     }
 
-    private fun addProductIn(category: Category) {
-        val dialogFragment = ProductFormDialogFragment.newInstance(category.id)
-        activityContext.supportFragmentManager.let { it -> dialogFragment.open(it) }
+    private fun addProductIn(c: Category) {
+        ProductFormDialog(activityContext, activityContext.window.decorView as ViewGroup, categoryId = c.id)
+                .show(whenSucceeded = { productSaved ->
+                    onDataBaseChanged(productSaved)
+                }, whenFailed = { errorMessage ->
+                    val toast = Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT)
+                    toast.show()
+                }
 
+                )
     }
 
 
@@ -74,9 +81,9 @@ class CategoryListFragment : Fragment() {
         view.fragment_category_list_fab_new_category.setOnClickListener {
             CategoryFormDialog(activityContext, activityContext.window.decorView as ViewGroup)
                     .show(
-                            whenSuccess = { createdCategory ->
+                            whenSucceeded = { createdCategory ->
                                 onDataBaseChanged(createdCategory)
-                            }, whenFail = { errorMessage ->
+                            }, whenFailed = { errorMessage ->
                         Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT)
                                 .show()
                     }
@@ -84,12 +91,12 @@ class CategoryListFragment : Fragment() {
         }
     }
 
-    private fun openEditCategoryDialogFragment(category: Category) {
+    private fun openEditCategoryDialog(category: Category) {
         CategoryFormDialog(activityContext, activityContext.window.decorView as ViewGroup, category.id)
                 .show(
-                        whenSuccess = { createdCategory ->
+                        whenSucceeded = { createdCategory ->
                             onDataBaseChanged(createdCategory)
-                        }, whenFail = { errorMessage ->
+                        }, whenFailed = { errorMessage ->
                     Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT)
                             .show()
                 }
@@ -99,6 +106,12 @@ class CategoryListFragment : Fragment() {
     private fun onDataBaseChanged(category: Category) {
         searchCategories()
         val text = "Banco de dados atualizado com " + category.title
+        val toast = Toast.makeText(context, text, Toast.LENGTH_SHORT)
+        toast.show()
+    }
+
+    private fun onDataBaseChanged(product: Product) {
+        val text = "Banco de dados atualizado com " + product.description
         val toast = Toast.makeText(context, text, Toast.LENGTH_SHORT)
         toast.show()
     }
@@ -113,7 +126,7 @@ class CategoryListFragment : Fragment() {
     override fun onContextItemSelected(item: MenuItem): Boolean {
         val category = adapter.getItem(item.groupId)
         when (item.itemId) {
-            R.id.category_list_menu_edit -> openEditCategoryDialogFragment(category)
+            R.id.category_list_menu_edit -> openEditCategoryDialog(category)
             R.id.category_list_menu_see_products -> openSeeProductsListFragment(category)
             R.id.category_list_menu_add_product -> addProductIn(category)
         }

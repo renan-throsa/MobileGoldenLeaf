@@ -1,4 +1,4 @@
-package com.mithril.mobilegoldenleaf.ui.product.dialogs
+package com.mithril.mobilegoldenleaf.ui.product
 
 import android.app.AlertDialog
 import android.content.Context
@@ -13,8 +13,7 @@ import com.mithril.mobilegoldenleaf.extentions.toDecimalFormat
 import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.models.Product
 import com.mithril.mobilegoldenleaf.persistence.AppDataBase
-import com.mithril.mobilegoldenleaf.ui.product.interfaces.ProductFormView
-import com.mithril.mobilegoldenleaf.ui.product.presenters.ProductFormPresenter
+import com.mithril.mobilegoldenleaf.ui.category.CategoryPresenter
 import kotlinx.android.synthetic.main.dialogfragment_product_form.view.*
 import java.math.BigDecimal
 import java.text.DecimalFormat
@@ -23,14 +22,19 @@ import java.text.ParsePosition
 import java.util.*
 
 
-class ProductFormDialog(private val context: Context, private val viewGroup: ViewGroup?
-                        , private val productId: Long = 0L) : ProductFormView {
+class ProductFormDialog(private val context: Context,
+                        private val viewGroup: ViewGroup?,
+                        private val productId: Long = 0L,
+                        private val categoryId: Long = 0L) {
 
 
     private val view = createView()
-    private val presenter by lazy {
-        val repository = AppDataBase.getInstance(context)
-        ProductFormPresenter(this, repository)
+    private val productPresenter by lazy {
+        ProductPresenter(AppDataBase.getInstance(context).productRepository)
+    }
+
+    private val categoryPresenter by lazy {
+        CategoryPresenter(AppDataBase.getInstance(context).categoryRepository)
     }
 
     private val NEGATIVE_BUTTON_TITLE = "Cancelar"
@@ -54,42 +58,54 @@ class ProductFormDialog(private val context: Context, private val viewGroup: Vie
 
         }
 
-    override fun productInvalidError() {
-        val toast = Toast.makeText(context, R.string.product_invalid_error, Toast.LENGTH_SHORT)
-        toast.show()
 
-    }
-
-    override fun savingProductError() {
-        val toast = Toast.makeText(context, R.string.product_saving_error, Toast.LENGTH_SHORT)
-        toast.show()
-    }
-
-
-    override fun showCategories(c: List<Category>) {
+    private fun showCategories(c: List<Category>) {
         val adapter = ArrayAdapter(context, android.R.layout.simple_spinner_item, c)
         adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line)
         view.form_category_spinner.adapter = adapter
     }
 
 
-    fun show(productDelegate: (product: Product) -> Unit) {
-        presenter.loadCategories()
+    fun show(whenSucceeded: (product: Product) -> Unit, whenFailed: (message: String?) -> Unit) {
+        if (categoryId == 0L) {
+            categoryPresenter.get(
+                    whenSucceeded = { allCategories ->
+                        showCategories(allCategories)
+                    }, whenFailed = {
+                val toast = Toast.makeText(context, R.string.getting_categories_error, Toast.LENGTH_SHORT)
+                toast.show()
+            }
+            )
+        } else {
+            categoryPresenter.get(categoryId,
+                    whenSucceeded = { categoryRetrieved ->
+                        categoryRetrieved?.let {
+                            showCategories(listOf(categoryRetrieved))
+                        }
+                    }
+            )
+        }
         if (productId != 0L) {
-            presenter.loadBy(productId)
+            productPresenter.get(productId,
+                    whenSucceeded = { productFound ->
+                        productFound?.let {
+                            show(productFound)
+                        }
+                    }
+            )
         }
         AlertDialog.Builder(context)
                 .setTitle(DIALOG_TITLE)
                 .setView(view)
                 .setPositiveButton(POSITIVE_BUTTON_TITLE) { _, _ ->
-                    createProduct(productDelegate)
+                    saveProduct(whenSucceeded, whenFailed)
                 }
                 .setNegativeButton(NEGATIVE_BUTTON_TITLE, null)
                 .show()
 
     }
 
-    override fun show(product: Product) {
+    private fun show(product: Product) {
         with(view) {
             form_category_spinner.setSelection(getIndex(form_category_spinner, product.categoryId))
             form_product_value.setText(product.unitCost.toDecimalFormat())
@@ -112,15 +128,7 @@ class ProductFormDialog(private val context: Context, private val viewGroup: Vie
     }
 
 
-    private fun createProduct(productDelegate: (product: Product) -> Unit) {
-        val product = saveProduct()
-        if (product != null) {
-            productDelegate(product)
-        }
-
-    }
-
-    private fun saveProduct(): Product? {
+    private fun saveProduct(whenSucceeded: (product: Product) -> Unit, whenFailed: (message: String?) -> Unit) {
         val product = Product()
         with(view) {
             product.categoryId = getCategoryFromSpinner()
@@ -133,12 +141,7 @@ class ProductFormDialog(private val context: Context, private val viewGroup: Vie
         if (productId != 0L) {
             product.id = productId
         }
-
-        return if (presenter.save(product)) {
-            product
-        } else {
-            null
-        }
+        productPresenter.save(product, whenSucceeded, whenFailed)
 
     }
 

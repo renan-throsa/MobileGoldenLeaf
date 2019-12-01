@@ -1,4 +1,4 @@
-package com.mithril.mobilegoldenleaf.ui.product.fragments
+package com.mithril.mobilegoldenleaf.ui.product
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,8 +12,6 @@ import com.mithril.mobilegoldenleaf.adapters.ProductAdapter
 import com.mithril.mobilegoldenleaf.models.Product
 import com.mithril.mobilegoldenleaf.persistence.AppDataBase
 import com.mithril.mobilegoldenleaf.ui.MainActivity
-import com.mithril.mobilegoldenleaf.ui.product.dialogs.ProductFormDialog
-import com.mithril.mobilegoldenleaf.ui.product.presenters.ProductPresenter
 import kotlinx.android.synthetic.main.fragment_products_list.view.*
 
 
@@ -59,9 +57,13 @@ class ProductListFragment : Fragment() {
 
     private fun openEditProductDialogFragment(product: Product) {
         ProductFormDialog(activityContext, activityContext.window.decorView as ViewGroup
-                , product.id).show { productEdited ->
+                , product.id).show(whenSucceeded = { productEdited ->
             onDataBaseChanged(productEdited)
+        }, whenFailed = { errorMessage ->
+            val toast = Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT)
+            toast.show()
         }
+        )
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
@@ -77,9 +79,14 @@ class ProductListFragment : Fragment() {
         view.fragment_products_list_fab_new_product
                 .setOnClickListener {
                     ProductFormDialog(activityContext, activityContext.window.decorView as ViewGroup
-                    ).show { productCreated ->
-                        onDataBaseChanged(productCreated)
+                    ).show(whenSucceeded = { productSaved ->
+                        onDataBaseChanged(productSaved)
+                    }, whenFailed = { errorMessage ->
+                        val toast = Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT)
+                        toast.show()
                     }
+
+                    )
                 }
     }
 
@@ -99,9 +106,9 @@ class ProductListFragment : Fragment() {
 
     private fun searchProducts() {
         presenter.get(
-                whenSuccess = {
+                whenSucceeded = {
                     adapter.update(it)
-                }, whenFail = {
+                }, whenFailed = {
             val toast = Toast.makeText(context, R.string.getting_products_error, Toast.LENGTH_SHORT)
             toast.show()
         }
@@ -110,9 +117,9 @@ class ProductListFragment : Fragment() {
 
     private fun searchProductsWith(categoryId: Long) {
         presenter.get(categoryId,
-                whenSuccess = {
+                whenSucceeded = {
                     adapter.update(it)
-                }, whenFail = {
+                }, whenFailed = {
             val toast = Toast.makeText(context, R.string.getting_products_error, Toast.LENGTH_SHORT)
             toast.show()
         }

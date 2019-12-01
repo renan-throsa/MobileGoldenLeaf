@@ -1,11 +1,7 @@
 package com.mithril.mobilegoldenleaf.ui
 
-import android.content.Context
 import android.os.Bundle
-import android.util.AttributeSet
 import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -14,16 +10,16 @@ import com.google.android.material.navigation.NavigationView
 import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.models.Clerk
-import com.mithril.mobilegoldenleaf.ui.category.fragments.CategoryListFragment
+import com.mithril.mobilegoldenleaf.ui.category.CategoryListFragment
 import com.mithril.mobilegoldenleaf.ui.category.interfaces.OnProductsFromCategoryListener
 import com.mithril.mobilegoldenleaf.ui.client.fragments.ClientListFragment
 import com.mithril.mobilegoldenleaf.ui.dashboard.Dashboard
-import com.mithril.mobilegoldenleaf.ui.product.fragments.ProductListFragment
+import com.mithril.mobilegoldenleaf.ui.product.ProductListFragment
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.menu_header.*
 import kotlinx.android.synthetic.main.toolbar.*
 
-class MainActivity : AppCompatActivity(), OnProductsFromCategoryListener, NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), OnProductsFromCategoryListener,
+        NavigationView.OnNavigationItemSelectedListener {
 
     private val clerk by lazy { intent.getParcelableExtra<Clerk>("clerk") }
 

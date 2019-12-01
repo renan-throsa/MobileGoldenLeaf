@@ -1,5 +1,6 @@
 package com.mithril.mobilegoldenleaf.retrofit.webclient
 
+import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.models.Product
 import com.mithril.mobilegoldenleaf.retrofit.AppRetrofit
 import com.mithril.mobilegoldenleaf.retrofit.service.ProductService
@@ -7,56 +8,54 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-private const val REQUISITION_NOT_SUCCEED = "Requisição não foi bem sucedida."
-
 class ProductWebClient(private val service: ProductService = AppRetrofit().productService()) {
     private fun <T> executeRequisition(
             call: Call<T>,
-            whenSuccess: (newCategories: T?) -> Unit,
-            whenFail: (error: String?) -> Unit
+            whenSucceeded: (newCategories: T?) -> Unit,
+            whenFailed: (error: String?) -> Unit
     ) {
         call.enqueue(object : Callback<T> {
             override fun onResponse(call: Call<T?>, response: Response<T?>) {
                 if (response.isSuccessful) {
-                    whenSuccess(response.body())
+                    whenSucceeded(response.body())
                 } else {
-                    whenFail(REQUISITION_NOT_SUCCEED)
+                    whenFailed(R.string.product_invalid_error.toString())
                 }
             }
 
             override fun onFailure(call: Call<T?>, t: Throwable?) {
-                whenFail(t?.message)
+                whenFailed(t?.message)
             }
         })
     }
 
     fun get(
-            whenSuccess: (newCategories: List<Product>?) -> Unit
-            , whenFail: (error: String?) -> Unit) {
-        executeRequisition(service.getAll(), whenSuccess, whenFail)
+            whenSucceeded: (newCategories: List<Product>?) -> Unit
+            , whenFailed: (error: String?) -> Unit) {
+        executeRequisition(service.getAll(), whenSucceeded, whenFailed)
     }
 
     fun get(categoryId: Long,
-            whenSuccess: (newProducts: List<Product>?) -> Unit
-            , whenFail: (error: String?) -> Unit) {
-        executeRequisition(service.getAll(categoryId), whenSuccess, whenFail)
+            whenSucceeded: (newProducts: List<Product>?) -> Unit
+            , whenFailed: (error: String?) -> Unit) {
+        executeRequisition(service.getAll(categoryId), whenSucceeded, whenFailed)
     }
 
     fun post(
             product: Product
-            , whenSuccess: (newCategory: Product?) -> Unit
-            , whenFail: (error: String?) -> Unit
+            , whenSucceeded: (newCategory: Product?) -> Unit
+            , whenFailed: (error: String?) -> Unit
     ) {
-        executeRequisition(service.save(product), whenSuccess, whenFail)
+        executeRequisition(service.save(product), whenSucceeded, whenFailed)
     }
 
 
     fun put(
             id: Long,
             product: Product,
-            whenSuccess: (newProduct: Product?) -> Unit,
-            whenFail: (error: String?) -> Unit
+            whenSucceeded: (newProduct: Product?) -> Unit,
+            whenFailed: (error: String?) -> Unit
     ) {
-        executeRequisition(service.update(id, product), whenSuccess, whenFail)
+        executeRequisition(service.update(id, product), whenSucceeded, whenFailed)
     }
 }

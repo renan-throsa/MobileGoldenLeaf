@@ -1,4 +1,4 @@
-package com.mithril.mobilegoldenleaf.ui.product.validators
+package com.mithril.mobilegoldenleaf.ui.product
 
 import com.mithril.mobilegoldenleaf.models.Product
 

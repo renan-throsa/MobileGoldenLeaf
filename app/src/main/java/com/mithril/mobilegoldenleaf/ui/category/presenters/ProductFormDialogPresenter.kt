@@ -7,7 +7,7 @@ import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.models.Product
 import com.mithril.mobilegoldenleaf.persistence.AppDataBase
 import com.mithril.mobilegoldenleaf.ui.category.interfaces.ProductFormDialogView
-import com.mithril.mobilegoldenleaf.ui.product.validators.ProductValidator
+import com.mithril.mobilegoldenleaf.ui.product.ProductValidator
 
 class ProductFormDialogPresenter(private val view: ProductFormDialogView,
                                  private val repository: AppDataBase) {

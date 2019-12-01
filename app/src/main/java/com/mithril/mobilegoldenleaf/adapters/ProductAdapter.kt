@@ -30,19 +30,17 @@ class ProductAdapter(private val context: Context) : RecyclerView.Adapter<Produc
 
 
     fun update(all: List<Product>) {
+        notifyItemRangeRemoved(0, this.products.size)
         products.clear()
         products.addAll(all)
-        notifyDataSetChanged()
+        notifyItemRangeInserted(0, this.products.size)
     }
 
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnCreateContextMenuListener {
 
         override fun onCreateContextMenu(menu: ContextMenu?, view: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
-
-            menu?.add(adapterPosition, R.id.category_list_menu_edit, Menu.NONE, R.string.edit_category)
-            menu?.add(adapterPosition, R.id.category_list_menu_see_products, Menu.NONE, R.string.add_product)
-            menu?.add(adapterPosition, R.id.category_list_menu_add_product, Menu.NONE, R.string.see_products)
+            menu?.add(adapterPosition, R.id.category_list_menu_edit, Menu.NONE, R.string.edit_product)
         }
 
         init {
