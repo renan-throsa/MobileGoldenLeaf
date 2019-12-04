@@ -42,8 +42,8 @@ class CategoryAdapter(private val context: Context) : RecyclerView.Adapter<Categ
         override fun onCreateContextMenu(menu: ContextMenu?, view: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
 
             menu?.add(adapterPosition, R.id.category_list_menu_edit, Menu.NONE, R.string.edit_category)
-            menu?.add(adapterPosition, R.id.category_list_menu_see_products, Menu.NONE, R.string.add_product)
-            menu?.add(adapterPosition, R.id.category_list_menu_add_product, Menu.NONE, R.string.see_products)
+            menu?.add(adapterPosition, R.id.category_list_menu_see_products, Menu.NONE, R.string.see_products)
+            menu?.add(adapterPosition, R.id.category_list_menu_add_product, Menu.NONE, R.string.add_product)
         }
 
         init {

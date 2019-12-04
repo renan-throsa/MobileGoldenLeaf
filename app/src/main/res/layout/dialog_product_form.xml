@@ -5,15 +5,27 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/form_category_categories"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/category"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
         android:id="@+id/form_category_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        />
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@id/form_category_categories"
+        app:layout_constraintEnd_toEndOf="@id/form_category_categories"
+        app:layout_constraintStart_toStartOf="@id/form_category_categories" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/product_brand"
@@ -32,7 +44,10 @@
             android:id="@+id/form_product_brand"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/brand" />
+            android:hint="@string/brand"
+            android:imeOptions="actionNext"
+            android:inputType="textCapCharacters"
+            />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -50,9 +65,10 @@
             android:id="@+id/form_product_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawablePadding="8dp"
             android:hint="@string/description"
-            android:lines="1" />
+            android:imeOptions="actionNext"
+            android:inputType="textCapCharacters"
+            />
     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -74,7 +90,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/code"
-            android:inputType="number" />
+            android:inputType="number"
+            android:imeOptions="actionNext"
+            />
     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -93,13 +111,12 @@
             android:id="@+id/form_product_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:digits="0123456789,"
             android:drawableStart="@drawable/ic_action_money"
             android:drawablePadding="8dp"
             android:hint="@string/value"
             android:imeOptions="actionDone"
             android:inputType="numberDecimal"
-            android:lines="1" />
+            />
     </com.google.android.material.textfield.TextInputLayout>
 
 

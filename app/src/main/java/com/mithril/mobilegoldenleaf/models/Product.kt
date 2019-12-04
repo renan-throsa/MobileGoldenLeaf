@@ -1,16 +1,12 @@
 package com.mithril.mobilegoldenleaf.models
 
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.Ignore
-import androidx.room.PrimaryKey
+import androidx.room.*
 
 import java.io.Serializable
 
-import androidx.room.ForeignKey.SET_NULL
 import java.math.BigDecimal
 
-@Entity(foreignKeys = [ForeignKey(entity = Category::class, parentColumns = ["id"], childColumns = ["categoryId"], onDelete = SET_NULL)])
+@Entity
 class Product : Serializable {
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0
@@ -44,15 +40,10 @@ class Product : Serializable {
         this.isAvailable = true
     }
 
-    constructor() {
-
-    }
+    constructor()
 
     override fun toString(): String {
         return "$brand'$description'$code'$unitCost"
     }
 
-    fun hasValidId(): Boolean {
-        return this.id > 0
-    }
 }

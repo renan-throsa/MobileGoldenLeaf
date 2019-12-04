@@ -18,7 +18,7 @@ import com.mithril.mobilegoldenleaf.models.Order
 import com.mithril.mobilegoldenleaf.models.Product
 import com.mithril.mobilegoldenleaf.persistence.repository.*
 
-@Database(entities = [Clerk::class, Client::class, Address::class, Order::class, Item::class, Category::class, Product::class], version = 5, exportSchema = false)
+@Database(entities = [Clerk::class, Client::class, Address::class, Order::class, Item::class, Category::class, Product::class], version = 7, exportSchema = false)
 @TypeConverters(CaledarConverter::class, StatusConverter::class, BigDecimalConverter::class)
 abstract class AppDataBase : RoomDatabase() {
 

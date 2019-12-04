@@ -71,6 +71,7 @@ class CategoryFormDialog(private val context: Context, private val viewGroup: Vi
                      whenSucceeded: (category: Category) -> Unit,
                      whenFailed: (error: String?) -> Unit) {
 
+
         if (categoryId != 0L) {
             category.id = categoryId
             presenter.update(category, whenSucceeded = whenSucceeded, whenFailed = whenFailed)

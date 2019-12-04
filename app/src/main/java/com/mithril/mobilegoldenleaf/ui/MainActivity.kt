@@ -11,7 +11,7 @@ import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.models.Clerk
 import com.mithril.mobilegoldenleaf.ui.category.CategoryListFragment
-import com.mithril.mobilegoldenleaf.ui.category.interfaces.OnProductsFromCategoryListener
+import com.mithril.mobilegoldenleaf.ui.category.OnProductsFromCategoryListener
 import com.mithril.mobilegoldenleaf.ui.client.fragments.ClientListFragment
 import com.mithril.mobilegoldenleaf.ui.dashboard.Dashboard
 import com.mithril.mobilegoldenleaf.ui.product.ProductListFragment

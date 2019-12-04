@@ -9,26 +9,23 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
 import com.mithril.mobilegoldenleaf.R
+import com.mithril.mobilegoldenleaf.extentions.toBrazilianFormat
 import com.mithril.mobilegoldenleaf.extentions.toDecimalFormat
 import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.models.Product
 import com.mithril.mobilegoldenleaf.persistence.AppDataBase
 import com.mithril.mobilegoldenleaf.ui.category.CategoryPresenter
-import kotlinx.android.synthetic.main.dialogfragment_product_form.view.*
+import kotlinx.android.synthetic.main.dialog_product_form.view.*
 import java.math.BigDecimal
-import java.text.DecimalFormat
-import java.text.NumberFormat
-import java.text.ParsePosition
-import java.util.*
 
 
 class ProductFormDialog(private val context: Context,
                         private val viewGroup: ViewGroup?,
-                        private val productId: Long = 0L,
-                        private val categoryId: Long = 0L) {
+                        private val productId: Long = 0L) {
 
 
     private val view = createView()
+
     private val productPresenter by lazy {
         ProductPresenter(AppDataBase.getInstance(context).productRepository)
     }
@@ -38,22 +35,14 @@ class ProductFormDialog(private val context: Context,
     }
 
     private val NEGATIVE_BUTTON_TITLE = "Cancelar"
+    private val POSITIVE_BUTTON_TITLE = "Salvar"
 
     private val DIALOG_TITLE: String
         get() {
             return if (productId != 0L) {
                 "Editar produto"
             } else {
-                "Nova categoria"
-            }
-
-        }
-    private val POSITIVE_BUTTON_TITLE: String
-        get() {
-            return if (productId != 0L) {
-                "Editar"
-            } else {
-                "Salvar"
+                "Novo produto"
             }
 
         }
@@ -66,25 +55,10 @@ class ProductFormDialog(private val context: Context,
     }
 
 
-    fun show(whenSucceeded: (product: Product) -> Unit, whenFailed: (message: String?) -> Unit) {
-        if (categoryId == 0L) {
-            categoryPresenter.get(
-                    whenSucceeded = { allCategories ->
-                        showCategories(allCategories)
-                    }, whenFailed = {
-                val toast = Toast.makeText(context, R.string.getting_categories_error, Toast.LENGTH_SHORT)
-                toast.show()
-            }
-            )
-        } else {
-            categoryPresenter.get(categoryId,
-                    whenSucceeded = { categoryRetrieved ->
-                        categoryRetrieved?.let {
-                            showCategories(listOf(categoryRetrieved))
-                        }
-                    }
-            )
-        }
+    fun show(whenSucceeded: (product: Product) -> Unit, whenFailed: (message: String?) -> Unit,
+             categoryId: Long = 0L) {
+
+        initCategoryDropDown(categoryId)
         if (productId != 0L) {
             productPresenter.get(productId,
                     whenSucceeded = { productFound ->
@@ -103,6 +77,30 @@ class ProductFormDialog(private val context: Context,
                 .setNegativeButton(NEGATIVE_BUTTON_TITLE, null)
                 .show()
 
+    }
+
+    /*
+    * This method decides weather or not categories drop down should be initialized in a specific way.
+    */
+    private fun initCategoryDropDown(categoryId: Long) {
+        if (categoryId == 0L) {
+            categoryPresenter.get(
+                    whenSucceeded = { allCategories ->
+                        showCategories(allCategories)
+                    }, whenFailed = {
+                val toast = Toast.makeText(context, R.string.getting_categories_error, Toast.LENGTH_SHORT)
+                toast.show()
+            }
+            )
+        } else {
+            categoryPresenter.get(categoryId,
+                    whenSucceeded = { categoryRetrieved ->
+                        categoryRetrieved?.let {
+                            showCategories(listOf(categoryRetrieved))
+                        }
+                    }
+            )
+        }
     }
 
     private fun show(product: Product) {
@@ -132,25 +130,28 @@ class ProductFormDialog(private val context: Context,
         val product = Product()
         with(view) {
             product.categoryId = getCategoryFromSpinner()
-            product.brand = form_product_brand.toString()
-            product.description = form_product_description.toString()
-            product.code = form_product_code.toString()
-            product.unitCost = convertValue(form_product_value.toString())
+            product.brand = form_product_brand.text.toString()
+            product.description = form_product_description.text.toString()
+            product.code = form_product_code.text.toString()
+            product.unitCost = convertValue(form_product_value.text.toString())
 
         }
         if (productId != 0L) {
             product.id = productId
+            productPresenter.update(product, whenSucceeded, whenFailed)
+        } else {
+            productPresenter.save(product, whenSucceeded, whenFailed)
         }
-        productPresenter.save(product, whenSucceeded, whenFailed)
-
     }
 
     private fun convertValue(str: String): BigDecimal {
         return try {
-            val ptBr = Locale("pt", "BR")
-            val nf = NumberFormat.getInstance(ptBr) as DecimalFormat
-            nf.isParseBigDecimal = true
-            return nf.parse(str, ParsePosition(0)) as BigDecimal
+//            val ptBr = Locale("pt", "BR")
+//            val nf = NumberFormat.getInstance(ptBr) as DecimalFormat
+//            nf.isParseBigDecimal = true
+//            return nf.parse(str, ParsePosition(0)) as BigDecimal
+
+            return BigDecimal(str)
         } catch (exception: NumberFormatException) {
             Toast.makeText(context, R.string.value_error, Toast.LENGTH_LONG)
                     .show()
@@ -170,7 +171,7 @@ class ProductFormDialog(private val context: Context,
     private fun createView(): View {
         return LayoutInflater
                 .from(context)
-                .inflate(R.layout.dialog_category_form, viewGroup, false)
+                .inflate(R.layout.dialog_product_form, viewGroup, false)
 
     }
 

@@ -11,7 +11,6 @@ interface CategoryService {
     @POST("category")
     fun save(@Body category: Category): Call<Category>
 
-
     @PUT("category/{id}")
     fun update(@Path("id") id: Long, @Body category: Category): Call<Category>
 }

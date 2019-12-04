@@ -66,14 +66,7 @@ class ProductListFragment : Fragment() {
         )
     }
 
-    override fun onContextItemSelected(item: MenuItem): Boolean {
-        val product = adapter.getItem(item.groupId)
-        when (item.itemId) {
-            R.id.product_list_menu_edit -> openEditProductDialogFragment(product)
-        }
-        return super.onContextItemSelected(item)
 
-    }
 
     private fun configFba(view: View) {
         view.fragment_products_list_fab_new_product
@@ -131,6 +124,15 @@ class ProductListFragment : Fragment() {
         with(view) {
             product_list.adapter = adapter
         }
+
+    }
+
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        val product = adapter.getItem(item.groupId)
+        when (item.itemId) {
+            R.id.product_list_menu_edit -> openEditProductDialogFragment(product)
+        }
+        return super.onContextItemSelected(item)
 
     }
 

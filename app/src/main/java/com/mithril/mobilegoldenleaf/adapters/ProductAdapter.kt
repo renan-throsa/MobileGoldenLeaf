@@ -40,7 +40,7 @@ class ProductAdapter(private val context: Context) : RecyclerView.Adapter<Produc
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnCreateContextMenuListener {
 
         override fun onCreateContextMenu(menu: ContextMenu?, view: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
-            menu?.add(adapterPosition, R.id.category_list_menu_edit, Menu.NONE, R.string.edit_product)
+            menu?.add(adapterPosition, R.id.product_list_menu_edit, Menu.NONE, R.string.edit_product)
         }
 
         init {

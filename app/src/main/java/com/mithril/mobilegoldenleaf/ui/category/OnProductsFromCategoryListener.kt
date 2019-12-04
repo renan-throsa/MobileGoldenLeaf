@@ -1,4 +1,4 @@
-package com.mithril.mobilegoldenleaf.ui.category.interfaces
+package com.mithril.mobilegoldenleaf.ui.category
 
 import com.mithril.mobilegoldenleaf.models.Category
 

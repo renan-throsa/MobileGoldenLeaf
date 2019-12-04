@@ -19,12 +19,12 @@ class ProductWebClient(private val service: ProductService = AppRetrofit().produ
                 if (response.isSuccessful) {
                     whenSucceeded(response.body())
                 } else {
-                    whenFailed(R.string.product_invalid_error.toString())
+                    whenFailed("executeRequisition Produto com campos inválidos.")
                 }
             }
 
             override fun onFailure(call: Call<T?>, t: Throwable?) {
-                whenFailed(t?.message)
+                whenFailed("ProductWebClient "+t?.message)
             }
         })
     }
@@ -43,7 +43,7 @@ class ProductWebClient(private val service: ProductService = AppRetrofit().produ
 
     fun post(
             product: Product
-            , whenSucceeded: (newCategory: Product?) -> Unit
+            , whenSucceeded: (newProduct: Product?) -> Unit
             , whenFailed: (error: String?) -> Unit
     ) {
         executeRequisition(service.save(product), whenSucceeded, whenFailed)

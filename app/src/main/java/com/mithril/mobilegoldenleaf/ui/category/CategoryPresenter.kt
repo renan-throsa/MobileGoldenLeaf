@@ -8,6 +8,7 @@ import com.mithril.mobilegoldenleaf.retrofit.webclient.CategoryWebClient
 class CategoryPresenter(private val repository: CategoryRepository) {
 
     private val webClient = CategoryWebClient()
+    private val validator = CategoryValidator()
 
     fun get(whenSucceeded: (List<Category>) -> Unit, whenFailed: (error: String?) -> Unit) {
         searchInternally(whenSucceeded)
@@ -23,14 +24,22 @@ class CategoryPresenter(private val repository: CategoryRepository) {
     fun save(category: Category,
              whenSucceeded: (category: Category) -> Unit,
              whenFailed: (error: String?) -> Unit) {
-        saveRemotely(category, whenSucceeded, whenFailed)
+        if (validator.validate(category)) {
+            saveRemotely(category, whenSucceeded, whenFailed)
+        } else {
+            whenFailed(validator.error)
+        }
     }
 
     fun update(category: Category,
                whenSucceeded: (newCategory: Category) -> Unit,
                whenFailed: (error: String?) -> Unit) {
 
-        updateRemotely(category, whenSucceeded, whenFailed)
+        if (validator.validate(category)) {
+            updateRemotely(category, whenSucceeded, whenFailed)
+        } else {
+            whenFailed(validator.error)
+        }
     }
 
 

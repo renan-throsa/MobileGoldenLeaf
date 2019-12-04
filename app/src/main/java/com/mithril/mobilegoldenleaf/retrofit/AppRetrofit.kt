@@ -3,18 +3,31 @@ package com.mithril.mobilegoldenleaf.retrofit
 import com.mithril.mobilegoldenleaf.retrofit.service.CategoryService
 import com.mithril.mobilegoldenleaf.retrofit.service.ClerkService
 import com.mithril.mobilegoldenleaf.retrofit.service.ProductService
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class AppRetrofit {
 
-    private val GOLDEN_LEAF_API_URL = "https://golden-leaf.herokuapp.com/api/"
+    private val BASE_URL = "https://golden-leaf.herokuapp.com/api/"
 
 
-    private val retrofit = Retrofit.Builder()
-            .baseUrl(GOLDEN_LEAF_API_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+    private val client by lazy {
+        val interceptor = HttpLoggingInterceptor()
+        interceptor.level = HttpLoggingInterceptor.Level.BODY
+        OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .build()
+    }
+
+    private val retrofit by lazy {
+        Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .build()
+    }
 
 
     fun categoryService(): CategoryService {

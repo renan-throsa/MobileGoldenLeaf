@@ -12,8 +12,6 @@ import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.models.Product
 import com.mithril.mobilegoldenleaf.persistence.AppDataBase
 import com.mithril.mobilegoldenleaf.ui.MainActivity
-import com.mithril.mobilegoldenleaf.ui.category.interfaces.OnProductsFromCategoryListener
-import com.mithril.mobilegoldenleaf.ui.category.fragments.ProductFormDialogFragment
 import com.mithril.mobilegoldenleaf.ui.product.ProductFormDialog
 import kotlinx.android.synthetic.main.fragment_category_list.view.*
 
@@ -60,19 +58,19 @@ class CategoryListFragment : Fragment() {
                 }, whenFailed = {
             val toast = Toast.makeText(context, R.string.getting_categories_error, Toast.LENGTH_SHORT)
             toast.show()
+            //TODO Load categories offline here.
         }
         )
     }
 
     private fun addProductIn(c: Category) {
-        ProductFormDialog(activityContext, activityContext.window.decorView as ViewGroup, categoryId = c.id)
-                .show(whenSucceeded = { productSaved ->
+        ProductFormDialog(activityContext, activityContext.window.decorView as ViewGroup)
+                .show(categoryId = c.id, whenSucceeded = { productSaved ->
                     onDataBaseChanged(productSaved)
                 }, whenFailed = { errorMessage ->
                     val toast = Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT)
                     toast.show()
                 }
-
                 )
     }
 
@@ -155,7 +153,6 @@ class CategoryListFragment : Fragment() {
 
 
     companion object {
-        const val TAG_PRODUCT_LIST = "tagListaCategoria"
         fun newInstance(): CategoryListFragment {
             return CategoryListFragment()
         }

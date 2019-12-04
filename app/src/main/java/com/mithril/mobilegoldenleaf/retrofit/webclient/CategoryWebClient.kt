@@ -17,15 +17,16 @@ class CategoryWebClient(private val service: CategoryService = AppRetrofit().cat
             whenFailed: (error: String?) -> Unit
     ) {
         call.enqueue(object : Callback<T> {
-            override fun onResponse(call: Call<T?>, response: Response<T?>) {
+            override fun onResponse(call: Call<T>, response: Response<T>) {
                 if (response.isSuccessful) {
                     whenSucceeded(response.body())
                 } else {
-                    whenFailed(REQUISITION_NOT_SUCCEED)
+                    whenFailed(response.errorBody().toString())
                 }
             }
-            override fun onFailure(call: Call<T?>, t: Throwable?) {
-                whenFailed(t?.message)
+
+            override fun onFailure(call: Call<T>, t: Throwable) {
+                whenFailed(t.message)
             }
         })
     }

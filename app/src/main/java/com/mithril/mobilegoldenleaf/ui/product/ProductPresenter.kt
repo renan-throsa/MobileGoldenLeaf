@@ -1,6 +1,5 @@
 package com.mithril.mobilegoldenleaf.ui.product
 
-import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.asynctask.BaseAsyncTask
 import com.mithril.mobilegoldenleaf.models.Product
 import com.mithril.mobilegoldenleaf.persistence.repository.ProductRepository
@@ -27,14 +26,13 @@ class ProductPresenter(private val productRepository: ProductRepository) {
         }, whenFinalize = whenSucceeded).execute()
     }
 
-
     fun save(product: Product,
              whenSucceeded: (product: Product) -> Unit,
              whenFailed: (error: String?) -> Unit) {
         if (validator.validate(product)) {
             saveRemotely(product, whenSucceeded, whenFailed)
         } else {
-            whenFailed(R.string.product_invalid_error.toString())
+            whenFailed(validator.error)
         }
 
     }
@@ -45,7 +43,7 @@ class ProductPresenter(private val productRepository: ProductRepository) {
         if (validator.validate(product)) {
             updateRemotely(product, whenSucceeded, whenFailed)
         } else {
-            whenFailed(R.string.product_invalid_error.toString())
+            whenFailed(validator.error)
         }
     }
 
@@ -96,8 +94,8 @@ class ProductPresenter(private val productRepository: ProductRepository) {
             whenFailed: (error: String?) -> Unit
     ) {
         productWebClient.post(product,
-                whenSucceeded = {
-                    it?.let { productSaved ->
+                whenSucceeded = { productSaved ->
+                    productSaved?.let {
                         productSaved.synchronized = true
                         saveInternally(productSaved, whenSucceeded)
                     }

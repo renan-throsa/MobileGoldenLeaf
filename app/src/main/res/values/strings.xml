@@ -61,7 +61,7 @@
     <string name="error_msg_email">Email Inválido</string>
     <string name="error_msg_password">Senha Inválida</string>
     <string name="invalid_title_error">Titulo inválido</string>
-    <string name="value_error">"Erro no valor do produto. Salvo cm valor 0.0."</string>
+    <string name="value_error">"Erro no valor do produto. Salvo com valor 0.0."</string>
     <string name="product_invalid_error">Produto com campos inválidos</string>
     <string name="client_invalid_error">Cliente com campos inválidos</string>
     <string name="address_invalid_error">Endereço com campos inválidos</string>
