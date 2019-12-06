@@ -1,5 +1,6 @@
 package com.mithril.mobilegoldenleaf.retrofit
 
+import com.mithril.mobilegoldenleaf.retrofit.service.ClientService
 import com.mithril.mobilegoldenleaf.retrofit.service.CategoryService
 import com.mithril.mobilegoldenleaf.retrofit.service.ClerkService
 import com.mithril.mobilegoldenleaf.retrofit.service.ProductService
@@ -40,6 +41,10 @@ class AppRetrofit {
 
     fun clerkService(): ClerkService {
         return retrofit.create(ClerkService::class.java)
+    }
+
+    fun clientService(): ClientService {
+        return retrofit.create(ClientService::class.java)
     }
 
 

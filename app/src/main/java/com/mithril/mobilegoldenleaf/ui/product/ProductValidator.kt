@@ -5,7 +5,7 @@ import java.math.BigDecimal
 
 class ProductValidator {
 
-    var error = "Everything ok."
+    var error = "Everything is ok."
 
     fun validate(p: Product): Boolean {
 

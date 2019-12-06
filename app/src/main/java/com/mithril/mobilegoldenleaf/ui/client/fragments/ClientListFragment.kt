@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.adapters.ClientAdapter
-import com.mithril.mobilegoldenleaf.models.Client
+import com.mithril.mobilegoldenleaf.models.Customer
 import com.mithril.mobilegoldenleaf.persistence.AppDataBase
 import com.mithril.mobilegoldenleaf.ui.MainActivity
 import com.mithril.mobilegoldenleaf.ui.client.interfaces.ClientListView
@@ -24,7 +24,7 @@ class ClientListFragment : Fragment(), ClientListView {
     }
 
     private val presenter by lazy {
-        val repository = AppDataBase.getInstance(activityContext).clientRepository
+        val repository = AppDataBase.getInstance(activityContext).customerRepository
         ClientListPresenter(this, repository)
     }
 
@@ -67,8 +67,8 @@ class ClientListFragment : Fragment(), ClientListView {
 
     }
 
-    private fun openEditProductDialogFragment(client: Client) {
-        val dialogFragment = ClientFormDialogFragment.newInstance(client.id)
+    private fun openEditProductDialogFragment(customer: Customer) {
+        val dialogFragment = ClientFormDialogFragment.newInstance(customer.id)
         activity?.supportFragmentManager?.let { it -> dialogFragment.open(it) }
     }
 
@@ -80,11 +80,11 @@ class ClientListFragment : Fragment(), ClientListView {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun showClients(all: List<Client>) {
+    override fun showClients(all: List<Customer>) {
         adapter.update(all)
     }
 
-    override fun showOrdersOf(client: Client) {
+    override fun showOrdersOf(customer: Customer) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
@@ -92,13 +92,13 @@ class ClientListFragment : Fragment(), ClientListView {
         with(view) {
             clients_list.adapter = adapter
             registerForContextMenu(clients_list)
-            clients_list.addFooterView(initFooter())
+            //clients_list.addFooterView(initFooter())
         }
     }
 
     private fun initFooter(): TextView {
         val txtFooter = TextView(context)
-        txtFooter.text = resources.getQuantityString(R.plurals.footer_text_client, adapter.count, adapter.count)
+        // txtFooter.text = resources.getQuantityString(R.plurals.footer_text_client, adapter.count, adapter.count)
         txtFooter.setBackgroundColor(Color.LTGRAY)
         txtFooter.gravity = Gravity.END
         txtFooter.setPadding(0, 8, 8, 8)

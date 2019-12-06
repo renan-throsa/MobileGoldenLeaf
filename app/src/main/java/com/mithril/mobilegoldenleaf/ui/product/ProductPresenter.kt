@@ -108,9 +108,9 @@ class ProductPresenter(private val productRepository: ProductRepository) {
 
         productWebClient.put(product.id,
                 product,
-                whenSucceeded = { updatedCategory ->
-                    updatedCategory?.let {
-                        saveInternally(updatedCategory, whenSucceeded)
+                whenSucceeded = { updatedProduct ->
+                    updatedProduct?.let {
+                        saveInternally(updatedProduct, whenSucceeded)
                     }
                 },
                 whenFailed = whenFailed)

@@ -8,30 +8,30 @@ import com.mithril.mobilegoldenleaf.asynctask.client.GetClientByIdTask
 import com.mithril.mobilegoldenleaf.asynctask.client.SaveClientTask
 import com.mithril.mobilegoldenleaf.asynctask.client.UpdateClientTask
 import com.mithril.mobilegoldenleaf.models.Address
-import com.mithril.mobilegoldenleaf.models.Client
+import com.mithril.mobilegoldenleaf.models.Customer
 import com.mithril.mobilegoldenleaf.persistence.AppDataBase
 import com.mithril.mobilegoldenleaf.ui.client.interfaces.ClientFormView
-import com.mithril.mobilegoldenleaf.ui.client.validators.AddressValidator
-import com.mithril.mobilegoldenleaf.ui.client.validators.ClientValidator
+import com.mithril.mobilegoldenleaf.ui.client.AddressValidator
+import com.mithril.mobilegoldenleaf.ui.client.CustomerValidator
 
 class ClientFormDialogPresenter(private val view: ClientFormView, private val repository: AppDataBase) {
 
-    private val clientValidator = ClientValidator()
+    private val clientValidator = CustomerValidator()
     private val addressValidator = AddressValidator()
 
     fun loadBy(clientId: Long) {
-        val c: Client = GetClientByIdTask(clientId, repository.clientRepository).execute().get()
+        val c: Customer = GetClientByIdTask(clientId, repository.customerRepository).execute().get()
         val a: Address = GetAddressByIdTask(c.addressId, repository.addressRepository).execute().get()
         view.showClient(c, a)
     }
 
-    fun save(client: Client): Boolean {
-        return if (clientValidator.validate(client)) {
+    fun save(customer: Customer): Boolean {
+        return if (clientValidator.validate(customer)) {
             try {
-                if (client.hasValidId()) {
-                    UpdateClientTask(repository.clientRepository, client).execute()
+                if (customer.hasValidId()) {
+                    UpdateClientTask(repository.customerRepository, customer).execute()
                 } else {
-                    SaveClientTask(repository.clientRepository, client).execute()
+                    SaveClientTask(repository.customerRepository, customer).execute()
                 }
                 true
             } catch (e: Exception) {

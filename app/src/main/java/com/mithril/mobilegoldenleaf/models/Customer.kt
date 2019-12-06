@@ -4,12 +4,13 @@ import androidx.room.Entity
 import androidx.room.Ignore
 
 @Entity
-class Client : User {
+class Customer : User {
 
     var identification: String? = null
     var addressId: Long = 0L
     var status: Boolean? = null
     var notifiable: Boolean? = null
+    var synchronized: Boolean = false
 
     constructor()
 

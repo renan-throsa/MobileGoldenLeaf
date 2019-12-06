@@ -1,10 +1,10 @@
 package com.mithril.mobilegoldenleaf.ui.client.interfaces
 
 import com.mithril.mobilegoldenleaf.models.Address
-import com.mithril.mobilegoldenleaf.models.Client
+import com.mithril.mobilegoldenleaf.models.Customer
 
 interface ClientFormView {
-    fun showClient(client: Client, address: Address)
+    fun showClient(customer: Customer, address: Address)
     fun clientInvalidError()
     fun savingClientError()
     fun savingAddressError()

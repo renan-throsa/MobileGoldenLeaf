@@ -1,4 +1,4 @@
-package com.mithril.mobilegoldenleaf.ui.client.validators
+package com.mithril.mobilegoldenleaf.ui.client
 
 import com.mithril.mobilegoldenleaf.models.Address
 

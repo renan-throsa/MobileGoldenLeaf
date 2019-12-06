@@ -1,62 +1,40 @@
 package com.mithril.mobilegoldenleaf.adapters
 
 import android.content.Context
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.BaseAdapter
+import android.view.*
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.mithril.mobilegoldenleaf.R
-import com.mithril.mobilegoldenleaf.models.Client
+import com.mithril.mobilegoldenleaf.models.Customer
 import kotlinx.android.synthetic.main.item_client_row.view.*
 
-class ClientAdapter(private val context: Context) : BaseAdapter() {
+class ClientAdapter(private val context: Context) : RecyclerView.Adapter<ClientAdapter.ViewHolder>() {
 
-    private val clients: ArrayList<Client> = ArrayList()
+    private val customers: ArrayList<Customer> = ArrayList()
 
-
-    override fun getCount(): Int = clients.size
-
-
-    override fun getItem(position: Int): Client = clients[position]
-
-
-    override fun getItemId(i: Int): Long = clients[i].id
-
-
-    override fun getView(position: Int, convertView: View?, viewGroup: ViewGroup): View {
-        val product = clients[position]
-        val holder: ViewHolder
-        val row: View
-        if (convertView == null) {
-            row = getInflate(viewGroup)
-            holder = ViewHolder(row)
-            row.tag = holder
-        } else {
-            row = convertView
-            holder = convertView.tag as ViewHolder
-        }
-
-        boundInformation(holder, product)
-        return row
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val client = customers[position]
+        holder.bindView(client)
     }
 
-    private fun getInflate(viewGroup: ViewGroup): View {
-        return LayoutInflater
-                .from(context)
-                .inflate(R.layout.item_client_row, viewGroup, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(context).inflate(R.layout.item_client_row, parent, false)
+        return ViewHolder(view)
     }
 
-    private fun boundInformation(row: ViewHolder, c: Client) {
-        row.name.text = c.name
-        row.phoneNumber.text = c.phoneNumber
-        row.identification.text = c.identification
-    }
 
-    fun update(all: List<Client>) {
-        clients.clear()
-        clients.addAll(all)
-        notifyDataSetChanged()
+    override fun getItemCount(): Int = customers.size
+
+    override fun getItemId(i: Int): Long = customers[i].id
+
+    fun getItem(position: Int): Customer = customers[position]
+
+
+    fun update(all: List<Customer>) {
+        notifyItemRangeRemoved(0, this.customers.size)
+        customers.clear()
+        customers.addAll(all)
+        notifyItemRangeInserted(0, this.customers.size)
     }
 
     companion object {
@@ -66,5 +44,29 @@ class ClientAdapter(private val context: Context) : BaseAdapter() {
             val identification: TextView = view.item_client_identification
 
         }
+    }
+
+
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnCreateContextMenuListener {
+
+        override fun onCreateContextMenu(menu: ContextMenu?, view: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
+            menu?.add(adapterPosition, R.id.client_list_menu_edit, Menu.NONE, R.string.edit_client)
+            menu?.add(adapterPosition, R.id.client_list_menu_add_order, Menu.NONE, R.string.add_order)
+            menu?.add(adapterPosition, R.id.client_list_menu_see_orders, Menu.NONE, R.string.see_orders)
+        }
+
+        init {
+            itemView.setOnCreateContextMenuListener(this)
+        }
+
+
+        fun bindView(customer: Customer) {
+            itemView.item_client_name.text = customer.name
+            itemView.item_client_phoneNumber.text = customer.phoneNumber
+            itemView.item_client_identification.text = customer.identification
+
+        }
+
+
     }
 }

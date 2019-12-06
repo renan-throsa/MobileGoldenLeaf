@@ -9,7 +9,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.models.Address
-import com.mithril.mobilegoldenleaf.models.Client
+import com.mithril.mobilegoldenleaf.models.Customer
 import com.mithril.mobilegoldenleaf.persistence.AppDataBase
 import com.mithril.mobilegoldenleaf.ui.MainActivity
 import com.mithril.mobilegoldenleaf.ui.client.interfaces.ClientFormView
@@ -79,7 +79,7 @@ class ClientFormDialogFragment : DialogFragment(), ClientFormView {
 
     }
 
-    private fun saveClient(addressId: Long): Client? {
+    private fun saveClient(addressId: Long): Customer? {
         val client = fillClientOut(addressId)
         return if (presenter.save(client)) {
             client
@@ -88,8 +88,8 @@ class ClientFormDialogFragment : DialogFragment(), ClientFormView {
         }
     }
 
-    private fun fillClientOut(addressId: Long): Client {
-        val client = Client()
+    private fun fillClientOut(addressId: Long): Customer {
+        val client = Customer()
         val clientId = arguments?.getLong(EXTRA_CLIENT_ID) ?: 0L
         if (clientId != 0L) {
             client.id = clientId
@@ -117,10 +117,10 @@ class ClientFormDialogFragment : DialogFragment(), ClientFormView {
         return address
     }
 
-    override fun showClient(client: Client, address: Address) {
-        form_client_name.setText(client.name)
-        form_client_identification.setText(client.identification)
-        form_client_phoneNumber.setText(client.phoneNumber)
+    override fun showClient(customer: Customer, address: Address) {
+        form_client_name.setText(customer.name)
+        form_client_identification.setText(customer.identification)
+        form_client_phoneNumber.setText(customer.phoneNumber)
         form_client_address_zipCode.setText(address.zipCode)
         form_client_address_street.setText(address.street)
     }
