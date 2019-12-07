@@ -2,12 +2,12 @@ package com.mithril.mobilegoldenleaf.retrofit.webclient
 
 import com.mithril.mobilegoldenleaf.models.Customer
 import com.mithril.mobilegoldenleaf.retrofit.AppRetrofit
-import com.mithril.mobilegoldenleaf.retrofit.service.ClientService
+import com.mithril.mobilegoldenleaf.retrofit.service.CustomerService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class CustomerWebClient(private val service: ClientService = AppRetrofit().clientService()) {
+class CustomerWebClient(private val service: CustomerService = AppRetrofit().customerService()) {
     private fun <T> executeRequisition(
             call: Call<T>,
             whenSucceeded: (newCategories: T?) -> Unit,

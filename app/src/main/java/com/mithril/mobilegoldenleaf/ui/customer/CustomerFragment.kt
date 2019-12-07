@@ -1,21 +1,22 @@
-package com.mithril.mobilegoldenleaf.ui.client.fragments
+package com.mithril.mobilegoldenleaf.ui.customer
 
 import android.graphics.Color
 import android.os.Bundle
 import android.view.*
 import android.widget.AdapterView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.adapters.ClientAdapter
 import com.mithril.mobilegoldenleaf.models.Customer
 import com.mithril.mobilegoldenleaf.persistence.AppDataBase
 import com.mithril.mobilegoldenleaf.ui.MainActivity
-import com.mithril.mobilegoldenleaf.ui.client.interfaces.ClientListView
-import com.mithril.mobilegoldenleaf.ui.client.presenters.ClientListPresenter
+import com.mithril.mobilegoldenleaf.ui.customer.fragments.ClientFormDialogFragment
+import com.mithril.mobilegoldenleaf.ui.customer.interfaces.ClientListView
 import kotlinx.android.synthetic.main.fragment_clients_list.view.*
 
-class ClientListFragment : Fragment(), ClientListView {
+class CustomerFragment : Fragment(), ClientListView {
 
     private lateinit var activityContext: MainActivity
 
@@ -25,7 +26,7 @@ class ClientListFragment : Fragment(), ClientListView {
 
     private val presenter by lazy {
         val repository = AppDataBase.getInstance(activityContext).customerRepository
-        ClientListPresenter(this, repository)
+        CustomerPresenter(repository)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,9 +44,20 @@ class ClientListFragment : Fragment(), ClientListView {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        presenter.searchClient("")
+        searchCustomer()
     }
 
+    private fun searchCustomer() {
+        presenter.get(
+                whenSucceeded = {
+                    adapter.update(it)
+                }, whenFailed = {
+            val toast = Toast.makeText(context, R.string.getting_customer_error, Toast.LENGTH_SHORT)
+            toast.show()
+            //TODO Load categories offline here.
+        }
+        )
+    }
 
     override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
         super.onCreateContextMenu(menu, v, menuInfo)
@@ -54,11 +66,11 @@ class ClientListFragment : Fragment(), ClientListView {
 
     override fun onResume() {
         super.onResume()
-        presenter.searchClient("")
+        searchCustomer()
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
-        val menuInfo = item?.menuInfo as AdapterView.AdapterContextMenuInfo
+        val menuInfo = item.menuInfo as AdapterView.AdapterContextMenuInfo
         val client = adapter.getItem(menuInfo.position)
         when (item.itemId) {
             R.id.client_list_menu_edit -> openEditProductDialogFragment(client)
@@ -116,8 +128,8 @@ class ClientListFragment : Fragment(), ClientListView {
 //        private const val EXTRA_CLIENT_ID = "categoryId"
 //        private const val TAG_CLIENT_LIST = "tagProductsList"
 
-        fun newInstance(): ClientListFragment {
-            val fragment = ClientListFragment()
+        fun newInstance(): CustomerFragment {
+            val fragment = CustomerFragment()
             return fragment
         }
     }

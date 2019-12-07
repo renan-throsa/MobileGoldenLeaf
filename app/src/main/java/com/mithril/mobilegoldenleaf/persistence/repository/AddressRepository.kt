@@ -18,14 +18,9 @@ interface AddressRepository {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun update(address: Address)
 
-    @Query("SELECT a.* FROM Address a")
-    fun all(): List<Address>
 
     @Query("SELECT a.* FROM Address a WHERE a.id = :addressId")
     fun get(addressId: Long): Address
-
-    @Delete
-    fun delete(address: Address)
 
 
 }

@@ -22,8 +22,7 @@
         android:layout_margin="8dp"
         android:hint="@string/name"
         android:importantForAutofill="no"
-        android:inputType="textCapWords"
-        />
+        android:inputType="textCapWords" />
 
 
     <EditText
@@ -34,8 +33,7 @@
         android:hint="@string/identification"
         android:importantForAutofill="no"
         android:inputType="number"
-        android:maxLength="11"
-        />
+        android:maxLength="11" />
 
     <EditText
         android:id="@+id/form_client_phoneNumber"
@@ -44,8 +42,8 @@
         android:layout_margin="8dp"
         android:hint="@string/phoneNumber"
         android:importantForAutofill="no"
-        android:maxLength="11"
-        android:inputType="phone" />
+        android:inputType="phone"
+        android:maxLength="11" />
 
 
     <TextView
@@ -57,25 +55,15 @@
         android:textColor="#7b7b7b"
         android:textSize="18sp" />
 
-    <EditText
-        android:id="@+id/form_client_address_zipCode"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:hint="@string/zipCode"
-        android:importantForAutofill="no"
-        android:inputType="number" />
-
 
     <EditText
-        android:id="@+id/form_client_address_street"
+        android:id="@+id/form_client_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:hint="@string/street"
         android:imeOptions="actionDone"
         android:inputType="textCapWords" />
-
 
 
 </LinearLayout>

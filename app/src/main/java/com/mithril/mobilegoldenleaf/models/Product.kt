@@ -9,9 +9,9 @@ import java.math.BigDecimal
 @Entity
 class Product : Serializable {
     @PrimaryKey(autoGenerate = true)
-    var id: Long = 0
+    var id: Long = 0L
     @ForeignKey(entity = Category::class, parentColumns = ["id"], childColumns = ["categoryId"])
-    var categoryId: Long = 0
+    var categoryId: Long = 0L
     var brand: String? = null
     var description: String? = null
     var code: String? = null

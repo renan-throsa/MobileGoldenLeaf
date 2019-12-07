@@ -1,13 +1,12 @@
 package com.mithril.mobilegoldenleaf.models
 
-import android.os.Parcelable
 import androidx.room.PrimaryKey
 
-abstract class User  {
+abstract class User {
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0L
-    var name: String? = null
-    var phoneNumber: String? = null
+    var name: String = ""
+    var phoneNumber: String = ""
 
     fun hasValidId(): Boolean {
         return id != 0L

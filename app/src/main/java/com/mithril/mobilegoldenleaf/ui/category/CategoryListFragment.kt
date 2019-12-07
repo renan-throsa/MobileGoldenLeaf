@@ -19,11 +19,11 @@ class CategoryListFragment : Fragment() {
 
     private lateinit var activityContext: MainActivity
 
+    private val adapter by lazy { CategoryAdapter(activityContext) }
+
     private val presenter by lazy {
         CategoryPresenter(AppDataBase.getInstance(activityContext).categoryRepository)
     }
-
-    private val adapter by lazy { CategoryAdapter(activityContext) }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

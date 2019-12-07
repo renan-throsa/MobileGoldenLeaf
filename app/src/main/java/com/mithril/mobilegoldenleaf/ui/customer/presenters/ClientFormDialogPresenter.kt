@@ -1,4 +1,4 @@
-package com.mithril.mobilegoldenleaf.ui.client.presenters
+package com.mithril.mobilegoldenleaf.ui.customer.presenters
 
 import com.mithril.mobilegoldenleaf.asynctask.address.DeleteAddressTask
 import com.mithril.mobilegoldenleaf.asynctask.address.GetAddressByIdTask
@@ -10,9 +10,9 @@ import com.mithril.mobilegoldenleaf.asynctask.client.UpdateClientTask
 import com.mithril.mobilegoldenleaf.models.Address
 import com.mithril.mobilegoldenleaf.models.Customer
 import com.mithril.mobilegoldenleaf.persistence.AppDataBase
-import com.mithril.mobilegoldenleaf.ui.client.interfaces.ClientFormView
-import com.mithril.mobilegoldenleaf.ui.client.AddressValidator
-import com.mithril.mobilegoldenleaf.ui.client.CustomerValidator
+import com.mithril.mobilegoldenleaf.ui.customer.interfaces.ClientFormView
+import com.mithril.mobilegoldenleaf.ui.customer.AddressValidator
+import com.mithril.mobilegoldenleaf.ui.customer.CustomerValidator
 
 class ClientFormDialogPresenter(private val view: ClientFormView, private val repository: AppDataBase) {
 

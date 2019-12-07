@@ -12,7 +12,7 @@ import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.models.Clerk
 import com.mithril.mobilegoldenleaf.ui.category.CategoryListFragment
 import com.mithril.mobilegoldenleaf.ui.category.OnProductsFromCategoryListener
-import com.mithril.mobilegoldenleaf.ui.client.fragments.ClientListFragment
+import com.mithril.mobilegoldenleaf.ui.customer.CustomerFragment
 import com.mithril.mobilegoldenleaf.ui.dashboard.Dashboard
 import com.mithril.mobilegoldenleaf.ui.product.ProductListFragment
 import kotlinx.android.synthetic.main.activity_main.*
@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity(), OnProductsFromCategoryListener,
             R.id.action_dashboard -> Dashboard.newInstance()
             R.id.action_category -> CategoryListFragment.newInstance()
             R.id.action_product -> ProductListFragment.newInstance()
-            R.id.action_client -> ClientListFragment.newInstance()
+            R.id.action_client -> CustomerFragment.newInstance()
             R.id.action_order -> Dashboard.newInstance()
             else -> {
                 Dashboard.newInstance()

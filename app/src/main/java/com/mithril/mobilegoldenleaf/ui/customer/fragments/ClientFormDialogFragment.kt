@@ -1,4 +1,4 @@
-package com.mithril.mobilegoldenleaf.ui.client.fragments
+package com.mithril.mobilegoldenleaf.ui.customer.fragments
 
 import android.app.Dialog
 import android.os.Bundle
@@ -12,10 +12,10 @@ import com.mithril.mobilegoldenleaf.models.Address
 import com.mithril.mobilegoldenleaf.models.Customer
 import com.mithril.mobilegoldenleaf.persistence.AppDataBase
 import com.mithril.mobilegoldenleaf.ui.MainActivity
-import com.mithril.mobilegoldenleaf.ui.client.interfaces.ClientFormView
-import com.mithril.mobilegoldenleaf.ui.client.presenters.ClientFormDialogPresenter
-import kotlinx.android.synthetic.main.dialogfragment_client_form.*
-import kotlinx.android.synthetic.main.dialogfragment_client_form.view.*
+import com.mithril.mobilegoldenleaf.ui.customer.interfaces.ClientFormView
+import com.mithril.mobilegoldenleaf.ui.customer.presenters.ClientFormDialogPresenter
+import kotlinx.android.synthetic.main.dialog_client_form.*
+import kotlinx.android.synthetic.main.dialog_client_form.view.*
 
 class ClientFormDialogFragment : DialogFragment(), ClientFormView {
     private lateinit var activityContext: MainActivity
@@ -37,7 +37,7 @@ class ClientFormDialogFragment : DialogFragment(), ClientFormView {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.dialogfragment_client_form, container, false)
+        return inflater.inflate(R.layout.dialog_client_form, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

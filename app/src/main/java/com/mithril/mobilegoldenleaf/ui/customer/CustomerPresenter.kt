@@ -1,4 +1,4 @@
-package com.mithril.mobilegoldenleaf.ui.client
+package com.mithril.mobilegoldenleaf.ui.customer
 
 import com.mithril.mobilegoldenleaf.asynctask.BaseAsyncTask
 import com.mithril.mobilegoldenleaf.models.Customer
@@ -16,6 +16,12 @@ class CustomerPresenter(private val customerRepository: CustomerRepository) {
         searchRemotely(whenSucceeded, whenFailed)
     }
 
+    fun get(id: Long, whenSucceeded: (customerRetrieved: Customer?) -> Unit) {
+        BaseAsyncTask(whenExecute = {
+            customerRepository.get(id)
+        }, whenFinalize = whenSucceeded).execute()
+    }
+
     fun save(customer: Customer,
              whenSucceeded: (customer: Customer) -> Unit,
              whenFailed: (error: String?) -> Unit) {
@@ -31,7 +37,7 @@ class CustomerPresenter(private val customerRepository: CustomerRepository) {
     fun update(customer: Customer,
                whenSucceeded: (newCustomer: Customer) -> Unit,
                whenFailed: (error: String?) -> Unit) {
-        if (customerValidator.validate(customer)) {
+        if (this.customerValidator.validate(customer)) {
             updateRemotely(customer, whenSucceeded, whenFailed)
         } else {
             whenFailed(customerValidator.error)

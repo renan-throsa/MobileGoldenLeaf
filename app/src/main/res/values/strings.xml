@@ -22,8 +22,7 @@
     <string name="title">Título</string>
     <string name="name">Nome completo</string>
     <string name="phoneNumber">Número de celular</string>
-    <string name="identification">Identificaçãp (cpf)</string>
-    <string name="zipCode">Cep</string>
+    <string name="identification">Identificaçãp (rg)</string>
     <string name="street">Rua</string>
     <string name="save">Salvar</string>
     <string name="add_product">Adicionar produto</string>
@@ -42,8 +41,9 @@
     <string name="product_saving_error">Não foi possível salvar o produto.</string>
     <string name="client_saving_error">Não foi possível salvar o cliente.</string>
     <string name="address_saving_error">Não foi possível salvar o produto.</string>
-    <string name="getting_categories_error">Não foi possível obter as categorias do servidor.</string>
-    <string name="getting_products_error">Não foi possível obter os produtos do servidor.</string>
+    <string name="getting_categories_error">Não foi possível obter as categorias a patir servidor.</string>
+    <string name="getting_products_error">Não foi possível obter os produtos a patir servidor.</string>
+    <string name="getting_customer_error">Não foi possível obter os clientes a patir servidor.</string>
     <string name="getting_clerk_error">Não foi fazer login.</string>
     <string name="ano">Ano</string>"Erro no valor inserido."
     <string name="see_products">Ver produtos</string>

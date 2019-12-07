@@ -1,8 +1,8 @@
-package com.mithril.mobilegoldenleaf.ui.client.presenters
+package com.mithril.mobilegoldenleaf.ui.customer.presenters
 
 import com.mithril.mobilegoldenleaf.asynctask.client.GetClientTask
 import com.mithril.mobilegoldenleaf.persistence.repository.CustomerRepository
-import com.mithril.mobilegoldenleaf.ui.client.interfaces.ClientListView
+import com.mithril.mobilegoldenleaf.ui.customer.interfaces.ClientListView
 
 class ClientListPresenter(private val view: ClientListView,
                           private val repository: CustomerRepository) {

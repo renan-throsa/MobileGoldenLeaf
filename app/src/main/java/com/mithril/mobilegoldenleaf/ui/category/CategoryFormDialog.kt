@@ -15,13 +15,13 @@ class CategoryFormDialog(private val context: Context, private val viewGroup: Vi
                          private val categoryId: Long = 0L) {
 
     private val view = createView()
+    private val NEGATIVE_BUTTON_TITLE = "Cancelar"
+    private val POSITIVE_BUTTON_TITLE = "Salvar"
 
     private val presenter by lazy {
         val repository = AppDataBase.getInstance(context).categoryRepository
         CategoryPresenter(repository)
     }
-
-    private val NEGATIVE_BUTTON_TITLE = "Cancelar"
 
     private val DIALOG_TITLE: String
         get() {
@@ -29,15 +29,6 @@ class CategoryFormDialog(private val context: Context, private val viewGroup: Vi
                 "Editar categoria"
             } else {
                 "Nova categoria"
-            }
-
-        }
-    private val POSITIVE_BUTTON_TITLE: String
-        get() {
-            return if (categoryId != 0L) {
-                "Editar"
-            } else {
-                "Salvar"
             }
 
         }

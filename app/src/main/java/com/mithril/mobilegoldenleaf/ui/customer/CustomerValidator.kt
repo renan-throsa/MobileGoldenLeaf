@@ -1,4 +1,4 @@
-package com.mithril.mobilegoldenleaf.ui.client
+package com.mithril.mobilegoldenleaf.ui.customer
 
 import com.mithril.mobilegoldenleaf.models.Customer
 
