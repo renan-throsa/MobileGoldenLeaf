@@ -19,6 +19,8 @@ class Product : Serializable {
     var isAvailable: Boolean = false
     var synchronized: Boolean = false
 
+    constructor()
+
     @Ignore
     constructor(id: Long, category_id: Long, brand: String, description: String, code: String, unit_cost: BigDecimal, is_available: Boolean) {
         this.id = id
@@ -40,7 +42,6 @@ class Product : Serializable {
         this.isAvailable = true
     }
 
-    constructor()
 
     override fun toString(): String {
         return "$brand'$description'$code'$unitCost"

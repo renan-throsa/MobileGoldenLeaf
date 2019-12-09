@@ -47,9 +47,7 @@ class AppRetrofit {
         return retrofit.create(CustomerService::class.java)
     }
 
-    fun addressService():AddressService{
 
-    }
 
 
 

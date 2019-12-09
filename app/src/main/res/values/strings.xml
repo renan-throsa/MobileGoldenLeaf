@@ -34,6 +34,7 @@
     <string name="edit_client">Editar cliente</string>
     <string name="date">Data</string>
     <string name="category">Categoria</string>
+    <string name="customer">Cliente</string>
     <string name="total">Total</string>
     <string name="mes">Mês</string>
     <string name="password">Senha</string>

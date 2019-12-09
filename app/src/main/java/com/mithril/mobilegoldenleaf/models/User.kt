@@ -6,23 +6,20 @@ abstract class User {
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0L
     var name: String = ""
-    var phoneNumber: String = ""
+    var phone_number: String = "000000000"
 
-    fun hasValidId(): Boolean {
-        return id != 0L
-    }
 
     constructor()
 
-    constructor(name: String, phoneNumber: String) {
+    constructor(name: String, phone_number: String) {
         this.name = name
-        this.phoneNumber = phoneNumber
+        this.phone_number = phone_number
     }
 
-    constructor(id: Long, name: String, phoneNumber: String) {
+    constructor(id: Long, name: String, phone_number: String) {
         this.id = id
         this.name = name
-        this.phoneNumber = phoneNumber
+        this.phone_number = phone_number
     }
 
 

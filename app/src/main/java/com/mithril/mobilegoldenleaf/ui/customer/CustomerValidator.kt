@@ -13,7 +13,7 @@ class CustomerValidator {
                 error = "Erro. O número de identificação precisa ter 9 dígitos"
                 return false
             }
-            if (!checkPhoneNumber(phoneNumber)) {
+            if (!checkPhoneNumber(phone_number)) {
                 error = "Erro. O número de telefone precisa ter 11 dígitos"
                 return false
             }

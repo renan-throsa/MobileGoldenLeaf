@@ -24,10 +24,12 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="George Orwell"
+            />
 
         <TextView
-            android:id="@+id/item_client_phoneNumber"
+            android:id="@+id/item_client_address"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
@@ -36,23 +38,9 @@
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="@+id/item_client_name"
             app:layout_constraintStart_toStartOf="@+id/item_client_name"
-            app:layout_constraintTop_toBottomOf="@+id/item_client_name" />
-
-        <TextView
-            android:id="@+id/item_client_identification"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:textColor="@android:color/holo_green_dark"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/item_client_phoneNumber"
-            app:layout_constraintStart_toStartOf="@+id/item_client_phoneNumber"
-            app:layout_constraintTop_toBottomOf="@+id/item_client_phoneNumber" />
+            app:layout_constraintTop_toBottomOf="@+id/item_client_name"
+            tools:text="Rua dos tolos nº 34."
+            />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

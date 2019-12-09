@@ -9,7 +9,6 @@ import com.mithril.mobilegoldenleaf.persistence.converter.BigDecimalConverter
 
 import com.mithril.mobilegoldenleaf.persistence.converter.CaledarConverter
 import com.mithril.mobilegoldenleaf.persistence.converter.StatusConverter
-import com.mithril.mobilegoldenleaf.models.Address
 import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.models.Clerk
 import com.mithril.mobilegoldenleaf.models.Customer
@@ -18,7 +17,7 @@ import com.mithril.mobilegoldenleaf.models.Order
 import com.mithril.mobilegoldenleaf.models.Product
 import com.mithril.mobilegoldenleaf.persistence.repository.*
 
-@Database(entities = [Clerk::class, Customer::class, Address::class, Order::class, Item::class, Category::class, Product::class], version = 7, exportSchema = false)
+@Database(entities = [Clerk::class, Customer::class, Order::class, Item::class, Category::class, Product::class], version = 6, exportSchema = false)
 @TypeConverters(CaledarConverter::class, StatusConverter::class, BigDecimalConverter::class)
 abstract class AppDataBase : RoomDatabase() {
 
@@ -27,8 +26,6 @@ abstract class AppDataBase : RoomDatabase() {
     abstract val productRepository: ProductRepository
 
     abstract val categoryRepository: CategoryRepository
-
-    abstract val addressRepository: AddressRepository
 
     abstract val customerRepository: CustomerRepository
 

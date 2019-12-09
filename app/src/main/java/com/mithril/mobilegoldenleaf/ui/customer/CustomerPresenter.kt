@@ -52,7 +52,7 @@ class CustomerPresenter(private val customerRepository: CustomerRepository) {
                 customer,
                 whenSucceeded = { updatedCustomer ->
                     updatedCustomer?.let {
-                        saveInternally(updatedCustomer, whenSucceeded)
+                        updateInternally(updatedCustomer, whenSucceeded)
                     }
                 },
                 whenFailed = whenFailed)
@@ -100,7 +100,19 @@ class CustomerPresenter(private val customerRepository: CustomerRepository) {
                 whenExecute = {
                     customerRepository.save(customer)
                     customerRepository.get(customer.id)
-                }, whenFinalize = { categoryFound -> whenSucceeded(categoryFound) }
+                }, whenFinalize = { customerFound -> whenSucceeded(customerFound) }
+        ).execute()
+    }
+
+    private fun updateInternally(
+            customer: Customer,
+            whenSucceeded: (newCustomer: Customer) -> Unit
+    ) {
+        BaseAsyncTask(
+                whenExecute = {
+                    customerRepository.update(customer)
+                    customerRepository.get(customer.id)
+                }, whenFinalize = { customerFound -> whenSucceeded(customerFound) }
         ).execute()
     }
 

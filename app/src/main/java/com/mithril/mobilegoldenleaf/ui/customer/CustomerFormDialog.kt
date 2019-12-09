@@ -63,7 +63,7 @@ class CustomerFormDialog(private val context: Context, private val viewGroup: Vi
         with(view) {
             form_client_name.setText(customer.name)
             form_client_identification.setText(customer.identification)
-            form_client_phoneNumber.setText(customer.phoneNumber)
+            form_client_phoneNumber.setText(customer.phone_number)
             form_client_address.setText(customer.address)
         }
 

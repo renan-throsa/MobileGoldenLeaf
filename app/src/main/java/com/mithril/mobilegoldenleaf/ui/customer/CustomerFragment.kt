@@ -3,7 +3,6 @@ package com.mithril.mobilegoldenleaf.ui.customer
 import android.graphics.Color
 import android.os.Bundle
 import android.view.*
-import android.widget.AdapterView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -12,11 +11,9 @@ import com.mithril.mobilegoldenleaf.adapters.ClientAdapter
 import com.mithril.mobilegoldenleaf.models.Customer
 import com.mithril.mobilegoldenleaf.persistence.AppDataBase
 import com.mithril.mobilegoldenleaf.ui.MainActivity
-import com.mithril.mobilegoldenleaf.ui.customer.fragments.ClientFormDialogFragment
-import com.mithril.mobilegoldenleaf.ui.customer.interfaces.ClientListView
 import kotlinx.android.synthetic.main.fragment_clients_list.view.*
 
-class CustomerFragment : Fragment(), ClientListView {
+class CustomerFragment : Fragment() {
 
     private lateinit var activityContext: MainActivity
 
@@ -59,53 +56,61 @@ class CustomerFragment : Fragment(), ClientListView {
         )
     }
 
-    override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
-        super.onCreateContextMenu(menu, v, menuInfo)
-        activity?.menuInflater?.inflate(R.menu.client_list_menu, menu)
-    }
-
     override fun onResume() {
         super.onResume()
         searchCustomer()
     }
 
+    private fun configureList(view: View) {
+        with(view) {
+            clients_list.adapter = adapter
+        }
+    }
+
+    private fun configFba(view: View) {
+        view.fragment_clients_list_fab_new_client.setOnClickListener {
+            CustomerFormDialog(activityContext, activityContext.window.decorView as ViewGroup)
+                    .show(
+                            whenSucceeded = { customerCreated: Customer ->
+                                onDataBaseChanged(customerCreated)
+                            },
+                            whenFailed = { errorMessage ->
+                                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT)
+                                        .show()
+                            }
+                    )
+
+        }
+    }
+
+
     override fun onContextItemSelected(item: MenuItem): Boolean {
-        val menuInfo = item.menuInfo as AdapterView.AdapterContextMenuInfo
-        val client = adapter.getItem(menuInfo.position)
+        val customer = adapter.getItem(item.groupId)
         when (item.itemId) {
-            R.id.client_list_menu_edit -> openEditProductDialogFragment(client)
+            R.id.client_list_menu_edit -> openEditCustomerDialog(customer)
         }
         return super.onContextItemSelected(item)
 
     }
 
-    private fun openEditProductDialogFragment(customer: Customer) {
-        val dialogFragment = ClientFormDialogFragment.newInstance(customer.id)
-        activity?.supportFragmentManager?.let { it -> dialogFragment.open(it) }
+    private fun openEditCustomerDialog(customer: Customer) {
+        CustomerFormDialog(activityContext, activityContext.window.decorView as ViewGroup, customer.id)
+                .show(
+                        whenSucceeded = { customerEdited: Customer ->
+                            onDataBaseChanged(customerEdited)
+                        },
+                        whenFailed = { errorMessage ->
+                            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT)
+                                    .show()
+                        }
+                )
     }
 
-    override fun showProgress() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun hideProgress() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun showClients(all: List<Customer>) {
-        adapter.update(all)
-    }
-
-    override fun showOrdersOf(customer: Customer) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    private fun configureList(view: View) {
-        with(view) {
-            clients_list.adapter = adapter
-            registerForContextMenu(clients_list)
-            //clients_list.addFooterView(initFooter())
-        }
+    private fun onDataBaseChanged(customer: Customer) {
+        searchCustomer()
+        val text = "Banco de dados atualizado com " + customer.name
+        val toast = Toast.makeText(context, text, Toast.LENGTH_SHORT)
+        toast.show()
     }
 
     private fun initFooter(): TextView {
@@ -117,20 +122,11 @@ class CustomerFragment : Fragment(), ClientListView {
         return txtFooter
     }
 
-    private fun configFba(view: View) {
-        view.fragment_clients_list_fab_new_client.setOnClickListener {
-            val dialogFragment = ClientFormDialogFragment.newInstance()
-            activity?.supportFragmentManager?.let { it -> dialogFragment.open(it) }
-        }
-    }
 
     companion object {
-//        private const val EXTRA_CLIENT_ID = "categoryId"
-//        private const val TAG_CLIENT_LIST = "tagProductsList"
-
         fun newInstance(): CustomerFragment {
-            val fragment = CustomerFragment()
-            return fragment
+            return CustomerFragment()
+
         }
     }
 }

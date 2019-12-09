@@ -37,15 +37,6 @@ class ClientAdapter(private val context: Context) : RecyclerView.Adapter<ClientA
         notifyItemRangeInserted(0, this.customers.size)
     }
 
-    companion object {
-        data class ViewHolder(val view: View) {
-            val name: TextView = view.item_client_name
-            val phoneNumber: TextView = view.item_client_phoneNumber
-            val identification: TextView = view.item_client_identification
-
-        }
-    }
-
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnCreateContextMenuListener {
 
@@ -62,9 +53,7 @@ class ClientAdapter(private val context: Context) : RecyclerView.Adapter<ClientA
 
         fun bindView(customer: Customer) {
             itemView.item_client_name.text = customer.name
-            itemView.item_client_phoneNumber.text = customer.phoneNumber
-            itemView.item_client_identification.text = customer.identification
-
+            itemView.item_client_address.text = customer.address
         }
 
 

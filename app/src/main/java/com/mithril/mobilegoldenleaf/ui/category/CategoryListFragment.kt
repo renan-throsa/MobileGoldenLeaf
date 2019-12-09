@@ -125,7 +125,7 @@ class CategoryListFragment : Fragment() {
         val category = adapter.getItem(item.groupId)
         when (item.itemId) {
             R.id.category_list_menu_edit -> openEditCategoryDialog(category)
-            R.id.category_list_menu_see_products -> openSeeProductsListFragment(category)
+            R.id.category_list_menu_see_products -> openSeeProductsList(category)
             R.id.category_list_menu_add_product -> addProductIn(category)
         }
         return super.onContextItemSelected(item)
@@ -144,7 +144,7 @@ class CategoryListFragment : Fragment() {
     }
 
 
-    private fun openSeeProductsListFragment(category: Category) {
+    private fun openSeeProductsList(category: Category) {
         if (activity is OnProductsFromCategoryListener) {
             val listener = activity as OnProductsFromCategoryListener
             listener.OnProductsFromCategoryClick(category)
