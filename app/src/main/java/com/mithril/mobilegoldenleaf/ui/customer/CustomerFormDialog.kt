@@ -28,8 +28,8 @@ class CustomerFormDialog(private val context: Context, private val viewGroup: Vi
         }
 
     private val customerPresenter by lazy {
-        val repository = AppDataBase.getInstance(context).customerRepository
-        CustomerPresenter(repository)
+        val repository = AppDataBase.getInstance(context).customerDao
+        CustomerRepository(repository)
     }
 
 

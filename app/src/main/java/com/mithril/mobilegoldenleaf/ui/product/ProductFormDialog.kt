@@ -9,7 +9,6 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
 import com.mithril.mobilegoldenleaf.R
-import com.mithril.mobilegoldenleaf.extentions.toBrazilianFormat
 import com.mithril.mobilegoldenleaf.extentions.toDecimalFormat
 import com.mithril.mobilegoldenleaf.models.Category
 import com.mithril.mobilegoldenleaf.models.Product
@@ -27,7 +26,7 @@ class ProductFormDialog(private val context: Context,
     private val view = createView()
 
     private val productPresenter by lazy {
-        ProductPresenter(AppDataBase.getInstance(context).productRepository)
+        ProductRepository(AppDataBase.getInstance(context).productDao)
     }
 
     private val categoryPresenter by lazy {

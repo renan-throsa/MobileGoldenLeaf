@@ -5,7 +5,7 @@ import androidx.room.*
 import com.mithril.mobilegoldenleaf.models.Product
 
 @Dao
-interface ProductRepository {
+interface ProductDao {
 
     @Insert
     fun save(product: Product): Long

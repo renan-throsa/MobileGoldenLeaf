@@ -1,24 +1,41 @@
 package com.mithril.mobilegoldenleaf.ui.customer
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.mithril.mobilegoldenleaf.asynctask.BaseAsyncTask
 import com.mithril.mobilegoldenleaf.models.Customer
-import com.mithril.mobilegoldenleaf.persistence.repository.CustomerRepository
+import com.mithril.mobilegoldenleaf.persistence.repository.CustomerDao
+import com.mithril.mobilegoldenleaf.persistence.repository.Resource
 import com.mithril.mobilegoldenleaf.retrofit.webclient.CustomerWebClient
 
-class CustomerPresenter(private val customerRepository: CustomerRepository) {
+class CustomerRepository(private val customerDao: CustomerDao) {
 
     private val customerWebClient = CustomerWebClient()
     private val customerValidator = CustomerValidator()
+    private val liveData = MutableLiveData<Resource<List<Customer>?>>()
 
+    fun get(): LiveData<Resource<List<Customer>?>> {
+        searchInternally(whenSucceeded = {
+            liveData.value = Resource(data = it)
+        })
+        searchRemotely(whenSucceeded = {
+            liveData.value = Resource(data = it)
+        }, whenFailed = {
+            val currentResource = liveData.value
+            val createdResource: Resource<List<Customer>?> = if (currentResource != null) {
+                Resource(data = currentResource.data, error = it)
+            } else {
+                Resource(data = null, error = it)
+            }
+            liveData.value = createdResource
+        })
 
-    fun get(whenSucceeded: (List<Customer>) -> Unit, whenFailed: (error: String?) -> Unit) {
-        searchInternally(whenSucceeded)
-        searchRemotely(whenSucceeded, whenFailed)
+        return liveData
     }
 
     fun get(id: Long, whenSucceeded: (customerRetrieved: Customer?) -> Unit) {
         BaseAsyncTask(whenExecute = {
-            customerRepository.get(id)
+            customerDao.get(id)
         }, whenFinalize = whenSucceeded).execute()
     }
 
@@ -60,7 +77,7 @@ class CustomerPresenter(private val customerRepository: CustomerRepository) {
 
     private fun searchInternally(whenSucceeded: (List<Customer>) -> Unit) {
         BaseAsyncTask(whenExecute = {
-            customerRepository.get()
+            customerDao.get()
         }, whenFinalize = whenSucceeded)
                 .execute()
     }
@@ -86,8 +103,8 @@ class CustomerPresenter(private val customerRepository: CustomerRepository) {
     ) {
         BaseAsyncTask(
                 whenExecute = {
-                    customerRepository.save(products)
-                    customerRepository.get()
+                    customerDao.save(products)
+                    customerDao.get()
                 }, whenFinalize = whenSucceeded
         ).execute()
     }
@@ -98,8 +115,8 @@ class CustomerPresenter(private val customerRepository: CustomerRepository) {
     ) {
         BaseAsyncTask(
                 whenExecute = {
-                    customerRepository.save(customer)
-                    customerRepository.get(customer.id)
+                    customerDao.save(customer)
+                    customerDao.get(customer.id)
                 }, whenFinalize = { customerFound -> whenSucceeded(customerFound) }
         ).execute()
     }
@@ -110,8 +127,8 @@ class CustomerPresenter(private val customerRepository: CustomerRepository) {
     ) {
         BaseAsyncTask(
                 whenExecute = {
-                    customerRepository.update(customer)
-                    customerRepository.get(customer.id)
+                    customerDao.update(customer)
+                    customerDao.get(customer.id)
                 }, whenFinalize = { customerFound -> whenSucceeded(customerFound) }
         ).execute()
     }

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.adapters.ProductAdapter
 import com.mithril.mobilegoldenleaf.models.Product
@@ -22,8 +23,14 @@ class ProductListFragment : Fragment() {
     private val adapter by lazy { ProductAdapter(activityContext) }
 
     private val presenter by lazy {
-        val repository = AppDataBase.getInstance(activityContext).productRepository
-        ProductPresenter(repository)
+        val repository = AppDataBase.getInstance(activityContext).productDao
+        ProductRepository(repository)
+    }
+
+    private val viewModel by lazy {
+        val repository = ProductRepository(AppDataBase.getInstance(activityContext).productDao)
+        val factory = ProductViewModelFactory(repository)
+        ViewModelProviders.of(this, factory).get(ProductViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -98,7 +105,7 @@ class ProductListFragment : Fragment() {
 
 
     private fun searchProducts() {
-        presenter.get(
+        viewModel.get(
                 whenSucceeded = {
                     adapter.update(it)
                 }, whenFailed = {
@@ -109,7 +116,7 @@ class ProductListFragment : Fragment() {
     }
 
     private fun searchProductsWith(categoryId: Long) {
-        presenter.get(categoryId,
+        viewModel.get(categoryId,
                 whenSucceeded = {
                     adapter.update(it)
                 }, whenFailed = {

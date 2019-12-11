@@ -27,7 +27,7 @@ class MobileGoldenLeafApplication : Application() {
 
         val categoryDao = database.categoryRepository
         val bebidasId = categoryDao.save(bebidas)
-        val productRepository = database.productRepository
+        val productRepository = database.productDao
         productRepository.save(
                 Product(bebidasId, "Coca Cola", "REFRIGERANTE COCA-COLA GARRAFA 2L", "7894900011517", BigDecimal(5.25)))
         val leite_substitutosId = categoryDao.save(leite_substitutos)

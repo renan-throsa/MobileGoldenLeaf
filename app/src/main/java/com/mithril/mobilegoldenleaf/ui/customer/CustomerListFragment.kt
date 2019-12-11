@@ -6,6 +6,8 @@ import android.view.*
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.adapters.ClientAdapter
 import com.mithril.mobilegoldenleaf.models.Customer
@@ -13,7 +15,7 @@ import com.mithril.mobilegoldenleaf.persistence.AppDataBase
 import com.mithril.mobilegoldenleaf.ui.MainActivity
 import kotlinx.android.synthetic.main.fragment_clients_list.view.*
 
-class CustomerFragment : Fragment() {
+class CustomerListFragment : Fragment() {
 
     private lateinit var activityContext: MainActivity
 
@@ -21,9 +23,10 @@ class CustomerFragment : Fragment() {
         ClientAdapter(activityContext)
     }
 
-    private val presenter by lazy {
-        val repository = AppDataBase.getInstance(activityContext).customerRepository
-        CustomerPresenter(repository)
+    private val viewModel by lazy {
+        val repository = CustomerRepository(AppDataBase.getInstance(activityContext).customerDao)
+        val factory = CustomerViewModelFactory(repository)
+        ViewModelProviders.of(this, factory).get(CustomerViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,15 +48,15 @@ class CustomerFragment : Fragment() {
     }
 
     private fun searchCustomer() {
-        presenter.get(
-                whenSucceeded = {
-                    adapter.update(it)
-                }, whenFailed = {
-            val toast = Toast.makeText(context, R.string.getting_customer_error, Toast.LENGTH_SHORT)
-            toast.show()
-            //TODO Load categories offline here.
-        }
-        )
+        viewModel.getAll().observe(this, Observer { resource ->
+            resource.data?.let {
+                adapter.update(it)
+            }
+            resource.error?.let {
+                val toast = Toast.makeText(context, R.string.getting_customer_error, Toast.LENGTH_SHORT)
+                toast.show()
+            }
+        })
     }
 
     override fun onResume() {
@@ -124,8 +127,8 @@ class CustomerFragment : Fragment() {
 
 
     companion object {
-        fun newInstance(): CustomerFragment {
-            return CustomerFragment()
+        fun newInstance(): CustomerListFragment {
+            return CustomerListFragment()
 
         }
     }

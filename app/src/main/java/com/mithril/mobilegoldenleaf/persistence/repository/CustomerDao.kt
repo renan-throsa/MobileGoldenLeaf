@@ -10,7 +10,7 @@ import androidx.room.Query
 import com.mithril.mobilegoldenleaf.models.Customer
 
 @Dao
-interface CustomerRepository {
+interface CustomerDao {
 
     @Insert
     fun save(customer: Customer): Long
@@ -24,8 +24,8 @@ interface CustomerRepository {
     @Query("SELECT * FROM Customer")
     fun get(): List<Customer>
 
-    @Query("SELECT c.* FROM Customer c WHERE c.name LIKE :term")
-    fun search(term: String): List<Customer>
+    @Query("SELECT c.* FROM Customer c WHERE c.name LIKE :query ORDER BY c.name")
+    fun search(query: String): List<Customer>
 
     @Query("SELECT c.* FROM Customer c WHERE c.id = :clientId")
     fun get(clientId: Long): Customer

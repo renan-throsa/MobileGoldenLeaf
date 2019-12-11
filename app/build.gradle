@@ -23,10 +23,14 @@ android {
 }
 
 dependencies {
-    def room_version = "2.2.1"
+    def room_version = "2.2.2"
+    def lifecycle_version = "2.1.0"
+
     kapt "android.arch.persistence.room:compiler:$room_version"
     implementation "android.arch.persistence.room:runtime:$room_version"
     implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'

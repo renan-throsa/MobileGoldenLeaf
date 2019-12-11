@@ -2,10 +2,10 @@ package com.mithril.mobilegoldenleaf.ui.product
 
 import com.mithril.mobilegoldenleaf.asynctask.BaseAsyncTask
 import com.mithril.mobilegoldenleaf.models.Product
-import com.mithril.mobilegoldenleaf.persistence.repository.ProductRepository
+import com.mithril.mobilegoldenleaf.persistence.repository.ProductDao
 import com.mithril.mobilegoldenleaf.retrofit.webclient.ProductWebClient
 
-class ProductPresenter(private val productRepository: ProductRepository) {
+class ProductRepository(private val productDao: ProductDao) {
 
     private val productWebClient = ProductWebClient()
     private val validator = ProductValidator()
@@ -22,7 +22,7 @@ class ProductPresenter(private val productRepository: ProductRepository) {
 
     fun get(productId: Long, whenSucceeded: (productFound: Product?) -> Unit) {
         BaseAsyncTask(whenExecute = {
-            productRepository.get(productId)
+            productDao.get(productId)
         }, whenFinalize = whenSucceeded).execute()
     }
 
@@ -50,7 +50,7 @@ class ProductPresenter(private val productRepository: ProductRepository) {
 
     private fun searchInternally(whenSucceeded: (List<Product>) -> Unit) {
         BaseAsyncTask(whenExecute = {
-            productRepository.get()
+            productDao.get()
         }, whenFinalize = whenSucceeded)
                 .execute()
     }
@@ -70,7 +70,7 @@ class ProductPresenter(private val productRepository: ProductRepository) {
 
     private fun searchInternally(categoryId: Long, whenSucceeded: (List<Product>) -> Unit) {
         BaseAsyncTask(whenExecute = {
-            productRepository.productsWith(categoryId)
+            productDao.productsWith(categoryId)
         }, whenFinalize = whenSucceeded)
                 .execute()
     }
@@ -122,8 +122,8 @@ class ProductPresenter(private val productRepository: ProductRepository) {
     ) {
         BaseAsyncTask(
                 whenExecute = {
-                    productRepository.save(products)
-                    productRepository.get()
+                    productDao.save(products)
+                    productDao.get()
                 }, whenFinalize = whenSucceeded
         ).execute()
     }
@@ -134,8 +134,8 @@ class ProductPresenter(private val productRepository: ProductRepository) {
     ) {
         BaseAsyncTask(
                 whenExecute = {
-                    productRepository.save(product)
-                    productRepository.get(product.id)
+                    productDao.save(product)
+                    productDao.get(product.id)
                 }, whenFinalize = { categoryFound -> whenSucceeded(categoryFound) }
         ).execute()
     }

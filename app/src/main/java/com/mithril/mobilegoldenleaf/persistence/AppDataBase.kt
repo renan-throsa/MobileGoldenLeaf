@@ -23,11 +23,11 @@ abstract class AppDataBase : RoomDatabase() {
 
     abstract val clerkRepository: ClerkRepository
 
-    abstract val productRepository: ProductRepository
+    abstract val productDao: ProductDao
 
     abstract val categoryRepository: CategoryRepository
 
-    abstract val customerRepository: CustomerRepository
+    abstract val customerDao: CustomerDao
 
     abstract val orderDao: OrderDao
 
