@@ -1,71 +1,74 @@
 package com.mithril.mobilegoldenleaf.ui.customer
 
-import android.app.AlertDialog
-import android.content.Context
+import android.app.Dialog
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.mithril.mobilegoldenleaf.R
 import com.mithril.mobilegoldenleaf.models.Customer
 import com.mithril.mobilegoldenleaf.persistence.AppDataBase
-import kotlinx.android.synthetic.main.dialog_client_form.view.*
+import com.mithril.mobilegoldenleaf.ui.MainActivity
+import kotlinx.android.synthetic.main.dialog_client_form.*
 
-class CustomerFormDialog(private val context: Context, private val viewGroup: ViewGroup?,
-                         private val customerId: Long = 0L) {
+class CustomerFormDialog : DialogFragment() {
 
-
-    private val view = createView()
-    private val NEGATIVE_BUTTON_TITLE = "Cancelar"
-    private val POSITIVE_BUTTON_TITLE = "Salvar"
-    private val DIALOG_TITLE: String
-        get() {
-            return if (customerId != 0L) {
-                "Editar cliente"
-            } else {
-                "Novo cliente"
-            }
-
-        }
+    private lateinit var activityContext: MainActivity
 
     private val customerPresenter by lazy {
-        val repository = AppDataBase.getInstance(context).customerDao
+        val repository = AppDataBase.getInstance(activityContext).customerDao
         CustomerRepository(repository)
     }
 
+    private val viewModel by lazy {
+        val repository = CustomerRepository(AppDataBase.getInstance(activityContext).customerDao)
+        val factory = CustomerFormViewModelFactory(repository)
+        ViewModelProviders.of(this, factory)
+                .get(CustomerFormViewModel::class.java)
+    }
 
-    fun show(whenSucceeded: (customer: Customer) -> Unit, whenFailed: (error: String?) -> Unit) {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        activityContext = activity as MainActivity
+        super.onCreate(savedInstanceState)
+    }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        setStyle(STYLE_NORMAL, R.style.CustomDialogFragment)
+        return super.onCreateDialog(savedInstanceState)
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.dialog_client_form, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
+        val customerId = arguments?.getLong(EXTRA_CUSTOMER_ID) ?: 0L
         if (customerId != 0L) {
             customerPresenter.get(customerId, whenSucceeded = { customerFound ->
                 if (customerFound != null) {
-                    show(customerFound)
+                    dialog?.setTitle(R.string.edit_client)
+                    showCustomer(customerFound)
                 }
             })
         }
-        AlertDialog.Builder(context)
-                .setTitle(DIALOG_TITLE)
-                .setView(view)
-                .setPositiveButton(POSITIVE_BUTTON_TITLE) { _, _ ->
-                    save(Customer(
-                            view.form_client_name.text.toString(),
-                            view.form_client_phoneNumber.text.toString(),
-                            view.form_client_identification.text.toString(),
-                            view.form_client_address.text.toString(),
-                            true),
 
-                            whenSucceeded, whenFailed)
-                }
-                .setNegativeButton(NEGATIVE_BUTTON_TITLE, null)
-                .show()
+        dialog?.setTitle(R.string.add_client)
+        dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
 
     }
 
-    private fun show(customer: Customer) {
-        with(view) {
-            form_client_name.setText(customer.name)
-            form_client_identification.setText(customer.identification)
-            form_client_phoneNumber.setText(customer.phone_number)
-            form_client_address.setText(customer.address)
-        }
+    private fun showCustomer(customer: Customer) {
+        form_client_name.setText(customer.name)
+        form_client_identification.setText(customer.identification)
+        form_client_phoneNumber.setText(customer.phone_number)
+        form_client_address.setText(customer.address)
 
     }
 
@@ -73,20 +76,36 @@ class CustomerFormDialog(private val context: Context, private val viewGroup: Vi
                      whenSucceeded: (customer: Customer) -> Unit,
                      whenFailed: (error: String?) -> Unit) {
 
-
-        if (customerId != 0L) {
-            customer.id = customerId
+        if (customer.id != 0L) {
             customerPresenter.update(customer, whenSucceeded = whenSucceeded, whenFailed = whenFailed)
         } else {
-            customerPresenter.save(customer, whenSucceeded = whenSucceeded, whenFailed = whenFailed)
+            viewModel.save(customer).observe(this, Observer {
+                 if(it.error==null){
+
+                 }else{
+                     
+                 }
+            })
         }
 
     }
 
-    private fun createView(): View {
-        return LayoutInflater
-                .from(context)
-                .inflate(R.layout.dialog_client_form, viewGroup, false)
 
+    fun open(fm: FragmentManager) {
+        if (fm.findFragmentByTag(DIALOG_TAG) == null)
+            show(fm, DIALOG_TAG)
+    }
+
+    companion object {
+        private const val DIALOG_TAG = "ClientFormDialogFragment"
+        private const val EXTRA_CUSTOMER_ID = "customerId"
+
+        fun newInstance(id: Long = 0): CustomerFormDialog {
+            val fragment = CustomerFormDialog()
+            val args = Bundle()
+            args.putLong(EXTRA_CUSTOMER_ID, id)
+            fragment.arguments = args
+            return fragment
+        }
     }
 }

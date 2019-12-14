@@ -6,6 +6,7 @@ import com.mithril.mobilegoldenleaf.asynctask.BaseAsyncTask
 import com.mithril.mobilegoldenleaf.models.Customer
 import com.mithril.mobilegoldenleaf.persistence.repository.CustomerDao
 import com.mithril.mobilegoldenleaf.persistence.repository.Resource
+import com.mithril.mobilegoldenleaf.persistence.repository.createFailedResource
 import com.mithril.mobilegoldenleaf.retrofit.webclient.CustomerWebClient
 
 class CustomerRepository(private val customerDao: CustomerDao) {
@@ -15,23 +16,20 @@ class CustomerRepository(private val customerDao: CustomerDao) {
     private val liveData = MutableLiveData<Resource<List<Customer>?>>()
 
     fun get(): LiveData<Resource<List<Customer>?>> {
-        searchInternally(whenSucceeded = {
+        val whenSucceeded: (List<Customer>) -> Unit = {
             liveData.value = Resource(data = it)
-        })
-        searchRemotely(whenSucceeded = {
-            liveData.value = Resource(data = it)
-        }, whenFailed = {
+        }
+
+        searchInternally(whenSucceeded = whenSucceeded)
+        searchRemotely(whenSucceeded = whenSucceeded, whenFailed = { error ->
             val currentResource = liveData.value
-            val createdResource: Resource<List<Customer>?> = if (currentResource != null) {
-                Resource(data = currentResource.data, error = it)
-            } else {
-                Resource(data = null, error = it)
-            }
-            liveData.value = createdResource
+            val failedResource = createFailedResource<List<Customer>?>(currentResource, error)
+            liveData.value = failedResource
         })
 
         return liveData
     }
+
 
     fun get(id: Long, whenSucceeded: (customerRetrieved: Customer?) -> Unit) {
         BaseAsyncTask(whenExecute = {
@@ -39,15 +37,16 @@ class CustomerRepository(private val customerDao: CustomerDao) {
         }, whenFinalize = whenSucceeded).execute()
     }
 
-    fun save(customer: Customer,
-             whenSucceeded: (customer: Customer) -> Unit,
-             whenFailed: (error: String?) -> Unit) {
+    fun save(customer: Customer): LiveData<Resource<Void?>> {
+        val liveData = MutableLiveData<Resource<Void?>>()
         if (customerValidator.validate(customer)) {
-            saveRemotely(customer, whenSucceeded, whenFailed)
-        } else {
-            whenFailed(customerValidator.error)
+            saveRemotely(customer, whenSucceeded = {
+                liveData.value = Resource(null)
+            }, whenFailed = {
+                Resource(data = null, error = it)
+            })
         }
-
+        return liveData
     }
 
 
@@ -140,8 +139,8 @@ class CustomerRepository(private val customerDao: CustomerDao) {
             whenFailed: (error: String?) -> Unit
     ) {
         customerWebClient.post(customer,
-                whenSucceeded = { customerSaved ->
-                    customerSaved?.let {
+                whenSucceeded = {
+                    it?.let { customerSaved ->
                         customerSaved.synchronized = true
                         saveInternally(customerSaved, whenSucceeded)
                     }

@@ -1,9 +1,10 @@
 package com.mithril.mobilegoldenleaf.ui.customer
 
-import android.graphics.Color
 import android.os.Bundle
-import android.view.*
-import android.widget.TextView
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -70,22 +71,28 @@ class CustomerListFragment : Fragment() {
         }
     }
 
+//    private fun configFba(view: View) {
+//        view.fragment_clients_list_fab_new_client.setOnClickListener {
+//            CustomerFormDialog(activityContext, activityContext.window.decorView as ViewGroup)
+//                    .showCustomer(
+//                            whenSucceeded = { customerCreated: Customer ->
+//                                onDataBaseChanged(customerCreated)
+//                            },
+//                            whenFailed = { errorMessage ->
+//                                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT)
+//                                        .show()
+//                            }
+//                    )
+//
+//        }
+//    }
+
     private fun configFba(view: View) {
         view.fragment_clients_list_fab_new_client.setOnClickListener {
-            CustomerFormDialog(activityContext, activityContext.window.decorView as ViewGroup)
-                    .show(
-                            whenSucceeded = { customerCreated: Customer ->
-                                onDataBaseChanged(customerCreated)
-                            },
-                            whenFailed = { errorMessage ->
-                                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT)
-                                        .show()
-                            }
-                    )
-
+            val dialogFragment = CustomerFormDialog.newInstance()
+            activity?.supportFragmentManager?.let { it -> dialogFragment.open(it) }
         }
     }
-
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
         val customer = adapter.getItem(item.groupId)
@@ -97,16 +104,18 @@ class CustomerListFragment : Fragment() {
     }
 
     private fun openEditCustomerDialog(customer: Customer) {
-        CustomerFormDialog(activityContext, activityContext.window.decorView as ViewGroup, customer.id)
-                .show(
-                        whenSucceeded = { customerEdited: Customer ->
-                            onDataBaseChanged(customerEdited)
-                        },
-                        whenFailed = { errorMessage ->
-                            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT)
-                                    .show()
-                        }
-                )
+//        CustomerFormDialog(activityContext, activityContext.window.decorView as ViewGroup, customer.id)
+//                .showCustomer(
+//                        whenSucceeded = { customerEdited: Customer ->
+//                            onDataBaseChanged(customerEdited)
+//                        },
+//                        whenFailed = { errorMessage ->
+//                            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT)
+//                                    .show()
+//                        }
+//                )
+        val dialogFragment = CustomerFormDialog.newInstance(customer.id)
+        activity?.supportFragmentManager?.let { it -> dialogFragment.open(it) }
     }
 
     private fun onDataBaseChanged(customer: Customer) {
@@ -114,15 +123,6 @@ class CustomerListFragment : Fragment() {
         val text = "Banco de dados atualizado com " + customer.name
         val toast = Toast.makeText(context, text, Toast.LENGTH_SHORT)
         toast.show()
-    }
-
-    private fun initFooter(): TextView {
-        val txtFooter = TextView(context)
-        // txtFooter.text = resources.getQuantityString(R.plurals.footer_text_client, adapter.count, adapter.count)
-        txtFooter.setBackgroundColor(Color.LTGRAY)
-        txtFooter.gravity = Gravity.END
-        txtFooter.setPadding(0, 8, 8, 8)
-        return txtFooter
     }
 
 
