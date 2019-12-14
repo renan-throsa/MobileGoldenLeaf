@@ -36,15 +36,20 @@ abstract class AppDataBase : RoomDatabase() {
     companion object {
 
         private const val GOLDEN_LEAF_DATABASE = "GoldenLeaf.db"
+        private lateinit var db: AppDataBase
+
 
         fun getInstance(context: Context): AppDataBase {
-            return Room
-                    .databaseBuilder(
-                            context,
-                            AppDataBase::class.java,
-                            GOLDEN_LEAF_DATABASE)
-                    .fallbackToDestructiveMigration()
-                    .build()
+            return if (::db.isInitialized) {
+                db
+            } else
+                Room.databaseBuilder(
+                        context,
+                        AppDataBase::class.java,
+                        GOLDEN_LEAF_DATABASE)
+                        .fallbackToDestructiveMigration()
+                        .build()
         }
     }
 }
+

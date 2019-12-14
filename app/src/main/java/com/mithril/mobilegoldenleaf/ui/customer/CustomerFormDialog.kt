@@ -20,10 +20,6 @@ class CustomerFormDialog : DialogFragment() {
 
     private lateinit var activityContext: MainActivity
 
-    private val customerPresenter by lazy {
-        val repository = AppDataBase.getInstance(activityContext).customerDao
-        CustomerRepository(repository)
-    }
 
     private val viewModel by lazy {
         val repository = CustomerRepository(AppDataBase.getInstance(activityContext).customerDao)
@@ -51,12 +47,9 @@ class CustomerFormDialog : DialogFragment() {
         setHasOptionsMenu(true)
         val customerId = arguments?.getLong(EXTRA_CUSTOMER_ID) ?: 0L
         if (customerId != 0L) {
-            customerPresenter.get(customerId, whenSucceeded = { customerFound ->
-                if (customerFound != null) {
-                    dialog?.setTitle(R.string.edit_client)
-                    showCustomer(customerFound)
-                }
-            })
+            val customerFound = viewModel.get(customerId).value
+            dialog?.setTitle(R.string.edit_client)
+            customerFound?.let { showCustomer(it) }
         }
 
         dialog?.setTitle(R.string.add_client)
@@ -72,24 +65,18 @@ class CustomerFormDialog : DialogFragment() {
 
     }
 
-    private fun save(customer: Customer,
-                     whenSucceeded: (customer: Customer) -> Unit,
-                     whenFailed: (error: String?) -> Unit) {
+    private fun save(customer: Customer) {
 
-        if (customer.id != 0L) {
-            customerPresenter.update(customer, whenSucceeded = whenSucceeded, whenFailed = whenFailed)
-        } else {
-            viewModel.save(customer).observe(this, Observer {
-                 if(it.error==null){
+        viewModel.save(customer).observe(this, Observer {
+            if (it.error == null) {
+                this.dismiss()
+            } else {
 
-                 }else{
-                     
-                 }
-            })
-        }
+            }
+        })
+
 
     }
-
 
     fun open(fm: FragmentManager) {
         if (fm.findFragmentByTag(DIALOG_TAG) == null)
